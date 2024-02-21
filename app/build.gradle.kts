@@ -3,6 +3,9 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs.kotlin")
+    id("com.google.devtools.ksp")
 }
 
 val versionMajor = 0
@@ -65,6 +68,9 @@ android {
 dependencies {
 
     val navVer = "2.7.7"
+    val hilt = "2.50"
+    val lifecycle = "2.7.0"
+    val retrofit = "2.9.0"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -78,8 +84,19 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation("io.insert-koin:koin-android:3.6.0-wasm-alpha2")
+    implementation("com.squareup.retrofit2:retrofit:$retrofit")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofit")
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.google.dagger:hilt-android:$hilt")
+    ksp("com.google.dagger:hilt-android-compiler:$hilt")
+
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle")
+
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+
+    implementation("io.coil-kt:coil:2.5.0")
 
 }

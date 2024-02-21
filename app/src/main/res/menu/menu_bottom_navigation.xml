@@ -5,10 +5,12 @@
         android:title="@string/home"
         android:id="@+id/homeFragment"/>
 
-    <item android:title="@string/search"/>
+    <item
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"/>
 
-    <item android:title="@string/favorite"/>
-
-    <item android:title="@string/profile"/>
+    <item
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/favorite"/>
 
 </menu>

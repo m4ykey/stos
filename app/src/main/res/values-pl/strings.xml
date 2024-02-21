@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search">Szukaj</string>
+    <string name="home">Główny</string>
+    <string name="favorite">Ulubione</string>
+    <string name="profile">Profil</string>
+    <string name="hot">Gorące</string>
+    <string name="weeks_top">Top Tygodnia</string>
+    <string name="featured">Wyróżnione</string>
+    <string name="unanswered">Bez Odpowiedzi</string>
+</resources>

@@ -1,9 +1,13 @@
 <resources>
-    <string name="app_name">stos</string>
+    <string name="app_name" translatable="false">stos</string>
     <string name="search">Search</string>
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
     <string name="profile">Profile</string>
+    <string name="hot">Hot</string>
+    <string name="weeks_top">Week\'s Top</string>
+    <string name="featured">Featured</string>
+    <string name="unanswered">Unanswered</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
