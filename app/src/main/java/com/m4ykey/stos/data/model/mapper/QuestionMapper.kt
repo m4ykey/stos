@@ -25,6 +25,7 @@ fun QuestionItemDto.toQuestionItem() : QuestionItem {
         score = score ?: 0,
         tags = tags ?: emptyList(),
         title = title ?: "",
-        viewCount = view_count ?: 0
+        viewCount = view_count ?: 0,
+        creationDate = creation_date ?: 0
     )
 }

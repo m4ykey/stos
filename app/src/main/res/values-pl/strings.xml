@@ -8,4 +8,11 @@
     <string name="weeks_top">Top Tygodnia</string>
     <string name="featured">Wyróżnione</string>
     <string name="unanswered">Bez Odpowiedzi</string>
+    <string name="owner_profile_picture">Zdjęcie autora</string>
+    <string name="creation">Stworzone</string>
+    <string name="votes">Głosy</string>
+    <string name="week">Tydzień</string>
+    <string name="month">Miesiąc</string>
+    <string name="activity">Aktywność</string>
+    <string name="home_page">Strona Główna</string>
 </resources>

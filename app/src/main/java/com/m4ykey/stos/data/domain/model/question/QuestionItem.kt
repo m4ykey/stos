@@ -7,5 +7,6 @@ data class QuestionItem(
     val score : Int,
     val tags : List<String>,
     val title : String,
-    val viewCount : Int
+    val viewCount : Int,
+    val creationDate : Int
 )

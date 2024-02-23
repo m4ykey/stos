@@ -7,5 +7,6 @@ data class QuestionItemDto(
     val score: Int? = 0,
     val tags: List<String>? = emptyList(),
     val title: String? = null,
-    val view_count: Int? = 0
+    val view_count: Int? = 0,
+    val creation_date : Int? = 0
 )
