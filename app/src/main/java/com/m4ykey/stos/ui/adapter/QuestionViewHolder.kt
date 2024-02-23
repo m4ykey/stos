@@ -1,10 +1,9 @@
 package com.m4ykey.stos.ui.adapter
 
-import android.app.ActionBar.LayoutParams
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.GridLayout
 import android.widget.TextView
 import coil.load
 import com.m4ykey.stos.R
@@ -47,12 +46,13 @@ class QuestionViewHolder(
                     setBackgroundResource(R.drawable.drawable_input_layout)
                     setPadding(15, 10, 10, 15)
                 }
-                val params = LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                params.marginEnd = 10
-                params.topMargin = 10
+                val params = GridLayout.LayoutParams()
+                params.apply {
+                    topMargin = 10
+                    marginEnd = 10
+                    height = GridLayout.LayoutParams.WRAP_CONTENT
+                    width = GridLayout.LayoutParams.WRAP_CONTENT
+                }
                 tagTextView.layoutParams = params
                 linearLayoutTags.addView(tagTextView)
             }

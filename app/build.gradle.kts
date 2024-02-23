@@ -107,6 +107,4 @@ dependencies {
 
     implementation("com.google.firebase:firebase-crashlytics:18.6.2")
 
-    implementation("com.google.android.flexbox:flexbox:3.0.0")
-
 }
