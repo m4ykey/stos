@@ -8,14 +8,13 @@ import com.m4ykey.stos.data.model.mapper.toQuestionItem
 import javax.inject.Inject
 
 class QuestionsPagingSource @Inject constructor(
-    private val api : QuestionApi,
-    private val sort : String
+    private val api : QuestionApi
 ) : PagingSource<Int, QuestionItem>() {
 
     override fun getRefreshKey(state: PagingState<Int, QuestionItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.let { closestPage ->
-                closestPage.nextKey ?: closestPage.prevKey
+                if (closestPage.prevKey == null) closestPage.nextKey else closestPage.prevKey
             }
         }
     }
@@ -23,12 +22,10 @@ class QuestionsPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, QuestionItem> {
         return try {
             val page = params.key ?: 1
-            val pageSize = params.loadSize
 
             val response = api.getQuestions(
                 page = page,
-                pageSize = pageSize,
-                sort = sort
+                pageSize = params.loadSize
             ).items.map { it.toQuestionItem() }
 
             LoadResult.Page(

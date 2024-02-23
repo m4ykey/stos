@@ -1,70 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/recyclerViewQuestions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"/>
+    <TextView
+        android:text="TEst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <EditText
-            app:layout_constraintTop_toBottomOf="@id/appBar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/etInputText"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:imeOptions="actionSearch"
-            android:padding="10dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/black"
-            android:paddingEnd="15dp"
-            android:drawableTint="#757575"
-            android:textColorHint="#757575"
-            android:drawableStart="@drawable/ic_search"
-            android:hint="@string/search"
-            android:inputType="text"
-            android:maxLines="1"
-            android:background="@drawable/drawable_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.tabs.TabLayout
-            app:tabMode="scrollable"
-            app:tabGravity="fill"
-            android:id="@+id/tabLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etInputText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

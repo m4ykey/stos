@@ -1,21 +1,29 @@
 package com.m4ykey.stos.ui
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.tabs.TabLayoutMediator
-import com.m4ykey.stos.extensions.BaseFragment
-import com.m4ykey.stos.R
-import com.m4ykey.stos.extensions.UIConfigurator
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentHomeBinding
-import com.m4ykey.stos.ui.adapter.ViewPagerAdapter
-import com.m4ykey.stos.ui.questions.QuestionsFeaturedFragment
-import com.m4ykey.stos.ui.questions.QuestionsHotFragment
-import com.m4ykey.stos.ui.questions.QuestionsUnansweredFragment
-import com.m4ykey.stos.ui.questions.QuestionsWeekFragment
+import com.m4ykey.stos.extensions.BaseFragment
+import com.m4ykey.stos.extensions.OnItemClickListener
+import com.m4ykey.stos.extensions.UIConfigurator
+import com.m4ykey.stos.ui.adapter.QuestionAdapter
+import com.m4ykey.stos.ui.uistate.QuestionUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<FragmentHomeBinding> {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<FragmentHomeBinding>, OnItemClickListener<QuestionItem> {
+
+    private val questionAdapter by lazy { QuestionAdapter(this) }
+    private val viewModel : HomeViewModel by viewModels()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -25,29 +33,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<Fragmen
     }
 
     override fun setupUI(binding: FragmentHomeBinding) {
-        with(binding) {
-            val fragmentList = listOf(
-                QuestionsHotFragment(),
-                QuestionsWeekFragment(),
-                QuestionsFeaturedFragment(),
-                QuestionsUnansweredFragment()
-            )
-            val testAdapter = ViewPagerAdapter(
-                lifecycle = lifecycle,
-                fragmentList = fragmentList,
-                fm = childFragmentManager)
+        viewModel.questions.observe(viewLifecycleOwner) { state ->
+            handleQuestionState(binding, state)
+        }
 
-            viewPager2.adapter = testAdapter
-            TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-                val fragment = fragmentList[position]
-                tab.text = when (fragment) {
-                    is QuestionsHotFragment -> requireContext().getString(R.string.hot)
-                    is QuestionsWeekFragment -> requireContext().getString(R.string.weeks_top)
-                    is QuestionsFeaturedFragment -> requireContext().getString(R.string.featured)
-                    is QuestionsUnansweredFragment -> requireContext().getString(R.string.unanswered)
-                    else -> ""
-                }
-            }.attach()
+        binding.recyclerViewQuestions.apply {
+            adapter = questionAdapter
+            layoutManager = LinearLayoutManager(requireContext())
         }
     }
+
+    override fun onItemClick(position: Int, item: QuestionItem) {}
+
+    private fun handleQuestionState(binding: FragmentHomeBinding, state : QuestionUiState?) {
+        with(binding) {
+            recyclerViewQuestions.isVisible = state?.isLoading == false && state.questionList != null
+            progressBar.isVisible = state?.isLoading == true
+
+            state?.error?.let {
+                progressBar.isVisible = false
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+            state?.questionList?.let { search ->
+                progressBar.isVisible = false
+                recyclerViewQuestions.isVisible = true
+                questionAdapter.submitData(viewLifecycleOwner.lifecycle, search)
+            }
+        }
+    }
+
 }

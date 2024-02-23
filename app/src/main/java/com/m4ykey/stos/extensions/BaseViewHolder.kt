@@ -14,7 +14,7 @@ abstract class BaseViewHolder<T>(
 
     init {
         listener?.let { view.setOnClickListener {
-            listener.onItemClick(adapterPosition, getItem(adapterPosition))
+            listener.onItemClick(bindingAdapterPosition, getItem(bindingAdapterPosition))
         } }
     }
 

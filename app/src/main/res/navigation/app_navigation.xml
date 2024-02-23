@@ -5,14 +5,10 @@
     android:id="@+id/app_navigation"
     app:startDestination="@id/homeFragment">
 
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.m4ykey.stos.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/questionsHotFragment"
-        android:name="com.m4ykey.stos.ui.questions.QuestionsHotFragment"
-        android:label="fragment_questions_hot"
-        tools:layout="@layout/fragment_questions_hot" />
 </navigation>

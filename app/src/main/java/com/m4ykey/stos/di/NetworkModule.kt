@@ -9,6 +9,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
 @Module
@@ -17,7 +19,17 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideQuestionApi(moshi: Moshi) : QuestionApi = createApi(BASE_URL, moshi, QuestionApi::class.java)
+    fun provideQuestionApi(moshi: Moshi): QuestionApi {
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        return createApi(BASE_URL, moshi, QuestionApi::class.java, client)
+    }
 
     @Provides
     @Singleton

@@ -1,15 +1,14 @@
-package com.m4ykey.stos.ui.adapter.viewholder
+package com.m4ykey.stos.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import coil.load
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
-import com.m4ykey.stos.databinding.LayoutQuestionBinding
+import com.m4ykey.stos.databinding.QuestionListBinding
 import com.m4ykey.stos.extensions.BaseViewHolder
 import com.m4ykey.stos.extensions.OnItemClickListener
 
 class QuestionViewHolder(
-    private val binding : LayoutQuestionBinding,
+    private val binding : QuestionListBinding,
     listener : OnItemClickListener<QuestionItem>?
 ) : BaseViewHolder<QuestionItem>(binding.root, listener) {
 
@@ -18,17 +17,17 @@ class QuestionViewHolder(
     override fun bind(item: QuestionItem) {
         currentQuestion = item
         binding.apply {
-            txtQuestionTitle.text = item.title
-            txtUserName.text = item.owner.displayName
-            imgUserAvatar.load(item.owner.profileImage)
+            txtTitle.text = item.title
         }
     }
 
-    override fun getItem(position: Int): QuestionItem = currentQuestion
+    override fun getItem(position: Int): QuestionItem { return currentQuestion }
 
     companion object {
         fun create(parent : ViewGroup, listener : OnItemClickListener<QuestionItem>?) : QuestionViewHolder {
-            return QuestionViewHolder(LayoutQuestionBinding.inflate(LayoutInflater.from(parent.context), parent, false), listener)
+            return QuestionViewHolder(
+                listener = listener,
+                binding = QuestionListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
     }
 

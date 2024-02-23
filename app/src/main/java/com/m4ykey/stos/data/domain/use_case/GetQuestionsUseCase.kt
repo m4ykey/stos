@@ -11,13 +11,9 @@ class GetQuestionsUseCase @Inject constructor(
     private val repository: QuestionRepository
 ) {
 
-    suspend operator fun invoke(
-        page : Int,
-        pageSize : Int,
-        sort : String
-    ) : Resource<PagingData<QuestionItem>> {
+    suspend operator fun invoke() : Resource<PagingData<QuestionItem>> {
         return try {
-            val questions = repository.getQuestions(page, pageSize, sort).first()
+            val questions = repository.getQuestions().first()
             Resource.Success(data = questions)
         } catch (e : Exception) {
             Resource.Error(message = "Failed to get questions: ${e.message}")
