@@ -6,12 +6,14 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val versionMajor = 0
 val versionMinor = 0
-val versionPatch = 1
-val versionBuild = 0
+val versionPatch = 2
+val versionBuild = 1
 var versionExt = ""
 
 if (versionBuild > 0) {
@@ -99,6 +101,10 @@ dependencies {
 
     implementation("io.coil-kt:coil:2.5.0")
 
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    implementation("com.google.firebase:firebase-crashlytics:18.6.2")
 
 }

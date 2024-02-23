@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.m4ykey.stos" />
+                  <option name="mobileSdkAppId" value="1:351057047408:android:618b8559bd42e2bf1c29b5" />
+                  <option name="projectId" value="kruki-b8d33" />
+                  <option name="projectNumber" value="351057047408" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
