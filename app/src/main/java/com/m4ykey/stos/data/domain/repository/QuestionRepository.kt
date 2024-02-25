@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuestionRepository {
 
-    suspend fun getQuestions() : Flow<PagingData<QuestionItem>>
+    suspend fun getQuestions(sort : String) : Flow<PagingData<QuestionItem>>
 
 }

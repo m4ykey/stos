@@ -15,14 +15,17 @@ class QuestionRepositoryImpl @Inject constructor(
     private val api : QuestionApi
 ) : QuestionRepository {
 
-    override suspend fun getQuestions(): Flow<PagingData<QuestionItem>> {
+    override suspend fun getQuestions(sort : String): Flow<PagingData<QuestionItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                QuestionsPagingSource(api = api)
+                QuestionsPagingSource(
+                    api = api,
+                    sort = sort
+                )
             }
         ).flow
     }

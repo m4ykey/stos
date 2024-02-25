@@ -8,7 +8,8 @@ import com.m4ykey.stos.data.model.mapper.toQuestionItem
 import javax.inject.Inject
 
 class QuestionsPagingSource @Inject constructor(
-    private val api : QuestionApi
+    private val api : QuestionApi,
+    private val sort : String
 ) : PagingSource<Int, QuestionItem>() {
 
     override fun getRefreshKey(state: PagingState<Int, QuestionItem>): Int? {
@@ -25,7 +26,8 @@ class QuestionsPagingSource @Inject constructor(
 
             val response = api.getQuestions(
                 page = page,
-                pageSize = params.loadSize
+                pageSize = params.loadSize,
+                sort = sort
             ).items.map { it.toQuestionItem() }
 
             LoadResult.Page(

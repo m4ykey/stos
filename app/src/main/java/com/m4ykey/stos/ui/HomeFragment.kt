@@ -1,15 +1,10 @@
 package com.m4ykey.stos.ui
 
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentHomeBinding
 import com.m4ykey.stos.extensions.BaseFragment
@@ -33,13 +28,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<Fragmen
     }
 
     override fun setupUI(binding: FragmentHomeBinding) {
-        viewModel.questions.observe(viewLifecycleOwner) { state ->
-            handleQuestionState(binding, state)
-        }
+        binding.apply {
+            viewModel.apply {
+                questions.observe(viewLifecycleOwner) { state ->
+                    handleQuestionState(binding, state)
+                }
 
-        binding.recyclerViewQuestions.apply {
-            adapter = questionAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+                currentSort.observe(viewLifecycleOwner) { sort ->
+                    updateChipState(sort, binding)
+                }
+            }
+
+            recyclerViewQuestions.adapter = questionAdapter
+
+            chipActivity.setOnClickListener { onChipClicked("activity", binding) }
+            chipCreation.setOnClickListener { onChipClicked("creation", binding) }
+            chipHot.setOnClickListener { onChipClicked("hot", binding) }
+            chipMonth.setOnClickListener { onChipClicked("month", binding) }
+            chipVotes.setOnClickListener { onChipClicked("votes", binding) }
+            chipWeek.setOnClickListener { onChipClicked("week", binding) }
         }
     }
 
@@ -57,9 +64,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<Fragmen
             state?.questionList?.let { search ->
                 progressBar.isVisible = false
                 recyclerViewQuestions.isVisible = true
-                questionAdapter.submitData(viewLifecycleOwner.lifecycle, search)
+                questionAdapter.submitData(lifecycle, search)
             }
         }
     }
 
+    private fun onChipClicked(sort : String, binding: FragmentHomeBinding) {
+        viewModel.getQuestions(sort)
+        updateChipState(sort, binding)
+    }
+
+    private fun updateChipState(sort : String, binding : FragmentHomeBinding) {
+        with(binding) {
+            chipWeek.isChecked = sort == "week"
+            chipActivity.isChecked = sort == "activity"
+            chipCreation.isChecked = sort == "creation"
+            chipHot.isChecked = sort == "hot"
+            chipMonth.isChecked = sort == "month"
+            chipVotes.isChecked = sort == "votes"
+        }
+    }
 }

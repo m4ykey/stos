@@ -15,6 +15,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            app:menu="@menu/menu_home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
@@ -34,37 +35,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutSearch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/drawable_input_layout"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:padding="10dp"
-            android:src="@drawable/ic_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:textSize="16sp"
-            android:fontFamily="@font/inter"
-            android:text="@string/search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
@@ -72,6 +43,8 @@
         android:orientation="vertical">
 
         <HorizontalScrollView
+            android:overScrollMode="never"
+            android:scrollbars="none"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_width="match_parent"
@@ -83,31 +56,43 @@
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:id="@+id/chipHot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hot"/>
 
                 <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:id="@+id/chipActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/activity"/>
 
                 <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:id="@+id/chipCreation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/creation"/>
 
                 <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:id="@+id/chipVotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/votes"/>
 
                 <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:id="@+id/chipWeek"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/week"/>
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipMonth"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/month"/>
@@ -117,6 +102,8 @@
         </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:id="@+id/recyclerViewQuestions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -128,6 +115,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

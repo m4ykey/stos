@@ -10,7 +10,7 @@ interface QuestionApi {
     @GET("questions")
     suspend fun getQuestions(
         @Query("order") order : String = "desc",
-        @Query("sort") sort : String = "hot",
+        @Query("sort") sort : String,
         @Query("site") site : String = "stackoverflow",
         @Query("key") key : String = BuildConfig.STACK_API_KEY,
         @Query("page") page : Int,
