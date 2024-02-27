@@ -1,33 +1,37 @@
-package com.m4ykey.stos.ui
+package com.m4ykey.stos.ui.question
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
-import com.m4ykey.stos.databinding.FragmentHomeBinding
+import com.m4ykey.stos.databinding.FragmentQuestionBinding
 import com.m4ykey.stos.extensions.BaseFragment
 import com.m4ykey.stos.extensions.OnItemClickListener
 import com.m4ykey.stos.extensions.UIConfigurator
-import com.m4ykey.stos.ui.adapter.QuestionAdapter
+import com.m4ykey.stos.ui.question.adapter.QuestionAdapter
 import com.m4ykey.stos.ui.uistate.QuestionUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<FragmentHomeBinding>, OnItemClickListener<QuestionItem> {
+class QuestionFragment : BaseFragment<FragmentQuestionBinding>(), UIConfigurator<FragmentQuestionBinding>, OnItemClickListener<QuestionItem> {
 
     private val questionAdapter by lazy { QuestionAdapter(this) }
-    private val viewModel : HomeViewModel by viewModels()
+    private val viewModel : QuestionViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentHomeBinding {
-        return FragmentHomeBinding.inflate(inflater, container, false)
+    ): FragmentQuestionBinding {
+        return FragmentQuestionBinding.inflate(inflater, container, false)
     }
 
-    override fun setupUI(binding: FragmentHomeBinding) {
+    override fun setupUI(binding: FragmentQuestionBinding) {
         binding.apply {
             viewModel.apply {
                 questions.observe(viewLifecycleOwner) { state ->
@@ -38,7 +42,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<Fragmen
                     updateChipState(sort, binding)
                 }
             }
-
+            navController = findNavController()
             recyclerViewQuestions.adapter = questionAdapter
 
             chipActivity.setOnClickListener { onChipClicked("activity", binding) }
@@ -47,12 +51,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<Fragmen
             chipMonth.setOnClickListener { onChipClicked("month", binding) }
             chipVotes.setOnClickListener { onChipClicked("votes", binding) }
             chipWeek.setOnClickListener { onChipClicked("week", binding) }
+
+            toolbar.menu.findItem(R.id.imgSearch).setOnMenuItemClickListener {
+                val action = QuestionFragmentDirections.actionQuestionFragmentToSearchFragment()
+                navController.navigate(action)
+                true
+            }
         }
     }
 
-    override fun onItemClick(position: Int, item: QuestionItem) {}
+    override fun onItemClick(position: Int, item: QuestionItem) {
+        val action = QuestionFragmentDirections.actionQuestionFragmentToQuestionDetailFragment(item.questionId)
+        navController.navigate(action)
+    }
 
-    private fun handleQuestionState(binding: FragmentHomeBinding, state : QuestionUiState?) {
+    private fun handleQuestionState(binding: FragmentQuestionBinding, state : QuestionUiState?) {
         with(binding) {
             recyclerViewQuestions.isVisible = state?.isLoading == false && state.questionList != null
             progressBar.isVisible = state?.isLoading == true
@@ -69,12 +82,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), UIConfigurator<Fragmen
         }
     }
 
-    private fun onChipClicked(sort : String, binding: FragmentHomeBinding) {
+    private fun onChipClicked(sort : String, binding: FragmentQuestionBinding) {
         viewModel.getQuestions(sort)
         updateChipState(sort, binding)
     }
 
-    private fun updateChipState(sort : String, binding : FragmentHomeBinding) {
+    private fun updateChipState(sort : String, binding : FragmentQuestionBinding) {
         with(binding) {
             chipWeek.isChecked = sort == "week"
             chipActivity.isChecked = sort == "activity"

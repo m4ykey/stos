@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.adapter
+package com.m4ykey.stos.ui.question.adapter
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater

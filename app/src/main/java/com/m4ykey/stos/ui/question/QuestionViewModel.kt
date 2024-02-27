@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui
+package com.m4ykey.stos.ui.question
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class QuestionViewModel @Inject constructor(
     private val repository: QuestionRepository
 ) : ViewModel() {
 

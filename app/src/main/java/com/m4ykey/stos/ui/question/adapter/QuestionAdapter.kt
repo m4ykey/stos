@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.adapter
+package com.m4ykey.stos.ui.question.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.extensions.OnItemClickListener
 
-class QuestionAdapter(private val listener : OnItemClickListener<QuestionItem>) : PagingDataAdapter<QuestionItem, QuestionViewHolder>(COMPARATOR)  {
+class QuestionAdapter(private val listener : OnItemClickListener<QuestionItem>) : PagingDataAdapter<QuestionItem, QuestionViewHolder>(
+    COMPARATOR
+)  {
 
     companion object {
         val COMPARATOR = object : DiffUtil.ItemCallback<QuestionItem>() {
