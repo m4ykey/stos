@@ -7,5 +7,6 @@ data class OwnerDto(
     val link: String? = null,
     val profile_image: String? = null,
     val reputation: Int? = 0,
-    val user_id: Int? = 0
+    val user_id: Int? = 0,
+    val user_type: String? = null
 )

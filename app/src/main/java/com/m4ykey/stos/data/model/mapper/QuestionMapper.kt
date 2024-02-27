@@ -23,9 +23,18 @@ fun QuestionItemDto.toQuestionItem() : QuestionItem {
         owner = owner.toOwner(),
         questionId = question_id ?: 0,
         score = score ?: 0,
-        tags = tags ?: emptyList(),
+        tags = tags,
         title = title ?: "",
         viewCount = view_count ?: 0,
-        creationDate = creation_date ?: 0
+        creationDate = creation_date ?: 0,
+        acceptedAnswerId = accepted_answer_id ?: 0,
+        body = body ?: "",
+        closedDate = closed_date ?: 0,
+        closedReason = closed_reason ?: "",
+        isAnswered = is_answered ?: false,
+        link = link ?: "",
+        lastActivityDate = last_activity_date ?: 0,
+        contentLicense = content_license ?: "",
+        lastEditDate = last_edit_date ?: 0
     )
 }

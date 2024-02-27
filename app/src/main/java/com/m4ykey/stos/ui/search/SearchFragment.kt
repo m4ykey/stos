@@ -14,10 +14,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), UIConfigurator<Fra
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentSearchBinding {
-        TODO("Not yet implemented")
+        return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
     override fun setupUI(binding: FragmentSearchBinding) {
-        TODO("Not yet implemented")
+
     }
 }

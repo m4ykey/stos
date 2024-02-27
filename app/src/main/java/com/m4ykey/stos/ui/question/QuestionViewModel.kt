@@ -9,7 +9,7 @@ import androidx.paging.cachedIn
 import com.m4ykey.stos.common.Resource
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.data.domain.repository.QuestionRepository
-import com.m4ykey.stos.ui.uistate.QuestionUiState
+import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_questionFragment_to_questionDetailFragment"
             app:destination="@id/questionDetailFragment" />
+        <action
+            android:id="@+id/action_questionFragment_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
 
     <fragment
@@ -34,6 +37,15 @@
         tools:layout="@layout/fragment_question_detail" >
         <argument
             android:name="questionId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.m4ykey.stos.ui.user.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
+        <argument
+            android:name="userId"
             app:argType="integer" />
     </fragment>
 

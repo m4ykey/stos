@@ -14,7 +14,7 @@ import com.m4ykey.stos.extensions.BaseFragment
 import com.m4ykey.stos.extensions.OnItemClickListener
 import com.m4ykey.stos.extensions.UIConfigurator
 import com.m4ykey.stos.ui.question.adapter.QuestionAdapter
-import com.m4ykey.stos.ui.uistate.QuestionUiState
+import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

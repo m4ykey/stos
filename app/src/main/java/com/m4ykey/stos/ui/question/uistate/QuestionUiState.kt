@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.uistate
+package com.m4ykey.stos.ui.question.uistate
 
 import androidx.paging.PagingData
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
