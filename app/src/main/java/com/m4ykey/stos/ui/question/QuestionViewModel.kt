@@ -9,10 +9,13 @@ import androidx.paging.cachedIn
 import com.m4ykey.stos.common.Resource
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.data.domain.repository.QuestionRepository
+import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +29,9 @@ class QuestionViewModel @Inject constructor(
 
     private val _currentSort = MutableLiveData("hot")
     val currentSort : LiveData<String> get() = _currentSort
+
+    private val _detail = MutableLiveData<QuestionDetailUiState>()
+    val detail : LiveData<QuestionDetailUiState> get() = _detail
 
     init {
         getQuestions(_currentSort.value!!)
@@ -45,6 +51,12 @@ class QuestionViewModel @Inject constructor(
         }
     }
 
+    suspend fun getQuestionDetails(id : Int) {
+        repository.getQuestionDetails(id).onEach { result ->
+            _detail.value = handleQuestionDetailState(result)
+        }.launchIn(viewModelScope)
+    }
+
     private fun handleQuestionError(e : Exception) {
         _questions.value = QuestionUiState(error = "An unexpected error occurred: $e")
     }
@@ -59,6 +71,14 @@ class QuestionViewModel @Inject constructor(
                     }
                 )
             }
+        }
+    }
+
+    private fun handleQuestionDetailState(result : Resource<QuestionItem>) : QuestionDetailUiState {
+        return when (result) {
+            is Resource.Success -> QuestionDetailUiState(detail = result.data)
+            is Resource.Loading -> QuestionDetailUiState(isLoading = true)
+            is Resource.Error -> QuestionDetailUiState(error = result.message)
         }
     }
 

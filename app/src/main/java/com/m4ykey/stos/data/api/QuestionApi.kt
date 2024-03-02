@@ -10,13 +10,14 @@ interface QuestionApi {
 
     companion object {
         const val API_KEY = BuildConfig.STACK_API_KEY
+        const val SITE = "stackoverflow"
     }
 
     @GET("questions")
     suspend fun getQuestions(
         @Query("order") order : String = "desc",
         @Query("sort") sort : String,
-        @Query("site") site : String = "stackoverflow",
+        @Query("site") site : String = SITE,
         @Query("key") key : String = API_KEY,
         @Query("page") page : Int,
         @Query("pagesize") pageSize : Int,
@@ -26,7 +27,8 @@ interface QuestionApi {
     suspend fun getQuestionDetail(
         @Path("id") questionId : Int,
         @Query("filter") filter : String = "withbody",
-        @Query("key") key : String = API_KEY
+        @Query("key") key : String = API_KEY,
+        @Query("site") site : String = SITE
     ) : QuestionDto
 
 }
