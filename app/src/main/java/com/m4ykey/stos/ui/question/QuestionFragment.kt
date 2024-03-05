@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class QuestionFragment : BaseFragment<FragmentQuestionBinding>(), UIConfigurator<FragmentQuestionBinding>, OnItemClickListener<QuestionItem> {
 
-    private val questionAdapter by lazy { QuestionAdapter(this) }
+    private val questionAdapter by lazy { QuestionAdapter(this, requireContext()) }
     private val viewModel : QuestionViewModel by viewModels()
     private lateinit var navController: NavController
 
