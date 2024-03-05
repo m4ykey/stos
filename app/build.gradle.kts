@@ -73,6 +73,7 @@ dependencies {
     val hilt = "2.50"
     val lifecycle = "2.7.0"
     val retrofit = "2.9.0"
+    val markwon = "4.6.2"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -106,5 +107,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     implementation("com.google.firebase:firebase-crashlytics:18.6.2")
+
+    implementation("io.noties.markwon:core:$markwon")
+    implementation("io.noties.markwon:image-coil:$markwon")
 
 }
