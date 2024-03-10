@@ -44,6 +44,11 @@ android {
         buildConfigField("String", "STACK_API_KEY", "\"${apiKey.getProperty("STACK_API_KEY")}\"")
     }
 
+    configurations {
+        create("cleanedAnnotations")
+        implementation.get().exclude(group = "org.jetbrains", module = "annotations")
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -69,7 +74,7 @@ android {
 
 dependencies {
 
-    val navVer = "2.7.7"
+    val navigation = "2.7.7"
     val hilt = "2.50"
     val lifecycle = "2.7.0"
     val retrofit = "2.9.0"
@@ -80,8 +85,8 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVer")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVer")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigation")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigation")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -121,5 +126,7 @@ dependencies {
     implementation("io.noties.markwon:ext-tasklist:$markwon")
     implementation("io.noties.markwon:recycler:$markwon")
     implementation("io.noties.markwon:syntax-highlight:$markwon")
+
+    implementation("io.noties:prism4j:2.0.0")
 
 }
