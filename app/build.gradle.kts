@@ -110,5 +110,16 @@ dependencies {
 
     implementation("io.noties.markwon:core:$markwon")
     implementation("io.noties.markwon:image-coil:$markwon")
+    implementation("io.noties.markwon:html:$markwon")
+    implementation("io.noties.markwon:linkify:$markwon")
+    implementation("io.noties.markwon:inline-parser:$markwon")
+    implementation("io.noties.markwon:image:$markwon")
+    implementation("io.noties.markwon:editor:$markwon")
+    implementation("io.noties.markwon:ext-latex:$markwon")
+    implementation("io.noties.markwon:ext-strikethrough:$markwon")
+    implementation("io.noties.markwon:ext-tables:$markwon")
+    implementation("io.noties.markwon:ext-tasklist:$markwon")
+    implementation("io.noties.markwon:recycler:$markwon")
+    implementation("io.noties.markwon:syntax-highlight:$markwon")
 
 }

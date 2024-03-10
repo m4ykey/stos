@@ -16,6 +16,13 @@ import com.m4ykey.stos.extensions.BaseFragment
 import com.m4ykey.stos.extensions.UIConfigurator
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
+import io.noties.markwon.Markwon
+import io.noties.markwon.core.CorePlugin
+import io.noties.markwon.html.HtmlPlugin
+import io.noties.markwon.image.ImagesPlugin
+import io.noties.markwon.image.coil.CoilImagesPlugin
+import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
+import io.noties.markwon.linkify.LinkifyPlugin
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -61,6 +68,17 @@ class QuestionDetailFragment :
 
     private fun displayQuestionDetail(questionDetail : QuestionItem, binding : FragmentQuestionDetailBinding) {
         with(binding) {
+            val markwon = Markwon.builder(requireContext())
+                .usePlugin(CorePlugin.create())
+                .usePlugin(CoilImagesPlugin.create(requireContext()))
+                .usePlugin(HtmlPlugin.create())
+                .usePlugin(LinkifyPlugin.create())
+                .usePlugin(MarkwonInlineParserPlugin.create())
+                .usePlugin(ImagesPlugin.create())
+                .build()
+
+            markwon.setMarkdown(txtBody, markwon.toMarkdown(questionDetail.body).toString())
+
             txtAuthor.text = questionDetail.owner.displayName
             txtTitle.text = questionDetail.title
 
