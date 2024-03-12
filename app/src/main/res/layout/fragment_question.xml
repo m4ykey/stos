@@ -23,7 +23,6 @@
             <TextView
                 android:textSize="24sp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/black"
                 android:fontFamily="@font/inter_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

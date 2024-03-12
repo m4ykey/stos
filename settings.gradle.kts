@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "stos"
 include(":app")
+include(":markdown")

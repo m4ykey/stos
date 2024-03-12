@@ -1,13 +1,13 @@
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.dagger.hilt.android")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.safeargs)
+    alias(libs.plugins.gms)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val versionMajor = 0
@@ -74,59 +74,29 @@ android {
 
 dependencies {
 
-    val navigation = "2.7.7"
-    val hilt = "2.50"
-    val lifecycle = "2.7.0"
-    val retrofit = "2.9.0"
-    val markwon = "4.6.2"
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.android.material)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.paging)
+    implementation(libs.androidx.swiperefreshlayout)
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
-    implementation("androidx.navigation:navigation-fragment-ktx:$navigation")
-    implementation("androidx.navigation:navigation-ui-ktx:$navigation")
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.lifecycle)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.okhttp)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.moshi)
 
-    implementation("com.squareup.retrofit2:retrofit:$retrofit")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofit")
+    implementation(libs.coil)
 
-    implementation("com.google.dagger:hilt-android:$hilt")
-    ksp("com.google.dagger:hilt-android-compiler:$hilt")
+    implementation(libs.firebase.crashlytics)
 
-    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
-
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle")
-
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
-
-    implementation("io.coil-kt:coil:2.5.0")
-
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
-
-    implementation("com.google.firebase:firebase-crashlytics:18.6.2")
-
-    implementation("io.noties.markwon:core:$markwon")
-    implementation("io.noties.markwon:image-coil:$markwon")
-    implementation("io.noties.markwon:html:$markwon")
-    implementation("io.noties.markwon:linkify:$markwon")
-    implementation("io.noties.markwon:inline-parser:$markwon")
-    implementation("io.noties.markwon:image:$markwon")
-    implementation("io.noties.markwon:editor:$markwon")
-    implementation("io.noties.markwon:ext-latex:$markwon")
-    implementation("io.noties.markwon:ext-strikethrough:$markwon")
-    implementation("io.noties.markwon:ext-tables:$markwon")
-    implementation("io.noties.markwon:ext-tasklist:$markwon")
-    implementation("io.noties.markwon:recycler:$markwon")
-    implementation("io.noties.markwon:syntax-highlight:$markwon")
-
-    implementation("io.noties:prism4j:2.0.0")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso)
 
 }
