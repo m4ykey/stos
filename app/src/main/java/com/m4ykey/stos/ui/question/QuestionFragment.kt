@@ -98,6 +98,7 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding>(),
         viewModel.getQuestions(sort)
         updateChipState(sort, binding)
         viewModel.setCurrentSort(sort)
+        binding.recyclerViewQuestions.smoothScrollToPosition(0)
     }
 
     private fun updateChipState(sort : String, binding : FragmentQuestionBinding) {

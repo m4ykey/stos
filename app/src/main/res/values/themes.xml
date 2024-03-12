@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.Stos" parent="Base.Theme.Stos" />
+    
+    <style name="AppTheme.Static" parent="Theme.MaterialComponents.Light">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    
 </resources>

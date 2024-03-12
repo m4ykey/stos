@@ -67,35 +67,35 @@
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    style="@style/Widget.Material3.Chip.Filter"
                     android:id="@+id/chipHot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hot"/>
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    style="@style/Widget.Material3.Chip.Filter"
                     android:id="@+id/chipActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/activity"/>
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    style="@style/Widget.Material3.Chip.Filter"
                     android:id="@+id/chipCreation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/creation"/>
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    style="@style/Widget.Material3.Chip.Filter"
                     android:id="@+id/chipVotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/votes"/>
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    style="@style/Widget.Material3.Chip.Filter"
                     android:id="@+id/chipWeek"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipMonth"
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/month"/>
