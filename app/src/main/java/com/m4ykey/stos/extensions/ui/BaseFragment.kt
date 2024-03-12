@@ -1,4 +1,4 @@
-package com.m4ykey.stos.extensions
+package com.m4ykey.stos.extensions.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

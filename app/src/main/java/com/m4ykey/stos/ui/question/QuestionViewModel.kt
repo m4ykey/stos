@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import com.m4ykey.stos.common.Resource
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.data.domain.repository.QuestionRepository
+import com.m4ykey.stos.common.handleResult
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,13 +34,21 @@ class QuestionViewModel @Inject constructor(
     private val _detail = MutableLiveData<QuestionDetailUiState>()
     val detail : LiveData<QuestionDetailUiState> get() = _detail
 
+    private val _isRefreshing = MutableLiveData(false)
+    val isRefreshing : LiveData<Boolean> get() = _isRefreshing
+
     init {
         getQuestions(_currentSort.value!!)
+    }
+
+    fun setCurrentSort(sort : String) {
+        _currentSort.value = sort
     }
 
     fun getQuestions(sort : String) {
         viewModelScope.launch {
             _questions.value = QuestionUiState(isLoading = true)
+            _isRefreshing.value = true
             try {
                 val result = repository.getQuestions(sort)
                     .cachedIn(viewModelScope)
@@ -47,6 +56,7 @@ class QuestionViewModel @Inject constructor(
                 handleQuestionSuccess(result)
             } finally {
                 _questions.value = _questions.value?.copy(isLoading = false)
+                _isRefreshing.value = false
             }
         }
     }
@@ -79,14 +89,6 @@ class QuestionViewModel @Inject constructor(
             is Resource.Success -> QuestionDetailUiState(detail = result.data)
             is Resource.Loading -> QuestionDetailUiState(isLoading = true)
             is Resource.Error -> QuestionDetailUiState(error = result.message)
-        }
-    }
-
-    private fun <T> Resource<T>.handleResult(onSuccess : (T) -> Unit, onError : (Exception) -> Unit) {
-        when (this) {
-            is Resource.Success -> onSuccess(data!!)
-            is Resource.Error -> onError(Exception(message ?: "Unknown error"))
-            else -> {}
         }
     }
 }

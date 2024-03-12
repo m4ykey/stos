@@ -1,17 +1,13 @@
 package com.m4ykey.stos.data.api
 
-import com.m4ykey.stos.BuildConfig
 import com.m4ykey.stos.data.model.question.QuestionDto
+import com.m4ykey.stos.common.Constants.API_KEY
+import com.m4ykey.stos.common.Constants.SITE
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface QuestionApi {
-
-    companion object {
-        const val API_KEY = BuildConfig.STACK_API_KEY
-        const val SITE = "stackoverflow"
-    }
 
     @GET("questions")
     suspend fun getQuestions(

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
-import com.m4ykey.stos.extensions.OnItemClickListener
+import com.m4ykey.stos.extensions.ui.OnItemClickListener
 import com.m4ykey.stos.ui.question.adapter.viewholder.QuestionViewHolder
 
 class QuestionAdapter(

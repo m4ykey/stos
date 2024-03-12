@@ -8,8 +8,8 @@ import coil.load
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.QuestionListBinding
-import com.m4ykey.stos.extensions.BaseViewHolder
-import com.m4ykey.stos.extensions.OnItemClickListener
+import com.m4ykey.stos.extensions.ui.BaseViewHolder
+import com.m4ykey.stos.extensions.ui.OnItemClickListener
 
 class QuestionViewHolder(
     private val binding : QuestionListBinding,

@@ -12,8 +12,8 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
-import com.m4ykey.stos.extensions.BaseFragment
-import com.m4ykey.stos.extensions.UIConfigurator
+import com.m4ykey.stos.extensions.ui.BaseFragment
+import com.m4ykey.stos.extensions.ui.UIConfigurator
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
