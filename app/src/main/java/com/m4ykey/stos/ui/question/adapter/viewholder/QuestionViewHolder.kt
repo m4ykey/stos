@@ -1,18 +1,18 @@
 package com.m4ykey.stos.ui.question.adapter.viewholder
 
 import android.content.Context
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import coil.load
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
-import com.m4ykey.stos.databinding.QuestionListBinding
+import com.m4ykey.stos.databinding.LayoutQuestionListBinding
 import com.m4ykey.stos.extensions.ui.BaseViewHolder
 import com.m4ykey.stos.extensions.ui.OnItemClickListener
+import com.m4ykey.stos.extensions.ui.convertTimestampToAgo
 
 class QuestionViewHolder(
-    private val binding : QuestionListBinding,
+    private val binding : LayoutQuestionListBinding,
     listener : OnItemClickListener<QuestionItem>?,
     private val context : Context
 ) : BaseViewHolder<QuestionItem>(binding.root, listener) {
@@ -30,12 +30,12 @@ class QuestionViewHolder(
             txtComments.text = item.answerCount.toString()
             txtViews.text = item.viewCount.toString()
             txtAskedTime.text = context.getString(R.string.asked_time_format, convertTimestampToAgo(item.creationDate.toLong()))
-            if (item.answerCount < 0) {
+            if (item.score < 0) {
                 imgArrow.setImageResource(R.drawable.ic_arrow_down)
             } else {
                 imgArrow.setImageResource(R.drawable.ic_arrow_up)
             }
-            txtScore.text = item.answerCount.toString()
+            txtScore.text = item.score.toString()
             txtOwner.text = item.owner.displayName
         }
     }
@@ -47,13 +47,7 @@ class QuestionViewHolder(
             return QuestionViewHolder(
                 listener = listener,
                 context = context,
-                binding = QuestionListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                binding = LayoutQuestionListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
-    }
-
-    private fun convertTimestampToAgo(timeStamp : Long) : String {
-        val now = System.currentTimeMillis()
-        val timeAgo = DateUtils.getRelativeTimeSpanString(timeStamp * 1000, now, DateUtils.MINUTE_IN_MILLIS)
-        return timeAgo.toString()
     }
 }
