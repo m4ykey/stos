@@ -9,9 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
+import com.google.android.material.chip.Chip
+import com.m4ykey.markdown.setMarkdown
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
+import com.m4ykey.stos.extensions.loadImage
 import com.m4ykey.stos.extensions.ui.BaseFragment
 import com.m4ykey.stos.extensions.ui.UIConfigurator
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
@@ -61,14 +63,21 @@ class QuestionDetailFragment :
         }
     }
 
-    private fun displayQuestionDetail(questionDetail : QuestionItem, binding : FragmentQuestionDetailBinding) {
+    private fun displayQuestionDetail(item : QuestionItem, binding : FragmentQuestionDetailBinding) {
         with(binding) {
-            txtAuthor.text = questionDetail.owner.displayName
-            txtTitle.text = questionDetail.title
+            with(item) {
+                txtAuthor.text = owner.displayName
+                txtTitle.text = title
+                setMarkdown(txtBody, item.body, requireContext())
 
-            imgAuthor.load(questionDetail.owner.profileImage) {
-                crossfade(true)
-                crossfade(500)
+                imgAuthor.loadImage(owner.profileImage)
+
+                for (tag in tags) {
+                    val chip = Chip(requireContext())
+                    chip.text = tag
+                    chip.isClickable = true
+                    chipGroup.addView(chip)
+                }
             }
         }
     }

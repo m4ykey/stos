@@ -3,10 +3,10 @@ package com.m4ykey.stos.ui.question.adapter.viewholder
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import coil.load
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.LayoutQuestionListBinding
+import com.m4ykey.stos.extensions.loadImage
 import com.m4ykey.stos.extensions.ui.BaseViewHolder
 import com.m4ykey.stos.extensions.ui.OnItemClickListener
 import com.m4ykey.stos.extensions.ui.convertTimestampToAgo
@@ -22,21 +22,17 @@ class QuestionViewHolder(
     override fun bind(item: QuestionItem) {
         currentQuestion = item
         binding.apply {
-            txtTitle.text = item.title
-            imgOwner.load(item.owner.profileImage) {
-                crossfade(true)
-                crossfade(500)
+            with(item) {
+                txtTitle.text = title
+                imgOwner.loadImage(owner.profileImage)
+                txtComments.text = answerCount.toString()
+                txtViews.text = viewCount.toString()
+                txtScore.text = score.toString()
+                txtOwner.text = owner.displayName
+                txtAskedTime.text = context.getString(R.string.asked_time_format, convertTimestampToAgo(creationDate.toLong()))
+                val arrowResource = if (score < 0) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up
+                imgArrow.setImageResource(arrowResource)
             }
-            txtComments.text = item.answerCount.toString()
-            txtViews.text = item.viewCount.toString()
-            txtAskedTime.text = context.getString(R.string.asked_time_format, convertTimestampToAgo(item.creationDate.toLong()))
-            if (item.score < 0) {
-                imgArrow.setImageResource(R.drawable.ic_arrow_down)
-            } else {
-                imgArrow.setImageResource(R.drawable.ic_arrow_up)
-            }
-            txtScore.text = item.score.toString()
-            txtOwner.text = item.owner.displayName
         }
     }
 

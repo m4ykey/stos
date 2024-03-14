@@ -74,6 +74,8 @@ android {
 
 dependencies {
 
+    implementation(project(":markdown"))
+
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)

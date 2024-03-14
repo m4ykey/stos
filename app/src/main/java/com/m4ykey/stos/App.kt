@@ -10,8 +10,6 @@ class App : Application() {
         super.onCreate()
         if (DynamicColors.isDynamicColorAvailable()) {
             DynamicColors.applyToActivitiesIfAvailable(this)
-        } else {
-            setTheme(R.style.AppTheme_Static)
         }
     }
 }

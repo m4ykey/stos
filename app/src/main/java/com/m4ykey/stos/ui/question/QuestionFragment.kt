@@ -45,7 +45,7 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding>(),
                     swipeRefresh.isRefreshing = isRefreshing
                 }
                 swipeRefresh.setOnRefreshListener {
-                    viewModel.getQuestions(viewModel.currentSort.value!!)
+                    getQuestions(currentSort.value!!)
                 }
                 questions.observe(viewLifecycleOwner) { state ->
                     handleQuestionState(binding, state)
