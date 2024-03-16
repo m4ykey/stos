@@ -3,7 +3,6 @@ package com.m4ykey.stos.ui.question.adapter.viewholder
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.m4ykey.markdown.toMarkdownText
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.LayoutQuestionListBinding
@@ -24,12 +23,12 @@ class QuestionViewHolder(
         currentQuestion = item
         binding.apply {
             with(item) {
-                txtTitle.toMarkdownText(title)
+                //txtTitle.toMarkdown(title)
                 imgOwner.loadImage(owner.profileImage)
                 txtComments.text = answerCount.toString()
                 txtViews.text = viewCount.toString()
                 txtScore.text = score.toString()
-                txtOwner.text = owner.displayName
+                //txtOwner.toMarkdown(owner.displayName)
                 txtAskedTime.text = context.getString(R.string.asked_time_format, convertTimestampToAgo(creationDate.toLong()))
                 val arrowResource = if (score < 0) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up
                 imgArrow.setImageResource(arrowResource)

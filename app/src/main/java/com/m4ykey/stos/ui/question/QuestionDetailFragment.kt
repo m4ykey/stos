@@ -12,13 +12,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
-import com.m4ykey.markdown.toMarkdownText
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
 import com.m4ykey.stos.extensions.loadImage
 import com.m4ykey.stos.extensions.ui.BaseFragment
 import com.m4ykey.stos.extensions.ui.UIConfigurator
+import com.m4ykey.stos.extensions.ui.showToast
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -69,8 +69,6 @@ class QuestionDetailFragment :
     private fun FragmentQuestionDetailBinding.displayQuestionDetail(item : QuestionItem) {
         with(item) {
             txtAuthor.text = owner.displayName
-            txtTitle.text = title
-            txtBody.toMarkdownText(body)
 
             imgAuthor.loadImage(owner.profileImage)
 
@@ -78,6 +76,9 @@ class QuestionDetailFragment :
                 val chip = Chip(requireContext())
                 chip.text = tag
                 chip.isClickable = true
+                chip.setOnClickListener {
+                    showToast(requireContext(), "Clicked on $tag")
+                }
                 chipGroup.addView(chip)
             }
 
