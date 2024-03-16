@@ -16,3 +16,8 @@ fun setMarkdown(textView : TextView, text : String, context: Context) {
     val formattedText = text.replace("\n", "<br>")
     markwon.setMarkdown(textView, formattedText)
 }
+
+fun formatTitle(textView: TextView, text : String, context: Context) {
+    val markwon = Markwon.builder(context).build()
+    markwon.setMarkdown(textView, text)
+}
