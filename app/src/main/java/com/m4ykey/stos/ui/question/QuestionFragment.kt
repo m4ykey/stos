@@ -7,18 +7,20 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.m4ykey.stos.R
-import com.m4ykey.stos.data.domain.model.question.QuestionItem
-import com.m4ykey.stos.databinding.FragmentQuestionBinding
 import com.m4ykey.stos.common.Constants.ACTIVITY
 import com.m4ykey.stos.common.Constants.CREATION
 import com.m4ykey.stos.common.Constants.HOT
 import com.m4ykey.stos.common.Constants.MONTH
 import com.m4ykey.stos.common.Constants.VOTES
 import com.m4ykey.stos.common.Constants.WEEK
+import com.m4ykey.stos.data.domain.model.question.QuestionItem
+import com.m4ykey.stos.databinding.FragmentQuestionBinding
 import com.m4ykey.stos.extensions.ui.BaseFragment
 import com.m4ykey.stos.extensions.ui.OnItemClickListener
 import com.m4ykey.stos.extensions.ui.UIConfigurator
+import com.m4ykey.stos.ui.adapter.LoadAdapter
 import com.m4ykey.stos.ui.question.adapter.QuestionAdapter
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +57,7 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding>(),
                 }
             }
             navController = findNavController()
-            recyclerViewQuestions.adapter = questionAdapter
+            setupRecyclerView()
 
             chipActivity.setOnClickListener { onChipClicked(ACTIVITY, binding) }
             chipCreation.setOnClickListener { onChipClicked(CREATION, binding) }
@@ -69,6 +71,18 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding>(),
                 navController.navigate(action)
                 true
             }
+        }
+    }
+
+    private fun FragmentQuestionBinding.setupRecyclerView() {
+        recyclerViewQuestions.adapter = questionAdapter.withLoadStateHeaderAndFooter(
+            footer = LoadAdapter { questionAdapter.retry() },
+            header = LoadAdapter { questionAdapter.retry() }
+        )
+
+        questionAdapter.addLoadStateListener { state ->
+            recyclerViewQuestions.isVisible = state.source.refresh is LoadState.NotLoading
+            progressBar.isVisible = state.source.refresh is LoadState.Loading
         }
     }
 

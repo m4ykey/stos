@@ -17,4 +17,6 @@
     <string name="home_page">Strona Główna</string>
     <string name="share">Udostępnij</string>
     <string name="open_in_browser">Otwórz w przeglądarce</string>
+    <string name="result_s_cannot_be_loaded">Wyniki nie mogą zostać załadowane</string>
+    <string name="refresh">Odśwież</string>
 </resources>

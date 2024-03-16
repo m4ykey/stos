@@ -1,6 +1,7 @@
 package com.m4ykey.stos.ui.question
 
-import android.text.Html
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -11,6 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
+import com.m4ykey.markdown.toMarkdownText
+import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
 import com.m4ykey.stos.extensions.loadImage
@@ -38,45 +41,61 @@ class QuestionDetailFragment :
     override fun setupUI(binding: FragmentQuestionDetailBinding) {
         navController = findNavController()
 
-        lifecycleScope.launch {
-            viewModel.getQuestionDetails(args.questionId)
-        }
-
-        viewModel.detail.observe(viewLifecycleOwner) { state -> handleDetailState(state, binding) }
-
-        binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
-    }
-
-    private fun handleDetailState(state : QuestionDetailUiState?, binding: FragmentQuestionDetailBinding) {
-        with(binding) {
-            progressBar.isVisible = state?.isLoading == true
-            linearLayoutBody.isVisible = state?.isLoading == false && state.detail != null
-
-            state?.error?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                progressBar.isVisible = false
-            }
-            state?.detail?.let { question ->
-                progressBar.isVisible = false
-                displayQuestionDetail(question, binding)
+        binding.apply {
+            toolbar.setNavigationOnClickListener { navController.navigateUp() }
+            lifecycleScope.launch {
+                viewModel.apply {
+                    getQuestionDetails(args.questionId)
+                    detail.observe(viewLifecycleOwner) { state -> handleDetailState(state) }
+                }
             }
         }
     }
 
-    private fun displayQuestionDetail(item : QuestionItem, binding : FragmentQuestionDetailBinding) {
-        with(binding) {
-            with(item) {
-                txtAuthor.text = owner.displayName
-                txtTitle.text = title
-                txtBody.text = Html.fromHtml(body)
+    private fun FragmentQuestionDetailBinding.handleDetailState(state : QuestionDetailUiState?) {
+        progressBar.isVisible = state?.isLoading == true
+        linearLayoutBody.isVisible = state?.isLoading == false && state.detail != null
 
-                imgAuthor.loadImage(owner.profileImage)
+        state?.error?.let {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            progressBar.isVisible = false
+        }
+        state?.detail?.let { question ->
+            progressBar.isVisible = false
+            displayQuestionDetail(question)
+        }
+    }
 
-                for (tag in tags) {
-                    val chip = Chip(requireContext())
-                    chip.text = tag
-                    chip.isClickable = true
-                    chipGroup.addView(chip)
+    private fun FragmentQuestionDetailBinding.displayQuestionDetail(item : QuestionItem) {
+        with(item) {
+            txtAuthor.text = owner.displayName
+            txtTitle.text = title
+            txtBody.toMarkdownText(body)
+
+            imgAuthor.loadImage(owner.profileImage)
+
+            for (tag in tags) {
+                val chip = Chip(requireContext())
+                chip.text = tag
+                chip.isClickable = true
+                chipGroup.addView(chip)
+            }
+
+            val buttons = listOf(
+                Pair(R.id.imgShare) {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.type = "text/plain"
+                    val chooser = Intent.createChooser(intent, link)
+                    context?.startActivity(chooser)
+                },
+                Pair(R.id.imgSite) {
+                    context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+                }
+            )
+            for ((itemId, action) in buttons) {
+                toolbar.menu.findItem(itemId)?.setOnMenuItemClickListener {
+                    action.invoke()
+                    true
                 }
             }
         }

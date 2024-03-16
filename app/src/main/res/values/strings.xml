@@ -20,5 +20,7 @@
     <string name="asked_time_format">· %s</string>
     <string name="share">Share</string>
     <string name="open_in_browser">Open in browser</string>
+    <string name="result_s_cannot_be_loaded">Result\'s cannot be loaded</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

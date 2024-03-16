@@ -17,11 +17,7 @@ class Markdown @Inject constructor(private val markwon: Markwon) : RenderText {
     }
 
     fun setMarkdown(textView: TextView, markdown : String) {
-        markwon.setMarkdown(textView, markdown.removeSpecials())
-    }
-
-    fun setParsedMarkdown(textView: TextView, spanned : Spanned) {
-        markwon.setParsedMarkdown(textView, spanned)
+        markwon.setMarkdown(textView, markdown)
     }
 
 }
