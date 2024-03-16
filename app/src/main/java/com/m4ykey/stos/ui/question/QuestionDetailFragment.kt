@@ -1,5 +1,6 @@
 package com.m4ykey.stos.ui.question
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -10,7 +11,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
-import com.m4ykey.markdown.setMarkdown
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
 import com.m4ykey.stos.extensions.loadImage
@@ -68,7 +68,7 @@ class QuestionDetailFragment :
             with(item) {
                 txtAuthor.text = owner.displayName
                 txtTitle.text = title
-                setMarkdown(txtBody, item.body, requireContext())
+                txtBody.text = Html.fromHtml(body)
 
                 imgAuthor.loadImage(owner.profileImage)
 

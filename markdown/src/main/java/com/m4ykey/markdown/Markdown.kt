@@ -1,23 +1,27 @@
 package com.m4ykey.markdown
 
-import android.content.Context
+import android.text.Spanned
 import android.widget.TextView
 import io.noties.markwon.Markwon
-import io.noties.markwon.html.HtmlPlugin
-import io.noties.markwon.image.coil.CoilImagesPlugin
+import io.noties.prism4j.annotations.PrismBundle
+import org.commonmark.node.Node
+import javax.inject.Inject
+import javax.inject.Singleton
 
-fun setMarkdown(textView : TextView, text : String, context: Context) {
+@Singleton
+@PrismBundle(includeAll = true)
+class Markdown @Inject constructor(private val markwon: Markwon) : RenderText {
 
-    val markwon = Markwon.builder(context)
-        .usePlugin(HtmlPlugin.create())
-        .usePlugin(CoilImagesPlugin.create(context))
-        .build()
+    override fun render(node: Node): Spanned {
+        return markwon.render(node)
+    }
 
-    val formattedText = text.replace("\n", "<br>")
-    markwon.setMarkdown(textView, formattedText)
-}
+    fun setMarkdown(textView: TextView, markdown : String) {
+        markwon.setMarkdown(textView, markdown.removeSpecials())
+    }
 
-fun formatTitle(textView: TextView, text : String, context: Context) {
-    val markwon = Markwon.builder(context).build()
-    markwon.setMarkdown(textView, text)
+    fun setParsedMarkdown(textView: TextView, spanned : Spanned) {
+        markwon.setParsedMarkdown(textView, spanned)
+    }
+
 }

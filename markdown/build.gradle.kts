@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -11,7 +13,6 @@ android {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -43,7 +44,12 @@ dependencies {
     androidTestImplementation(libs.espresso)
 
     implementation(libs.markwon.core)
-    implementation(libs.markwon.html)
-    implementation(libs.markwon.coil)
+    implementation(libs.apache.commons.text)
+
+    ksp(libs.prism.bundler)
+    implementation(libs.prism)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
 }

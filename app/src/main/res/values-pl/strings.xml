@@ -15,4 +15,6 @@
     <string name="month">Miesiąc</string>
     <string name="activity">Aktywność</string>
     <string name="home_page">Strona Główna</string>
+    <string name="share">Udostępnij</string>
+    <string name="open_in_browser">Otwórz w przeglądarce</string>
 </resources>

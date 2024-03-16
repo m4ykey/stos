@@ -16,6 +16,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             app:navigationIcon="@drawable/ic_arrow_back"
+            app:menu="@menu/menu_question_detail"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
@@ -81,13 +82,6 @@
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtAskedTime"
-                android:layout_marginTop="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Asked 40 minut temu"/>
 
             <TextView
                 android:id="@+id/txtBody"

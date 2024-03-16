@@ -3,7 +3,7 @@ package com.m4ykey.stos.ui.question.adapter.viewholder
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.m4ykey.markdown.formatTitle
+import com.m4ykey.markdown.toMarkdownText
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.LayoutQuestionListBinding
@@ -24,7 +24,7 @@ class QuestionViewHolder(
         currentQuestion = item
         binding.apply {
             with(item) {
-                formatTitle(txtTitle, title, context)
+                txtTitle.toMarkdownText(title)
                 imgOwner.loadImage(owner.profileImage)
                 txtComments.text = answerCount.toString()
                 txtViews.text = viewCount.toString()
