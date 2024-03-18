@@ -22,7 +22,6 @@ import com.m4ykey.stos.extensions.ui.showToast
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 import io.noties.markwon.Markwon
-import io.noties.markwon.image.coil.CoilImagesPlugin
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -81,10 +80,7 @@ class QuestionDetailFragment :
             val document : Document = Jsoup.parse(body)
             val markdown = convertToMarkdown(document)
 
-            val markwon = Markwon.builder(requireContext())
-                .usePlugin(CoilImagesPlugin.create(requireContext()))
-                .build()
-
+            val markwon = Markwon.create(requireContext())
             markwon.setMarkdown(txtBody, markdown)
 
             for (tag in tags) {
@@ -127,7 +123,7 @@ class QuestionDetailFragment :
                     when (child.tagName()) {
                         "p" -> {
                             processElements(child, stringBuilder)
-                            stringBuilder.append("\n")
+                            stringBuilder.append("\n\n")
                         }
                         "pre" -> {
                             val codeText = child.select("code").html()
