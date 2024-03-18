@@ -21,7 +21,13 @@ import com.m4ykey.stos.extensions.ui.UIConfigurator
 import com.m4ykey.stos.extensions.ui.showToast
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
+import io.noties.markwon.Markwon
+import io.noties.markwon.image.coil.CoilImagesPlugin
 import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.nodes.TextNode
 
 @AndroidEntryPoint
 class QuestionDetailFragment :
@@ -68,9 +74,18 @@ class QuestionDetailFragment :
 
     private fun FragmentQuestionDetailBinding.displayQuestionDetail(item : QuestionItem) {
         with(item) {
-            txtAuthor.text = owner.displayName
-
+            txtTitle.text = Jsoup.parse(title).text()
+            txtAuthor.text = Jsoup.parse(owner.displayName).text()
             imgAuthor.loadImage(owner.profileImage)
+
+            val document : Document = Jsoup.parse(body)
+            val markdown = convertToMarkdown(document)
+
+            val markwon = Markwon.builder(requireContext())
+                .usePlugin(CoilImagesPlugin.create(requireContext()))
+                .build()
+
+            markwon.setMarkdown(txtBody, markdown)
 
             for (tag in tags) {
                 val chip = Chip(requireContext())
@@ -100,5 +115,38 @@ class QuestionDetailFragment :
                 }
             }
         }
+    }
+
+    private fun processElements(element: Element, stringBuilder: StringBuilder) {
+        for (child in element.childNodes()) {
+            when (child) {
+                is TextNode -> {
+                    stringBuilder.append(child.text())
+                }
+                is Element -> {
+                    when (child.tagName()) {
+                        "p" -> {
+                            processElements(child, stringBuilder)
+                            stringBuilder.append("\n")
+                        }
+                        "pre" -> {
+                            val codeText = child.select("code").html()
+                            stringBuilder.append("\n```\n")
+                            stringBuilder.append(codeText)
+                            stringBuilder.append("\n```\n")
+                        }
+                        else -> {
+                            processElements(child, stringBuilder)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun convertToMarkdown(document : Document) : String {
+        val stringBuilder = StringBuilder()
+        processElements(document.body(), stringBuilder)
+        return stringBuilder.toString()
     }
 }

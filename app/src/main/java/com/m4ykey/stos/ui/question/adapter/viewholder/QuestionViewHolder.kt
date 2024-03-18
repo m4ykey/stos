@@ -10,6 +10,7 @@ import com.m4ykey.stos.extensions.loadImage
 import com.m4ykey.stos.extensions.ui.BaseViewHolder
 import com.m4ykey.stos.extensions.ui.OnItemClickListener
 import com.m4ykey.stos.extensions.ui.convertTimestampToAgo
+import org.jsoup.Jsoup
 
 class QuestionViewHolder(
     private val binding : LayoutQuestionListBinding,
@@ -23,12 +24,12 @@ class QuestionViewHolder(
         currentQuestion = item
         binding.apply {
             with(item) {
-                //txtTitle.toMarkdown(title)
+                txtTitle.text = Jsoup.parse(title).text()
                 imgOwner.loadImage(owner.profileImage)
                 txtComments.text = answerCount.toString()
                 txtViews.text = viewCount.toString()
                 txtScore.text = score.toString()
-                //txtOwner.toMarkdown(owner.displayName)
+                txtOwner.text = Jsoup.parse(owner.displayName).text()
                 txtAskedTime.text = context.getString(R.string.asked_time_format, convertTimestampToAgo(creationDate.toLong()))
                 val arrowResource = if (score < 0) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up
                 imgArrow.setImageResource(arrowResource)
