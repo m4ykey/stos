@@ -18,7 +18,6 @@ import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
 import com.m4ykey.stos.extensions.loadImage
 import com.m4ykey.stos.extensions.ui.BaseFragment
 import com.m4ykey.stos.extensions.ui.UIConfigurator
-import com.m4ykey.stos.extensions.ui.showToast
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 import io.noties.markwon.Markwon
@@ -88,7 +87,8 @@ class QuestionDetailFragment :
                 chip.text = tag
                 chip.isClickable = true
                 chip.setOnClickListener {
-                    showToast(requireContext(), "Clicked on $tag")
+                    val action = QuestionDetailFragmentDirections.actionQuestionDetailFragmentToQuestionTagsFragment(tag)
+                    navController.navigate(action)
                 }
                 chipGroup.addView(chip)
             }

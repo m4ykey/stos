@@ -27,4 +27,15 @@ interface QuestionApi {
         @Query("site") site : String = SITE
     ) : QuestionDto
 
+    @GET("questions/tagged/{tag}")
+    suspend fun getQuestionTags(
+        @Path("tag") tag : String,
+        @Query("order") order : String = "desc",
+        @Query("sort") sort : String,
+        @Query("site") site : String = SITE,
+        @Query("key") key : String = API_KEY,
+        @Query("page") page : Int,
+        @Query("pagesize") pageSize : Int
+    ) : QuestionDto
+
 }

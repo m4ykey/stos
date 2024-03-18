@@ -38,6 +38,9 @@
         <argument
             android:name="questionId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_questionDetailFragment_to_questionTagsFragment"
+            app:destination="@id/questionTagsFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -47,6 +50,18 @@
         <argument
             android:name="userId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionTagsFragment"
+        android:name="com.m4ykey.stos.ui.question.tags.QuestionTagsFragment"
+        android:label="fragment_question_tags"
+        tools:layout="@layout/fragment_question_tags" >
+        <argument
+            android:name="tag"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_questionTagsFragment_to_questionDetailFragment"
+            app:destination="@id/questionDetailFragment" />
     </fragment>
 
 </navigation>
