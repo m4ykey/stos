@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="10dp">
@@ -87,6 +89,7 @@
                 <ImageView
                     android:id="@+id/imgArrow"
                     android:layout_width="20dp"
+                    app:tint="@color/menu_item"
                     android:layout_height="20dp"
                     android:layout_marginEnd="5dp"
                     android:contentDescription="@null"
@@ -113,6 +116,7 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="5dp"
                     android:contentDescription="@null"
+                    app:tint="@color/menu_item"
                     android:src="@drawable/ic_comments" />
 
                 <TextView
@@ -132,6 +136,7 @@
 
                 <ImageView
                     android:layout_width="20dp"
+                    app:tint="@color/menu_item"
                     android:layout_height="20dp"
                     android:layout_marginEnd="5dp"
                     android:contentDescription="@null"
@@ -150,4 +155,4 @@
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

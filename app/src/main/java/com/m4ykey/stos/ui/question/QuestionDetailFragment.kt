@@ -12,20 +12,18 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
+import com.m4ykey.markdown.converter.convertHtmlToMarkdown
+import com.m4ykey.markdown.converter.displayMarkdownInTextView
+import com.m4ykey.markdown.converter.parseText
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
-import com.m4ykey.stos.extensions.convertToMarkdown
 import com.m4ykey.stos.extensions.loadImage
 import com.m4ykey.stos.extensions.ui.BaseFragment
 import com.m4ykey.stos.extensions.ui.UIConfigurator
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
-import io.noties.markwon.Markwon
-import io.noties.markwon.image.coil.CoilImagesPlugin
 import kotlinx.coroutines.launch
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 
 @AndroidEntryPoint
 class QuestionDetailFragment :
@@ -72,17 +70,12 @@ class QuestionDetailFragment :
 
     private fun FragmentQuestionDetailBinding.displayQuestionDetail(item : QuestionItem) {
         with(item) {
-            txtTitle.text = Jsoup.parse(title).text()
-            txtAuthor.text = Jsoup.parse(owner.displayName).text()
+            txtTitle.text = parseText(title)
+            txtAuthor.text = parseText(owner.displayName)
             imgAuthor.loadImage(owner.profileImage)
 
-            val document : Document = Jsoup.parse(body)
-            val markdown = convertToMarkdown(document)
-
-            val markwon = Markwon.builder(requireContext())
-                .usePlugin(CoilImagesPlugin.create(requireContext())).build()
-
-            markwon.setMarkdown(txtBody, markdown)
+            val markdown = convertHtmlToMarkdown(body)
+            displayMarkdownInTextView(markdown, txtBody)
 
             for (tag in tags) {
                 val chip = Chip(requireContext())

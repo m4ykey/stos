@@ -4,12 +4,14 @@
 
     <item
         android:id="@+id/imgShare"
+        app:iconTint="@color/menu_item"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/imgSite"
+        app:iconTint="@color/menu_item"
         android:icon="@drawable/ic_site"
         android:title="@string/open_in_browser"
         app:showAsAction="always" />

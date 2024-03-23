@@ -12,7 +12,7 @@ plugins {
 
 val versionMajor = 0
 val versionMinor = 1
-val versionPatch = 0
+val versionPatch = 1
 val versionBuild = 1
 var versionExt = ""
 
@@ -74,6 +74,8 @@ android {
 
 dependencies {
 
+    implementation(project(":markdown"))
+
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
@@ -94,11 +96,6 @@ dependencies {
     implementation(libs.coil)
 
     implementation(libs.firebase.crashlytics)
-
-    implementation(libs.jsoup)
-
-    implementation("io.noties.markwon:core:4.6.2")
-    implementation("io.noties.markwon:image-coil:4.6.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

@@ -15,6 +15,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            app:navigationIconTint="@color/menu_item"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:menu="@menu/menu_question_detail"
             android:id="@+id/toolbar"
