@@ -98,7 +98,6 @@ dependencies {
     implementation(libs.jsoup)
 
     implementation("io.noties.markwon:core:4.6.2")
-    implementation("io.noties.markwon:image-coil:4.6.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

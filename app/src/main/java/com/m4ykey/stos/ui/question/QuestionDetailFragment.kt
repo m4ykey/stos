@@ -15,6 +15,7 @@ import com.google.android.material.chip.Chip
 import com.m4ykey.stos.R
 import com.m4ykey.stos.data.domain.model.question.QuestionItem
 import com.m4ykey.stos.databinding.FragmentQuestionDetailBinding
+import com.m4ykey.stos.extensions.convertToMarkdown
 import com.m4ykey.stos.extensions.loadImage
 import com.m4ykey.stos.extensions.ui.BaseFragment
 import com.m4ykey.stos.extensions.ui.UIConfigurator
@@ -24,8 +25,6 @@ import io.noties.markwon.Markwon
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.jsoup.nodes.TextNode
 
 @AndroidEntryPoint
 class QuestionDetailFragment :
@@ -80,6 +79,7 @@ class QuestionDetailFragment :
             val markdown = convertToMarkdown(document)
 
             val markwon = Markwon.create(requireContext())
+
             markwon.setMarkdown(txtBody, markdown)
 
             for (tag in tags) {
@@ -111,38 +111,5 @@ class QuestionDetailFragment :
                 }
             }
         }
-    }
-
-    private fun processElements(element: Element, stringBuilder: StringBuilder) {
-        for (child in element.childNodes()) {
-            when (child) {
-                is TextNode -> {
-                    stringBuilder.append(child.text())
-                }
-                is Element -> {
-                    when (child.tagName()) {
-                        "p" -> {
-                            processElements(child, stringBuilder)
-                            stringBuilder.append("\n\n")
-                        }
-                        "pre" -> {
-                            val codeText = child.select("code").html()
-                            stringBuilder.append("\n```\n")
-                            stringBuilder.append(codeText)
-                            stringBuilder.append("\n```\n")
-                        }
-                        else -> {
-                            processElements(child, stringBuilder)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun convertToMarkdown(document : Document) : String {
-        val stringBuilder = StringBuilder()
-        processElements(document.body(), stringBuilder)
-        return stringBuilder.toString()
     }
 }

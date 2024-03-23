@@ -39,7 +39,7 @@ espresso = { group = "androidx.test.espresso", name = "espresso-core", version =
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.9.22" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.9.23" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.19" }
 safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
