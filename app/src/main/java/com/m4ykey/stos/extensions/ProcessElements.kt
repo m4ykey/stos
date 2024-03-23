@@ -23,9 +23,16 @@ private fun processElements(element: Element, stringBuilder: StringBuilder) {
                         stringBuilder.append("\n```\n")
                     }
                     "a" -> {
-                        val linkText = child.text()
-                        val linkUrl = child.attr("href")
-                        stringBuilder.append("[$linkText]($linkUrl)")
+                        val imgTag = child.getElementsByTag("img").firstOrNull()
+                        if (imgTag != null) {
+                            val imageUrl = imgTag.attr("src")
+                            val imageAlt = imgTag.attr("alt")
+                            stringBuilder.append("![$imageAlt]($imageUrl)\n")
+                        } else {
+                            val linkText = child.text()
+                            val linkUrl = child.attr("href")
+                            stringBuilder.append("[$linkText]($linkUrl)\n")
+                        }
                     }
                     "ul" -> {
                         processList(child, stringBuilder)
@@ -44,6 +51,11 @@ private fun processElements(element: Element, stringBuilder: StringBuilder) {
                         stringBuilder.append("_")
                         processElements(child, stringBuilder)
                         stringBuilder.append("_")
+                    }
+                    "strong" -> {
+                        stringBuilder.append("**")
+                        processElements(child, stringBuilder)
+                        stringBuilder.append("**")
                     }
                     else -> {
                         processElements(child, stringBuilder)

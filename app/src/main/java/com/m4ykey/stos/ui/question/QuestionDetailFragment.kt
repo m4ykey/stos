@@ -22,6 +22,7 @@ import com.m4ykey.stos.extensions.ui.UIConfigurator
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 import io.noties.markwon.Markwon
+import io.noties.markwon.image.coil.CoilImagesPlugin
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -78,7 +79,8 @@ class QuestionDetailFragment :
             val document : Document = Jsoup.parse(body)
             val markdown = convertToMarkdown(document)
 
-            val markwon = Markwon.create(requireContext())
+            val markwon = Markwon.builder(requireContext())
+                .usePlugin(CoilImagesPlugin.create(requireContext())).build()
 
             markwon.setMarkdown(txtBody, markdown)
 
