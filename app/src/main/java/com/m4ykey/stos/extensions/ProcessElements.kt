@@ -7,9 +7,7 @@ import org.jsoup.nodes.TextNode
 private fun processElements(element: Element, stringBuilder: StringBuilder) {
     for (child in element.childNodes()) {
         when (child) {
-            is TextNode -> {
-                stringBuilder.append(child.text())
-            }
+            is TextNode -> stringBuilder.append(child.text())
             is Element -> {
                 when (child.tagName()) {
                     "p" -> {
@@ -19,8 +17,8 @@ private fun processElements(element: Element, stringBuilder: StringBuilder) {
                     "pre" -> {
                         val codeText = child.select("code").html()
                         stringBuilder.append("\n```\n")
-                        stringBuilder.append(codeText)
-                        stringBuilder.append("\n```\n")
+                            .append(codeText)
+                            .append("\n```\n")
                     }
                     "a" -> {
                         val imgTag = child.getElementsByTag("img").firstOrNull()
@@ -47,19 +45,13 @@ private fun processElements(element: Element, stringBuilder: StringBuilder) {
                         processElements(child, stringBuilder)
                         stringBuilder.append("\n")
                     }
-                    "em" -> {
-                        stringBuilder.append("_")
+                    "em", "strong" -> {
+                        val tag = if (child.tagName() == "em") "_" else "**"
+                        stringBuilder.append(tag)
                         processElements(child, stringBuilder)
-                        stringBuilder.append("_")
+                        stringBuilder.append(tag)
                     }
-                    "strong" -> {
-                        stringBuilder.append("**")
-                        processElements(child, stringBuilder)
-                        stringBuilder.append("**")
-                    }
-                    else -> {
-                        processElements(child, stringBuilder)
-                    }
+                    else -> processElements(child, stringBuilder)
                 }
             }
         }
@@ -67,10 +59,10 @@ private fun processElements(element: Element, stringBuilder: StringBuilder) {
 }
 
 private fun processList(element: Element, stringBuilder: StringBuilder) {
-    for (child in element.children()) {
+    element.children().forEach { child ->
         stringBuilder.append("- ")
-        processElements(child, stringBuilder)
-        stringBuilder.append("\n")
+            .append(child.text())
+            .append("\n")
     }
 }
 
