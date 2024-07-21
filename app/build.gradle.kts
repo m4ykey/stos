@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -24,14 +27,32 @@ android {
         }
     }
 
+    signingConfigs {
+        val keyStorePropertiesFile = rootProject.file("keystore.properties")
+        val keyStoreProperties = Properties()
+        keyStoreProperties.load(FileInputStream(keyStorePropertiesFile))
+
+        create("release") {
+            keyAlias = keyStoreProperties["keyAlias"] as String
+            keyPassword = keyStoreProperties["keyPassword"] as String
+            storePassword = keyStoreProperties["storePassword"] as String
+            storeFile = file(keyStoreProperties["storeFile"] as String)
+        }
+    }
+
     buildTypes {
+        debug {
+            applicationIdSuffix = ""
+            versionNameSuffix = "-debug"
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
         release {
+            isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -56,8 +77,6 @@ android {
 
 dependencies {
 
-    implementation(project(":network"))
-
     val lifecycle = "2.8.3"
     val bom = "2024.06.00"
 
@@ -73,11 +92,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
 
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
 
     implementation("io.insert-koin:koin-androidx-compose:3.5.6")
 
-    implementation("com.google.firebase:firebase-crashlytics:19.0.2")
+    implementation("com.google.firebase:firebase-crashlytics:19.0.3")
     implementation("com.google.firebase:firebase-perf:21.0.1")
 
     testImplementation("junit:junit:4.13.2")
