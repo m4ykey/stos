@@ -14,7 +14,8 @@ class QuestionService(private val client : HttpClient) {
         site : String = "stackoverflow",
         page : Int,
         pageSize : Int,
-        filter : String = "!-R-q)p7F7-ux36Owxn_EekGSsD1yy7OT9P60"
+        filter : String = "!-R-q)p7F7-ux36Owxn_EekGSsD1yy7OT9P60",
+        sort : String = "hot"
     ) : Items<QuestionDto> {
         return client.get {
             url("questions")
@@ -22,6 +23,7 @@ class QuestionService(private val client : HttpClient) {
             parameter("page", page)
             parameter("pagesize", pageSize)
             parameter("filter", filter)
+            parameter("sort", sort)
         }.body()
     }
 }

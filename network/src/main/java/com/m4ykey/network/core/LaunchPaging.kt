@@ -1,4 +1,4 @@
-package com.m4ykey.stos.core
+package com.m4ykey.network.core
 
 import androidx.paging.PagingData
 import androidx.paging.cachedIn

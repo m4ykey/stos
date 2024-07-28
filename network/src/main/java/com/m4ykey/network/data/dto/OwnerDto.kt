@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Keep
 @Serializable
 data class OwnerDto(
-    val display_name: String?,
-    val link: String?,
-    val profile_image: String?,
-    val reputation: Int?,
-    val user_id: Int?
+    val display_name: String? = null,
+    val link: String? = null,
+    val profile_image: String? = null,
+    val reputation: Int? = -1,
+    val user_id: Int? = -1
 )

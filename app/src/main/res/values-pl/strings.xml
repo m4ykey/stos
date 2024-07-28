@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">stos</string>
+    <string name="profile_image">Zdjęcie profilowe</string>
+    <string name="days_ago">%d dni</string>
+    <string name="hours_ago">%d godz.</string>
+    <string name="minutes_ago">%d min.</string>
+    <string name="seconds_ago">%d sek.</string>
+    <string name="weeks_ago">%d tyg.</string>
 </resources>

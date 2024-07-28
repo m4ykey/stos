@@ -19,7 +19,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.0.1"
+        versionName = "0.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -82,6 +82,7 @@ dependencies {
     val lifecycle = "2.8.4"
     val bom = "2024.06.00"
     val paging = "3.3.1"
+    val markwon = "4.6.2"
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
@@ -103,6 +104,9 @@ dependencies {
 
     implementation("com.google.firebase:firebase-crashlytics:19.0.3")
     implementation("com.google.firebase:firebase-perf:21.0.1")
+
+    implementation("io.noties.markwon:core:$markwon")
+    implementation("io.noties.markwon:image-coil:$markwon")
 
     testImplementation("junit:junit:4.13.2")
 

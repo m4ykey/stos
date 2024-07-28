@@ -2,7 +2,7 @@ package com.m4ykey.stos.ui.question
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.m4ykey.stos.core.launchPaging
+import com.m4ykey.network.core.launchPaging
 import com.m4ykey.stos.data.repository.QuestionRepository
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
