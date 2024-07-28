@@ -1,5 +1,8 @@
 package com.m4ykey.network.data.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class Question(
     val answerCount : Int,
     val creationDate : Int,
