@@ -77,12 +77,14 @@ android {
 
 dependencies {
 
-    val lifecycle = "2.8.3"
+    implementation(project(":network"))
+
+    val lifecycle = "2.8.4"
     val bom = "2024.06.00"
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
-    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.activity:activity-compose:1.9.1")
     implementation(platform("androidx.compose:compose-bom:$bom"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
