@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">stos</string>
     <string name="profile_image">Profile image</string>
-    <string name="days_ago">%d days</string>
-    <string name="hours_ago">%d hours</string>
-    <string name="minutes_ago">%d min</string>
-    <string name="seconds_ago">%d sec</string>
-    <string name="weeks_ago">%d weeks</string>
+    <string name="activity">Activity</string>
+    <string name="votes">Votes</string>
+    <string name="creation">Creation</string>
+    <string name="hot">Hot</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
 </resources>

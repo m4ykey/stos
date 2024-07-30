@@ -6,11 +6,12 @@ import com.m4ykey.network.data.toQuestion
 import com.m4ykey.network.service.QuestionService
 
 class QuestionPagingSource(
-    private val service: QuestionService
+    private val service: QuestionService,
+    private val sort : String
 ) : BasePagingSource<Question>(service) {
 
     override suspend fun loadPage(page: Int, pageSize: Int): List<Question> {
-        val response = service.getQuestions(page = page, pageSize = pageSize)
+        val response = service.getQuestions(page = page, pageSize = pageSize, sort = sort)
         return response.items.map { it.toQuestion() }
     }
 }
