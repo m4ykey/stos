@@ -17,7 +17,8 @@ class QuestionService(private val client : HttpClient) {
         page : Int,
         pageSize : Int,
         filter : String = DEFAULT_FILTER,
-        sort : String
+        sort : String,
+        order : String = "desc"
     ) : Items<QuestionDto> {
         return client.get {
             url("questions")
@@ -26,6 +27,7 @@ class QuestionService(private val client : HttpClient) {
             parameter("pagesize", pageSize)
             parameter("filter", filter)
             parameter("sort", sort)
+            parameter("order", order)
         }.body()
     }
 }

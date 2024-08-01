@@ -38,6 +38,7 @@ import com.m4ykey.stos.ui.question.QuestionList
 fun MainScreen(modifier: Modifier = Modifier) {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    var sortType by remember { mutableStateOf("hot") }
 
     Scaffold(
         modifier = modifier
@@ -68,26 +69,31 @@ fun MainScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(innerPadding)
         ) {
             Spacer(modifier = modifier.height(5.dp))
-            ChipList()
+            ChipList(
+                selectedSort = sortType,
+                onSortSelected = { sortType = it }
+            )
             Spacer(modifier = modifier.height(5.dp))
-            QuestionList(sort = "hot")
+            QuestionList(sort = sortType)
         }
     }
 }
 
 @Composable
-fun ChipList(modifier: Modifier = Modifier) {
+fun ChipList(
+    modifier: Modifier = Modifier,
+    onSortSelected : (String) -> Unit,
+    selectedSort : String
+) {
 
     val chipList = listOf(
-        stringResource(id = R.string.hot),
-        stringResource(id = R.string.activity),
-        stringResource(id = R.string.votes),
-        stringResource(id = R.string.creation),
-        stringResource(id = R.string.week),
-        stringResource(id = R.string.month)
+        stringResource(id = R.string.hot) to "hot",
+        stringResource(id = R.string.activity) to "activity",
+        stringResource(id = R.string.votes) to "votes",
+        stringResource(id = R.string.creation) to "creation",
+        stringResource(id = R.string.week) to "week",
+        stringResource(id = R.string.month) to "month"
     )
-
-    var selected by remember { mutableStateOf(chipList[0]) }
 
     Row(
         modifier = modifier
@@ -95,14 +101,12 @@ fun ChipList(modifier: Modifier = Modifier) {
             .padding(horizontal = 5.dp)
             .horizontalScroll(rememberScrollState())
     ) {
-        chipList.forEach { chip ->
+        chipList.forEach { (label, sortKey) ->
             Chip(
                 modifier = modifier.padding(horizontal = 5.dp),
-                title = chip,
-                selected = selected == chip,
-                onSelected = { isSelected ->
-
-                }
+                title = label,
+                selected = selectedSort == sortKey,
+                onSelected = { onSortSelected(sortKey) }
             )
         }
     }
