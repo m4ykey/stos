@@ -2,6 +2,7 @@ package com.m4ykey.stos.ui.question
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,7 +41,8 @@ import org.koin.androidx.compose.koinViewModel
 fun QuestionList(
     modifier: Modifier = Modifier,
     viewModel: QuestionViewModel = koinViewModel(),
-    sort : String
+    sort : String,
+    onQuestionClick : (Int) -> Unit
 ) {
     val uiState by viewModel.questions.collectAsState()
     val questionList: LazyPagingItems<Question> = uiState.questionList.collectAsLazyPagingItems()
@@ -60,7 +62,10 @@ fun QuestionList(
             ) { index ->
                 val question = questionList[index]
                 if (question != null) {
-                    QuestionItem(question = question)
+                    QuestionItem(
+                        question = question,
+                        onQuestionClick = onQuestionClick
+                    )
                     HorizontalDivider()
                 }
             }
@@ -101,12 +106,14 @@ fun QuestionList(
 @Composable
 fun QuestionItem(
     modifier: Modifier = Modifier,
-    question: Question
+    question: Question,
+    onQuestionClick: (Int) -> Unit
 ) {
     Column(
         modifier = modifier
             .padding(10.dp)
             .fillMaxWidth()
+            .clickable { onQuestionClick(question.questionId) }
     ) {
         OwnerProfile(owner = question.owner)
         Spacer(modifier = modifier.height(5.dp))

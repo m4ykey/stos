@@ -81,7 +81,7 @@ dependencies {
 
     val lifecycle = "2.8.4"
     val bom = "2024.06.00"
-    val paging = "3.3.1"
+    val paging = "3.3.2"
     val markwon = "4.6.2"
 
     implementation("androidx.core:core-ktx:1.13.1")

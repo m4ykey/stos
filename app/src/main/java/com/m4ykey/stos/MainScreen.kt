@@ -21,32 +21,29 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.m4ykey.stos.ui.question.QuestionList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    onQuestionClick : (Int) -> Unit
+) {
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var sortType by remember { mutableStateOf("hot") }
 
     Scaffold(
-        modifier = modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                scrollBehavior = scrollBehavior,
                 title = { },
                 actions = {
                     IconButton(onClick = {  }) {
@@ -74,7 +71,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 onSortSelected = { sortType = it }
             )
             Spacer(modifier = modifier.height(5.dp))
-            QuestionList(sort = sortType)
+            QuestionList(
+                sort = sortType,
+                onQuestionClick = onQuestionClick
+            )
         }
     }
 }
