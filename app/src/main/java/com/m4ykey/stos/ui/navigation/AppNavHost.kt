@@ -7,8 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.m4ykey.stos.MainScreen
 import com.m4ykey.stos.ui.question.QuestionDetail
+import com.m4ykey.stos.ui.question.QuestionHome
 
 @Composable
 fun AppNavHost(
@@ -17,11 +17,11 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "main_screen",
+        startDestination = "question_home",
         modifier = modifier
     ) {
-        composable(route = "main_screen") {
-            MainScreen(
+        composable(route = "question_home") {
+            QuestionHome(
                 onQuestionClick = { questionId ->
                     navController.navigate("question_detail/$questionId")
                 }

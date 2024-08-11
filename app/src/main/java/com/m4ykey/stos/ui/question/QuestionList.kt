@@ -48,7 +48,9 @@ fun QuestionList(
     val questionList: LazyPagingItems<Question> = uiState.questionList.collectAsLazyPagingItems()
 
     LaunchedEffect(sort) {
-        viewModel.getQuestions(sort = sort)
+        if (viewModel.shouldLoadData(sort)) {
+            viewModel.getQuestions(sort = sort)
+        }
     }
 
     CompositionLocalProvider(
