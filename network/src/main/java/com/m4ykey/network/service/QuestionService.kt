@@ -1,8 +1,10 @@
 package com.m4ykey.network.service
 
 import com.m4ykey.network.core.Constants.DEFAULT_FILTER
+import com.m4ykey.network.core.Constants.DETAIL_FILTER
 import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.data.Items
+import com.m4ykey.network.data.dto.QuestionDetailDto
 import com.m4ykey.network.data.dto.QuestionDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -30,4 +32,17 @@ class QuestionService(private val client : HttpClient) {
             parameter("order", order)
         }.body()
     }
+
+    suspend fun getQuestionDetail(
+        site : String = SITE,
+        filter: String = DETAIL_FILTER,
+        questionId : Int
+    ) : Items<QuestionDetailDto> {
+        return client.get {
+            url("questions/$questionId")
+            parameter("site", site)
+            parameter("filter", filter)
+        }.body()
+    }
+
 }

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.QuestionRepository
+import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.launch
 
 class QuestionViewModel(
     private val repository: QuestionRepository
@@ -16,10 +18,24 @@ class QuestionViewModel(
     private val _questions = MutableStateFlow(QuestionUiState())
     val questions = _questions.asStateFlow()
 
+    private val _questionDetail = MutableStateFlow(QuestionDetailUiState())
+    val questionDetail = _questionDetail.asStateFlow()
+
     private var currentSort : String? = null
 
     suspend fun shouldLoadData(sort : String) : Boolean {
         return sort != currentSort || _questions.value.questionList.count() == 0
+    }
+
+    suspend fun getQuestionDetail(questionId : Int) = viewModelScope.launch {
+        _questionDetail.value = QuestionDetailUiState(isLoading = true)
+        try {
+            repository.getQuestionDetail(questionId).collect { detail ->
+                _questionDetail.value = QuestionDetailUiState(questionDetail = detail)
+            }
+        } catch (e : Exception) {
+            _questionDetail.value = QuestionDetailUiState(isError = e.localizedMessage)
+        }
     }
 
     fun getQuestions(sort : String) {
