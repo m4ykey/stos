@@ -39,7 +39,6 @@ fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
         downVoteCount = down_vote_count ?: -1,
         owner = owner!!.toOwner(),
         tags = tags ?: emptyList(),
-        lastEditor = last_editor!!.toOwner(),
         lastActivityDate = last_activity_date ?: -1,
         lastEditDate = last_edit_date ?: -1,
         bodyMarkdown = body_markdown.orEmpty(),

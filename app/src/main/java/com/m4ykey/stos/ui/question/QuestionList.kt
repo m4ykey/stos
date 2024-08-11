@@ -2,6 +2,7 @@ package com.m4ykey.stos.ui.question
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -31,9 +33,9 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
-import com.m4ykey.stos.markdown.MarkdownText
 import com.m4ykey.stos.ui.components.OwnerProfile
 import com.m4ykey.stos.ui.components.QuestionCount
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -119,7 +121,10 @@ fun QuestionItem(
     ) {
         OwnerProfile(owner = question.owner)
         Spacer(modifier = modifier.height(5.dp))
-        MarkdownText(text = question.title)
+        MarkdownText(
+            markdown = question.title,
+            modifier = modifier.clickable {  }.background(Color.Transparent)
+        )
         Spacer(modifier = modifier.height(5.dp))
         Row(
             modifier = modifier.fillMaxWidth()

@@ -1,23 +1,34 @@
 package com.m4ykey.stos.ui.question
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.m4ykey.network.data.model.QuestionDetail
+import com.m4ykey.stos.util.CustomMarkdown
+import com.m4ykey.stos.util.openUrlBrowser
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,8 +41,9 @@ fun QuestionDetail(
 ) {
 
     val uiState by viewModel.questionDetail.collectAsState()
+    val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(questionId) {
         viewModel.getQuestionDetail(questionId)
     }
 
@@ -47,13 +59,32 @@ fun QuestionDetail(
                             contentDescription = null
                         )
                     }
+                },
+                actions = {
+                    IconButton(onClick = { openUrlBrowser(context, uiState.questionDetail?.link.orEmpty()) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Share,
+                            contentDescription = null
+                        )
+                    }
+                    IconButton(onClick = { openUrlBrowser(context, uiState.questionDetail?.link.orEmpty()) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Share,
+                            contentDescription = null
+                        )
+                    }
                 }
             )
         }
     ) { innerPadding ->
         when {
             uiState.isLoading -> {
-                CircularProgressIndicator()
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
             uiState.isError != null -> {}
             uiState.questionDetail != null -> {
@@ -72,8 +103,19 @@ fun QuestionDetailContent(
     questionDetail: QuestionDetail
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        Text(text = questionDetail.bodyMarkdown)
+        MarkdownText(
+            markdown = questionDetail.title,
+            style = TextStyle(
+                fontSize = 20.sp
+            )
+        )
+        CustomMarkdown(
+            markdown = questionDetail.bodyMarkdown
+        )
     }
 }

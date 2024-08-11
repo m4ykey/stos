@@ -57,7 +57,7 @@ fun Chip(
     modifier : Modifier = Modifier,
     title: String,
     selected: Boolean,
-    onSelected: (Boolean) -> Unit,
+    onSelected: (Boolean) -> Unit
 ) {
     FilterChip(
         modifier = modifier,

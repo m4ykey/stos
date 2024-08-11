@@ -10,7 +10,6 @@ data class QuestionDetail(
     val upVoteCount : Int,
     val viewCount : Int,
     val tags : List<String>,
-    val lastEditor : Owner,
     val lastActivityDate : Int,
     val lastEditDate : Int,
     val bodyMarkdown : String,

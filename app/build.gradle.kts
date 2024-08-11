@@ -82,7 +82,6 @@ dependencies {
     val lifecycle = "2.8.4"
     val bom = "2024.06.00"
     val paging = "3.3.2"
-    val markwon = "4.6.2"
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
@@ -97,6 +96,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
     implementation("androidx.paging:paging-compose:$paging")
     implementation("androidx.paging:paging-runtime-ktx:$paging")
+    implementation("androidx.browser:browser:1.8.0")
 
     implementation("io.coil-kt:coil-compose:2.7.0")
 
@@ -105,8 +105,9 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics:19.0.3")
     implementation("com.google.firebase:firebase-perf:21.0.1")
 
-    implementation("io.noties.markwon:core:$markwon")
-    implementation("io.noties.markwon:image-coil:$markwon")
+    implementation("com.github.jeziellago:compose-markdown:0.5.2")
+
+    implementation("org.jetbrains:annotations:24.1.0")
 
     testImplementation("junit:junit:4.13.2")
 

@@ -15,7 +15,6 @@ data class QuestionDetailDto(
     val up_vote_count: Int?,
     val view_count: Int?,
     val tags : List<String>?,
-    val last_editor : OwnerDto?,
     val last_activity_date : Int?,
     val last_edit_date : Int? = 0,
     val body_markdown : String?,
