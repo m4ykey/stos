@@ -2,7 +2,6 @@ package com.m4ykey.stos.ui.question
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -119,12 +117,13 @@ fun QuestionItem(
             .fillMaxWidth()
             .clickable { onQuestionClick(question.questionId) }
     ) {
-        OwnerProfile(owner = question.owner)
-        Spacer(modifier = modifier.height(5.dp))
-        MarkdownText(
-            markdown = question.title,
-            modifier = modifier.clickable {  }.background(Color.Transparent)
+        OwnerProfile(
+            owner = question.owner,
+            size = 24.dp,
+            isBadgeCounts = false
         )
+        Spacer(modifier = modifier.height(5.dp))
+        MarkdownText(markdown = question.title)
         Spacer(modifier = modifier.height(5.dp))
         Row(
             modifier = modifier.fillMaxWidth()

@@ -42,7 +42,7 @@ fun ChipList(
             .horizontalScroll(rememberScrollState())
     ) {
         chipList.forEach { (label, sortKey) ->
-            Chip(
+            ChipItem(
                 modifier = modifier.padding(horizontal = 5.dp),
                 title = label,
                 selected = selectedSort == sortKey,
@@ -53,7 +53,7 @@ fun ChipList(
 }
 
 @Composable
-fun Chip(
+fun ChipItem(
     modifier : Modifier = Modifier,
     title: String,
     selected: Boolean,

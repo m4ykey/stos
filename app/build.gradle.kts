@@ -80,7 +80,7 @@ dependencies {
     implementation(project(":network"))
 
     val lifecycle = "2.8.4"
-    val bom = "2024.06.00"
+    val bom = "2024.08.00"
     val paging = "3.3.2"
 
     implementation("androidx.core:core-ktx:1.13.1")
@@ -105,7 +105,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics:19.0.3")
     implementation("com.google.firebase:firebase-perf:21.0.1")
 
-    implementation("com.github.jeziellago:compose-markdown:0.5.2")
+    implementation("com.github.jeziellago:compose-markdown:0.5.3")
 
     implementation("org.jetbrains:annotations:24.1.0")
 

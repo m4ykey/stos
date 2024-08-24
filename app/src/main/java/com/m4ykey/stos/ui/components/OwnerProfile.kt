@@ -1,7 +1,6 @@
 package com.m4ykey.stos.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +11,6 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
@@ -43,7 +41,9 @@ fun OwnerProfileCard(
 @Composable
 fun OwnerProfile(
     modifier: Modifier = Modifier,
-    owner : Owner
+    owner : Owner,
+    size : Dp,
+    isBadgeCounts : Boolean
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -51,15 +51,23 @@ fun OwnerProfile(
     ) {
         OwnerProfileCard(
             owner = owner,
-            size = 24.dp
+            size = size
         )
         Spacer(modifier = modifier.width(5.dp))
-        MarkdownText(
-            markdown = owner.displayName,
-            style = TextStyle(
-                fontSize = 14.sp
-            ),
-            modifier = modifier.clickable {  }.background(Color.Transparent)
-        )
+        Column {
+            MarkdownText(
+                markdown = owner.displayName,
+                style = TextStyle(
+                    fontSize = 14.sp
+                )
+            )
+            if (isBadgeCounts) {
+                BadgeRow(
+                    goldCount = owner.badgeCounts.gold,
+                    silverCount = owner.badgeCounts.silver,
+                    bronzeCount = owner.badgeCounts.bronze
+                )
+            }
+        }
     }
 }

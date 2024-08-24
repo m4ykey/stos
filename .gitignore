@@ -16,3 +16,4 @@ local.properties
 google-services.json
 keystore.properties
 .kotlin/sessions
+/.idea/other.xml

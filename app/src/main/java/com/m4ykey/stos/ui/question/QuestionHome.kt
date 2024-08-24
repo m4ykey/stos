@@ -26,7 +26,9 @@ import com.m4ykey.stos.ui.components.ChipList
 @Composable
 fun QuestionHome(
     modifier: Modifier = Modifier,
-    onQuestionClick : (Int) -> Unit
+    onQuestionClick : (Int) -> Unit,
+    onSearchClick : () -> Unit,
+    onUserClick : () -> Unit
 ) {
 
     var sortType by remember { mutableStateOf("hot") }
@@ -37,13 +39,13 @@ fun QuestionHome(
             TopAppBar(
                 title = { },
                 actions = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = onSearchClick) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = null
                         )
                     }
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = onUserClick) {
                         Icon(
                             imageVector = Icons.Outlined.AccountCircle,
                             contentDescription = null
