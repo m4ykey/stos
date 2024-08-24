@@ -10,8 +10,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Public
@@ -123,33 +122,35 @@ fun QuestionDetailContent(
     CompositionLocalProvider(
         value = LocalOverscrollConfiguration provides null
     ) {
-        Column(
+        LazyColumn(
             modifier = modifier
                 .fillMaxSize()
                 .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
-                .verticalScroll(rememberScrollState())
         ) {
-            MarkdownText(
-                markdown = questionDetail.title,
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
-                ),
-                modifier = modifier.padding(bottom = 10.dp)
-            )
-            MarkdownText(
-                markdown = processHtmlEntities(questionDetail.bodyMarkdown),
-                linkColor = Color(0xFF2367DD)
-            )
-            ChipGroup(
-                tags = questionDetail.tags,
-                onTagClick = { tag -> onTagClick(tag) }
-            )
-            OwnerProfile(
-                owner = questionDetail.owner,
-                size = 30.dp,
-                isBadgeCounts = true
-            )
+            item {
+                Column {
+                    MarkdownText(
+                        markdown = questionDetail.title,
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                    MarkdownText(
+                        markdown = processHtmlEntities(questionDetail.bodyMarkdown),
+                        linkColor = Color(0xFF2367DD)
+                    )
+                    ChipGroup(
+                        tags = questionDetail.tags,
+                        onTagClick = { tag -> onTagClick(tag) }
+                    )
+                    OwnerProfile(
+                        owner = questionDetail.owner,
+                        size = 30.dp,
+                        isBadgeCounts = true
+                    )
+                }
+            }
         }
     }
 }

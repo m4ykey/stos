@@ -119,7 +119,7 @@ fun QuestionItem(
     ) {
         OwnerProfile(
             owner = question.owner,
-            size = 24.dp,
+            size = 26.dp,
             isBadgeCounts = false
         )
         Spacer(modifier = modifier.height(5.dp))
