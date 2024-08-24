@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.m4ykey.stos.ui.question.QuestionDetail
 import com.m4ykey.stos.ui.question.QuestionHome
+import com.m4ykey.stos.ui.question.QuestionTagList
 import com.m4ykey.stos.ui.search.SearchScreen
 import com.m4ykey.stos.ui.user.UserScreen
 
@@ -51,7 +52,24 @@ fun AppNavHost(
             QuestionDetail(
                 questionId = questionId,
                 onNavigateBack = { navController.navigateUp() },
-                onTagClick = {}
+                onTagClick = { tag ->
+                    navController.navigate("question_tag/$tag")
+                }
+            )
+        }
+        composable(
+            route = "question_tag/{tag}",
+            arguments = listOf(navArgument("tag") {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            val tag = backStackEntry.arguments?.getString("tag") ?: ""
+            QuestionTagList(
+                tag = tag,
+                onNavigateBack = { navController.navigateUp() },
+                onQuestionClick = { questionId ->
+                    navController.navigate("question_detail/$questionId")
+                }
             )
         }
     }

@@ -9,5 +9,6 @@ interface QuestionRepository {
 
     suspend fun getQuestions(sort : String) : Flow<PagingData<Question>>
     suspend fun getQuestionDetail(questionId : Int) : Flow<QuestionDetail>
+    suspend fun getQuestionTag(tag : String, sort : String) : Flow<PagingData<Question>>
 
 }

@@ -22,9 +22,14 @@ class QuestionViewModel(
     val questionDetail = _questionDetail.asStateFlow()
 
     private var currentSort : String? = null
+    private var currentTag : String? = null
 
     suspend fun shouldLoadData(sort : String) : Boolean {
         return sort != currentSort || _questions.value.questionList.count() == 0
+    }
+
+    suspend fun shouldLoadTagData(tag : String, sort : String) : Boolean {
+        return sort != currentSort || tag != currentTag || _questions.value.questionList.count() == 0
     }
 
     suspend fun getQuestionDetail(questionId : Int) = viewModelScope.launch {
@@ -43,6 +48,18 @@ class QuestionViewModel(
         launchPaging(
             scope = viewModelScope,
             source = { repository.getQuestions(sort) },
+            onDataCollected = { pagingData ->
+                _questions.value = QuestionUiState(questionList = pagingData)
+            }
+        )
+    }
+
+    fun getQuestionsTag(tag : String, sort : String) {
+        currentTag = tag
+        currentSort = sort
+        launchPaging(
+            scope = viewModelScope,
+            source = { repository.getQuestionTag(tag, sort) },
             onDataCollected = { pagingData ->
                 _questions.value = QuestionUiState(questionList = pagingData)
             }

@@ -17,7 +17,7 @@ class QuestionService(private val client : HttpClient) {
     suspend fun getQuestions(
         site : String = SITE,
         page : Int,
-        pageSize : Int,
+        pageSize : Int = 20,
         filter : String = DEFAULT_FILTER,
         sort : String,
         order : String = "desc"
@@ -42,6 +42,27 @@ class QuestionService(private val client : HttpClient) {
             url("questions/$questionId")
             parameter("site", site)
             parameter("filter", filter)
+        }.body()
+    }
+
+    suspend fun getQuestionTag(
+        site : String = SITE,
+        page : Int,
+        pageSize : Int = 20,
+        filter : String = DEFAULT_FILTER,
+        tag : String,
+        order : String = "desc",
+        sort : String
+    ) : Items<QuestionDto> {
+        return client.get {
+            url("questions")
+            parameter("site", site)
+            parameter("page", page)
+            parameter("pagesize", pageSize)
+            parameter("filter", filter)
+            parameter("order", order)
+            parameter("sort", sort)
+            parameter("tagged", tag)
         }.body()
     }
 
