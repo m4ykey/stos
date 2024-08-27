@@ -15,11 +15,11 @@ import io.ktor.client.request.url
 class QuestionService(private val client : HttpClient) {
 
     suspend fun getQuestions(
-        site : String = SITE,
-        page : Int,
-        pageSize : Int = 20,
         filter : String = DEFAULT_FILTER,
         sort : String,
+        page : Int,
+        pageSize : Int = 20,
+        site : String = SITE,
         order : String = "desc"
     ) : Items<QuestionDto> {
         return client.get {
@@ -34,9 +34,9 @@ class QuestionService(private val client : HttpClient) {
     }
 
     suspend fun getQuestionDetail(
-        site : String = SITE,
         filter: String = DETAIL_FILTER,
-        questionId : Int
+        questionId : Int,
+        site : String = SITE
     ) : Items<QuestionDetailDto> {
         return client.get {
             url("questions/$questionId")
@@ -46,13 +46,13 @@ class QuestionService(private val client : HttpClient) {
     }
 
     suspend fun getQuestionTag(
+        filter: String = DEFAULT_FILTER,
+        tag: String,
+        sort: String,
+        page: Int,
         site : String = SITE,
-        page : Int,
-        pageSize : Int = 20,
-        filter : String = DEFAULT_FILTER,
-        tag : String,
         order : String = "desc",
-        sort : String
+        pageSize : Int = 20
     ) : Items<QuestionDto> {
         return client.get {
             url("questions")

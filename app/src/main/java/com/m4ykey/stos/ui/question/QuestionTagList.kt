@@ -98,7 +98,7 @@ fun QuestionTagList(
     val questionList: LazyPagingItems<Question> = uiState.questionList.collectAsLazyPagingItems()
 
     LaunchedEffect(tag) {
-        if (viewModel.shouldLoadTagData(tag, sort)) {
+        if (viewModel.shouldLoadData(tag, sort)) {
             viewModel.getQuestionsTag(tag = tag, sort = sort)
         }
     }

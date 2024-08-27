@@ -19,7 +19,7 @@ class QuestionRepositoryImpl(private val service : QuestionService) : QuestionRe
 
     override suspend fun getQuestions(sort  : String) : Flow<PagingData<Question>> = createPager {
         QuestionPagingSource(service, sort)
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getQuestionDetail(questionId: Int): Flow<QuestionDetail> = flow {
         val result = safeApiCall {
@@ -34,5 +34,6 @@ class QuestionRepositoryImpl(private val service : QuestionService) : QuestionRe
 
     override suspend fun getQuestionTag(tag: String, sort : String): Flow<PagingData<Question>> = createPager {
         QuestionTagPagingSource(service = service, tag = tag, sort = sort)
-    }
+    }.flowOn(Dispatchers.IO)
+
 }

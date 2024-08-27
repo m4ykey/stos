@@ -7,6 +7,7 @@ import com.m4ykey.network.data.repository.QuestionRepository
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
@@ -16,19 +17,15 @@ class QuestionViewModel(
 ) : ViewModel() {
 
     private val _questions = MutableStateFlow(QuestionUiState())
-    val questions = _questions.asStateFlow()
+    val questions : StateFlow<QuestionUiState> = _questions.asStateFlow()
 
     private val _questionDetail = MutableStateFlow(QuestionDetailUiState())
-    val questionDetail = _questionDetail.asStateFlow()
+    val questionDetail : StateFlow<QuestionDetailUiState> = _questionDetail.asStateFlow()
 
     private var currentSort : String? = null
     private var currentTag : String? = null
 
-    suspend fun shouldLoadData(sort : String) : Boolean {
-        return sort != currentSort || _questions.value.questionList.count() == 0
-    }
-
-    suspend fun shouldLoadTagData(tag : String, sort : String) : Boolean {
+    suspend fun shouldLoadData(sort : String, tag : String? = null) : Boolean {
         return sort != currentSort || tag != currentTag || _questions.value.questionList.count() == 0
     }
 

@@ -12,7 +12,16 @@ class QuestionTagPagingSource(
 ) : BasePagingSource<Question>(service) {
 
     override suspend fun loadPage(page: Int, pageSize: Int): List<Question> {
-        val response = service.getQuestionTag(tag = tag, page = page, pageSize = pageSize, sort = sort)
-        return response.items.map { it.toQuestion() }
+        return try {
+            val response = service.getQuestionTag(
+                tag = tag,
+                sort = sort,
+                page = page,
+                pageSize = pageSize
+            )
+            response.items.map { it.toQuestion() }
+        } catch (e : Exception) {
+            emptyList()
+        }
     }
 }

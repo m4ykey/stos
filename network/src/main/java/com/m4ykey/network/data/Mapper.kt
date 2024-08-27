@@ -9,6 +9,16 @@ import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.model.QuestionDetail
 
+val badgeCounts = BadgeCounts(0,0,0)
+val owners = Owner(
+    displayName = "",
+    link = "",
+    profileImage = "",
+    reputation = -1,
+    userId = -1,
+    badgeCounts = badgeCounts
+)
+
 fun OwnerDto.toOwner() : Owner =
     Owner(
         link = link.orEmpty(),
@@ -16,7 +26,7 @@ fun OwnerDto.toOwner() : Owner =
         profileImage = profile_image.orEmpty(),
         reputation = reputation ?: -1,
         userId = user_id ?: -1,
-        badgeCounts = badge_counts!!.toBadgeCounts()
+        badgeCounts = badge_counts?.toBadgeCounts() ?: badgeCounts
     )
 
 fun QuestionDto.toQuestion() : Question =
@@ -28,7 +38,7 @@ fun QuestionDto.toQuestion() : Question =
         upVoteCount = up_vote_count ?: -1,
         answerCount = answer_count ?: -1,
         downVoteCount = down_vote_count ?: -1,
-        owner = owner!!.toOwner()
+        owner = owner?.toOwner() ?: owners
     )
 
 fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
@@ -40,7 +50,7 @@ fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
         upVoteCount = up_vote_count ?: -1,
         answerCount = answer_count ?: -1,
         downVoteCount = down_vote_count ?: -1,
-        owner = owner!!.toOwner(),
+        owner = owner?.toOwner() ?: owners,
         tags = tags ?: emptyList(),
         lastActivityDate = last_activity_date ?: -1,
         lastEditDate = last_edit_date ?: -1,

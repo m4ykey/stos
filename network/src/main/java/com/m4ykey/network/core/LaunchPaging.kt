@@ -12,7 +12,7 @@ fun <T : Any> launchPaging(
     onDataCollected : (Flow<PagingData<T>>) -> Unit
 ) {
     scope.launch {
-        val flow = source().cachedIn(this)
+        val flow = source().cachedIn(scope)
         onDataCollected(flow)
     }
 }

@@ -20,55 +20,55 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "question_home",
+        startDestination = Screen.QuestionHome.route,
         modifier = modifier
     ) {
-        composable(route = "search_screen") {
+        composable(route = Screen.SearchScreen.route) {
             SearchScreen()
         }
-        composable(route = "user_screen") {
+        composable(route = Screen.UserScreen.route) {
             UserScreen()
         }
-        composable(route = "question_home") {
+        composable(route = Screen.QuestionHome.route) {
             QuestionHome(
                 onQuestionClick = { questionId ->
-                    navController.navigate("question_detail/$questionId")
+                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
                 },
                 onSearchClick = {
-                    navController.navigate("search_screen")
+                    navController.navigate(Screen.SearchScreen.route)
                 },
                 onUserClick = {
-                    navController.navigate("user_screen")
+                    navController.navigate(Screen.UserScreen.route)
                 }
             )
         }
         composable(
-            route = "question_detail/{questionId}",
-            arguments = listOf(navArgument("questionId") {
+            route = Screen.QuestionDetail.route,
+            arguments = listOf(navArgument(Screen.QuestionDetail.argument) {
                 type = NavType.IntType
             })
         ) { backStackEntry ->
-            val questionId = backStackEntry.arguments?.getInt("questionId") ?: -1
+            val questionId = backStackEntry.arguments?.getInt(Screen.QuestionDetail.argument) ?: -1
             QuestionDetail(
                 questionId = questionId,
                 onNavigateBack = { navController.navigateUp() },
                 onTagClick = { tag ->
-                    navController.navigate("question_tag/$tag")
+                    navController.navigate(Screen.QuestionTag.createRoute(tag))
                 }
             )
         }
         composable(
-            route = "question_tag/{tag}",
-            arguments = listOf(navArgument("tag") {
+            route = Screen.QuestionTag.route,
+            arguments = listOf(navArgument(Screen.QuestionTag.argument) {
                 type = NavType.StringType
             })
         ) { backStackEntry ->
-            val tag = backStackEntry.arguments?.getString("tag") ?: ""
+            val tag = backStackEntry.arguments?.getString(Screen.QuestionTag.argument) ?: ""
             QuestionTagList(
                 tag = tag,
                 onNavigateBack = { navController.navigateUp() },
                 onQuestionClick = { questionId ->
-                    navController.navigate("question_detail/$questionId")
+                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
                 }
             )
         }

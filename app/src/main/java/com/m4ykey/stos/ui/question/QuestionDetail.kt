@@ -100,7 +100,14 @@ fun QuestionDetail(
                     CircularProgressIndicator()
                 }
             }
-            uiState.isError != null -> {}
+            uiState.isError != null -> {
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Error: ${uiState.isError}")
+                }
+            }
             uiState.questionDetail != null -> {
                 QuestionDetailContent(
                     modifier = modifier.padding(innerPadding),
