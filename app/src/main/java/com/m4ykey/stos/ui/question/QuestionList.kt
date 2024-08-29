@@ -43,7 +43,8 @@ fun QuestionList(
     modifier: Modifier = Modifier,
     viewModel: QuestionViewModel = koinViewModel(),
     sort : String,
-    onQuestionClick : (Int) -> Unit
+    onQuestionClick : (Int) -> Unit,
+    onOwnerClick: (Int) -> Unit
 ) {
     val uiState by viewModel.questions.collectAsState()
     val questionList: LazyPagingItems<Question> = uiState.questionList.collectAsLazyPagingItems()
@@ -67,7 +68,8 @@ fun QuestionList(
                 if (question != null) {
                     QuestionItem(
                         question = question,
-                        onQuestionClick = onQuestionClick
+                        onQuestionClick = onQuestionClick,
+                        onOwnerClick = onOwnerClick
                     )
                     HorizontalDivider()
                 }
@@ -128,7 +130,8 @@ fun QuestionList(
 fun QuestionItem(
     modifier: Modifier = Modifier,
     question: Question,
-    onQuestionClick: (Int) -> Unit
+    onQuestionClick: (Int) -> Unit,
+    onOwnerClick : (Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -139,7 +142,8 @@ fun QuestionItem(
         OwnerProfile(
             owner = question.owner,
             size = 26.dp,
-            isBadgeCounts = false
+            isBadgeCounts = false,
+            onOwnerClick = onOwnerClick
         )
         Spacer(modifier = modifier.height(5.dp))
         MarkdownText(markdown = question.title)

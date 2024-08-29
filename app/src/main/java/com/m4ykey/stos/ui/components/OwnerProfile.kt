@@ -1,5 +1,6 @@
 package com.m4ykey.stos.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,10 +48,13 @@ fun OwnerProfile(
     modifier: Modifier = Modifier,
     owner : Owner,
     size : Dp,
-    isBadgeCounts : Boolean
+    isBadgeCounts : Boolean,
+    onOwnerClick : (Int) -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onOwnerClick(owner.userId) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         OwnerProfileCard(

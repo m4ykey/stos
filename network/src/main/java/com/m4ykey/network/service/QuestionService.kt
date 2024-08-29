@@ -3,6 +3,7 @@ package com.m4ykey.network.service
 import com.m4ykey.network.core.Constants.ANSWER_FILTER
 import com.m4ykey.network.core.Constants.DEFAULT_FILTER
 import com.m4ykey.network.core.Constants.DETAIL_FILTER
+import com.m4ykey.network.core.Constants.PAGE_SIZE
 import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.AnswerDto
@@ -20,7 +21,7 @@ class QuestionService(private val client : HttpClient) {
         filter : String = DEFAULT_FILTER,
         sort : String,
         page : Int,
-        pageSize : Int = 20,
+        pageSize : Int = PAGE_SIZE,
         site : String = SITE,
         order : String = "desc"
     ) : Items<QuestionDto> {
@@ -54,7 +55,7 @@ class QuestionService(private val client : HttpClient) {
         page: Int,
         site : String = SITE,
         order : String = "desc",
-        pageSize : Int = 20
+        pageSize : Int = PAGE_SIZE
     ) : Items<QuestionDto> {
         return client.get {
             url("questions")
@@ -72,7 +73,7 @@ class QuestionService(private val client : HttpClient) {
         questionId : Int,
         site : String = SITE,
         page : Int,
-        pageSize: Int = 20,
+        pageSize: Int = PAGE_SIZE,
         filter: String = ANSWER_FILTER
     ) : Items<AnswerDto> {
         return client.get {

@@ -6,5 +6,6 @@ data class Owner(
     val profileImage : String,
     val reputation : Int,
     val userId : Int,
-    val badgeCounts : BadgeCounts
+    val badgeCounts : BadgeCounts,
+    val location : String? = null
 )

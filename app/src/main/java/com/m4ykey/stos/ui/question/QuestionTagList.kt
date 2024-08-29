@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -36,6 +37,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.m4ykey.network.data.model.Question
+import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.ChipList
 import org.koin.androidx.compose.koinViewModel
 
@@ -45,7 +47,8 @@ fun QuestionTagList(
     modifier: Modifier = Modifier,
     tag: String,
     onNavigateBack: () -> Unit,
-    onQuestionClick: (Int) -> Unit
+    onQuestionClick: (Int) -> Unit,
+    onOwnerClick: (Int) -> Unit
 ) {
 
     var sortType by remember { mutableStateOf("hot") }
@@ -59,7 +62,7 @@ fun QuestionTagList(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.back)
                         )
                     }
                 }
@@ -78,7 +81,8 @@ fun QuestionTagList(
             QuestionTagList(
                 tag = tag,
                 sort = sortType,
-                onQuestionClick = onQuestionClick
+                onQuestionClick = onQuestionClick,
+                onOwnerClick = onOwnerClick
             )
         }
     }
@@ -91,7 +95,8 @@ fun QuestionTagList(
     viewModel: QuestionViewModel = koinViewModel(),
     onQuestionClick: (Int) -> Unit,
     tag: String,
-    sort : String
+    sort : String,
+    onOwnerClick : (Int) -> Unit
 ) {
 
     val uiState by viewModel.questions.collectAsState()
@@ -116,7 +121,8 @@ fun QuestionTagList(
                 if (question != null) {
                     QuestionItem(
                         question = question,
-                        onQuestionClick = onQuestionClick
+                        onQuestionClick = onQuestionClick,
+                        onOwnerClick = onOwnerClick
                     )
                     HorizontalDivider()
                 }

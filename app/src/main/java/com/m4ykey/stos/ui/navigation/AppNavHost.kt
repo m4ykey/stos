@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.m4ykey.stos.ui.owner.OwnerScreen
 import com.m4ykey.stos.ui.question.QuestionDetail
 import com.m4ykey.stos.ui.question.QuestionHome
 import com.m4ykey.stos.ui.question.QuestionTagList
@@ -39,6 +40,9 @@ fun AppNavHost(
                 },
                 onUserClick = {
                     navController.navigate(Screen.UserScreen.route)
+                },
+                onOwnerClick = { ownerId ->
+                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
                 }
             )
         }
@@ -54,6 +58,9 @@ fun AppNavHost(
                 onNavigateBack = { navController.navigateUp() },
                 onTagClick = { tag ->
                     navController.navigate(Screen.QuestionTag.createRoute(tag))
+                },
+                onOwnerClick = { ownerId ->
+                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
                 }
             )
         }
@@ -69,7 +76,22 @@ fun AppNavHost(
                 onNavigateBack = { navController.navigateUp() },
                 onQuestionClick = { questionId ->
                     navController.navigate(Screen.QuestionDetail.createRoute(questionId))
+                },
+                onOwnerClick = { ownerId ->
+                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
                 }
+            )
+        }
+        composable(
+            route = Screen.OwnerScreen.route,
+            arguments = listOf(navArgument(Screen.OwnerScreen.argument) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            val ownerId = backStackEntry.arguments?.getInt(Screen.OwnerScreen.argument) ?: -1
+            OwnerScreen(
+                onNavigateBack = { navController.navigateUp() },
+                ownerId = ownerId
             )
         }
     }

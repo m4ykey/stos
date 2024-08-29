@@ -18,12 +18,14 @@ val owners = Owner(
     profileImage = "",
     reputation = -1,
     userId = -1,
-    badgeCounts = badgeCounts
+    badgeCounts = badgeCounts,
+    location = ""
 )
 
 fun OwnerDto.toOwner() : Owner =
     Owner(
         link = link.orEmpty(),
+        location = location,
         displayName = display_name.orEmpty(),
         profileImage = profile_image.orEmpty(),
         reputation = reputation ?: -1,

@@ -19,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.ChipList
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,7 +30,8 @@ fun QuestionHome(
     modifier: Modifier = Modifier,
     onQuestionClick : (Int) -> Unit,
     onSearchClick : () -> Unit,
-    onUserClick : () -> Unit
+    onUserClick : () -> Unit,
+    onOwnerClick : (Int) -> Unit
 ) {
 
     var sortType by remember { mutableStateOf("hot") }
@@ -42,13 +45,13 @@ fun QuestionHome(
                     IconButton(onClick = onSearchClick) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.search)
                         )
                     }
                     IconButton(onClick = onUserClick) {
                         Icon(
                             imageVector = Icons.Outlined.AccountCircle,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.user_profile)
                         )
                     }
                 }
@@ -66,7 +69,8 @@ fun QuestionHome(
             Spacer(modifier = modifier.height(5.dp))
             QuestionList(
                 sort = sortType,
-                onQuestionClick = onQuestionClick
+                onQuestionClick = onQuestionClick,
+                onOwnerClick = onOwnerClick
             )
         }
     }

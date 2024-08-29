@@ -26,4 +26,11 @@ object Screen {
         val route = "$baseRoute/{$argument}"
         fun createRoute(tag : String) = "$baseRoute/$tag"
     }
+
+    object OwnerScreen {
+        private const val baseRoute = "owner_screen"
+        const val argument = "ownerId"
+        val route = "$baseRoute/{$argument}"
+        fun createRoute(ownerId : Int) = "$baseRoute/$ownerId"
+    }
 }

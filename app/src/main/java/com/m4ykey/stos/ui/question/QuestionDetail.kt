@@ -60,7 +60,8 @@ fun QuestionDetail(
     questionId : Int,
     onNavigateBack : () -> Unit,
     onTagClick: (String) -> Unit,
-    viewModel: QuestionViewModel = koinViewModel()
+    viewModel: QuestionViewModel = koinViewModel(),
+    onOwnerClick: (Int) -> Unit
 ) {
 
     val uiDetailState by viewModel.questionDetail.collectAsState()
@@ -79,7 +80,7 @@ fun QuestionDetail(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.back)
                         )
                     }
                 },
@@ -87,13 +88,13 @@ fun QuestionDetail(
                     IconButton(onClick = { shareUrl(uiDetailState.questionDetail?.link.orEmpty(), context) }) {
                         Icon(
                             imageVector = Icons.Outlined.Share,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.share_url)
                         )
                     }
                     IconButton(onClick = { openUrlBrowser(context, uiDetailState.questionDetail?.link.orEmpty()) }) {
                         Icon(
                             imageVector = Icons.Outlined.Public,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.open_url_in_browser)
                         )
                     }
                 }
@@ -121,7 +122,8 @@ fun QuestionDetail(
                 QuestionDetailContent(
                     modifier = modifier.padding(innerPadding),
                     questionDetail = uiDetailState.questionDetail!!,
-                    onTagClick = onTagClick
+                    onTagClick = onTagClick,
+                    onOwnerClick = onOwnerClick
                 )
             }
         }
@@ -134,7 +136,8 @@ fun QuestionDetailContent(
     modifier: Modifier = Modifier,
     questionDetail: QuestionDetail,
     onTagClick: (String) -> Unit,
-    viewModel: QuestionViewModel = koinViewModel()
+    viewModel: QuestionViewModel = koinViewModel(),
+    onOwnerClick : (Int) -> Unit
 ) {
     val uiAnswerState by viewModel.questionAnswer.collectAsState()
     val answerList : LazyPagingItems<Answer> = uiAnswerState.questionAnswerList.collectAsLazyPagingItems()
@@ -173,7 +176,8 @@ fun QuestionDetailContent(
                 OwnerProfile(
                     owner = questionDetail.owner,
                     size = 30.dp,
-                    isBadgeCounts = true
+                    isBadgeCounts = true,
+                    onOwnerClick = onOwnerClick
                 )
             }
             item {
@@ -191,7 +195,10 @@ fun QuestionDetailContent(
                 ) { index ->
                     val answer = answerList[index]
                     if (answer != null) {
-                        AnswerItem(answer = answer)
+                        AnswerItem(
+                            answer = answer,
+                            onOwnerClick = onOwnerClick
+                        )
                         HorizontalDivider()
                     }
                 }
@@ -251,7 +258,8 @@ fun QuestionDetailContent(
 @Composable
 fun AnswerItem(
     modifier: Modifier = Modifier,
-    answer: Answer
+    answer: Answer,
+    onOwnerClick: (Int) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -261,7 +269,8 @@ fun AnswerItem(
         OwnerProfile(
             owner = answer.owner,
             size = 30.dp,
-            isBadgeCounts = true
+            isBadgeCounts = true,
+            onOwnerClick = onOwnerClick
         )
     }
 }

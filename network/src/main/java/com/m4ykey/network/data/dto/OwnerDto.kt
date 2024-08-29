@@ -11,5 +11,6 @@ data class OwnerDto(
     val profile_image: String? = null,
     val reputation: Int? = -1,
     val user_id: Int? = -1,
-    val badge_counts : BadgeCountsDto? = null
+    val badge_counts : BadgeCountsDto? = null,
+    val location : String? = null
 )
