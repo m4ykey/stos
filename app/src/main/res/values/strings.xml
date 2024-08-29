@@ -7,4 +7,5 @@
     <string name="hot">Hot</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
+    <string name="no_answers">No Answers</string>
 </resources>

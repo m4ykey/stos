@@ -1,9 +1,11 @@
 package com.m4ykey.network.data
 
+import com.m4ykey.network.data.dto.AnswerDto
 import com.m4ykey.network.data.dto.BadgeCountsDto
 import com.m4ykey.network.data.dto.OwnerDto
 import com.m4ykey.network.data.dto.QuestionDetailDto
 import com.m4ykey.network.data.dto.QuestionDto
+import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.BadgeCounts
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
@@ -63,4 +65,16 @@ fun BadgeCountsDto.toBadgeCounts() : BadgeCounts =
         silver = silver,
         gold = gold,
         bronze = bronze
+    )
+
+fun AnswerDto.toAnswer() : Answer =
+    Answer(
+        answerId = answer_id ?: -1,
+        bodyMarkdown = body_markdown.orEmpty(),
+        commentCount = comment_count ?: -1,
+        creationDate = creation_date ?: -1,
+        downVoteCount = down_vote_count ?: -1,
+        owner = owner?.toOwner() ?: owners,
+        questionId = question_id ?: -1,
+        upVoteCount = up_vote_count ?: -1
     )

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.QuestionRepository
+import com.m4ykey.stos.ui.question.uistate.QuestionAnswerUiState
 import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,9 @@ class QuestionViewModel(
     private val _questionDetail = MutableStateFlow(QuestionDetailUiState())
     val questionDetail : StateFlow<QuestionDetailUiState> = _questionDetail.asStateFlow()
 
+    private val _questionAnswer = MutableStateFlow(QuestionAnswerUiState())
+    val questionAnswer : StateFlow<QuestionAnswerUiState> = _questionAnswer.asStateFlow()
+
     private var currentSort : String? = null
     private var currentTag : String? = null
 
@@ -29,7 +33,22 @@ class QuestionViewModel(
         return sort != currentSort || tag != currentTag || _questions.value.questionList.count() == 0
     }
 
-    suspend fun getQuestionDetail(questionId : Int) = viewModelScope.launch {
+    suspend fun getQuestionDetailAnswer(questionId : Int) {
+        getQuestionAnswer(questionId)
+        getQuestionDetail(questionId)
+    }
+
+    private fun getQuestionAnswer(questionId : Int) {
+        launchPaging(
+            scope = viewModelScope,
+            source = { repository.getQuestionAnswer(questionId) },
+            onDataCollected = { pagingData ->
+                _questionAnswer.value = QuestionAnswerUiState(questionAnswerList = pagingData)
+            }
+        )
+    }
+
+    private suspend fun getQuestionDetail(questionId : Int) = viewModelScope.launch {
         _questionDetail.value = QuestionDetailUiState(isLoading = true)
         try {
             repository.getQuestionDetail(questionId).collect { detail ->

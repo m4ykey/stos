@@ -3,10 +3,12 @@ package com.m4ykey.stos.data.repository
 import androidx.paging.PagingData
 import com.m4ykey.network.core.createPager
 import com.m4ykey.network.core.safeApiCall
+import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.model.QuestionDetail
 import com.m4ykey.network.data.repository.QuestionRepository
 import com.m4ykey.network.data.toQuestionDetail
+import com.m4ykey.network.paging.QuestionAnswerPagingSource
 import com.m4ykey.network.paging.QuestionPagingSource
 import com.m4ykey.network.paging.QuestionTagPagingSource
 import com.m4ykey.network.service.QuestionService
@@ -36,4 +38,7 @@ class QuestionRepositoryImpl(private val service : QuestionService) : QuestionRe
         QuestionTagPagingSource(service = service, tag = tag, sort = sort)
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getQuestionAnswer(questionId: Int): Flow<PagingData<Answer>> = createPager {
+        QuestionAnswerPagingSource(service = service, questionId = questionId)
+    }.flowOn(Dispatchers.IO)
 }

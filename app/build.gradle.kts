@@ -105,7 +105,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics:19.0.3")
     implementation("com.google.firebase:firebase-perf:21.0.1")
 
-    implementation("com.github.jeziellago:compose-markdown:0.5.3")
+    implementation("com.github.jeziellago:compose-markdown:0.5.4")
 
     implementation("org.jetbrains:annotations:24.1.0")
 

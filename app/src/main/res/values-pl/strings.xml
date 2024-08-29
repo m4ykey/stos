@@ -8,4 +8,5 @@
     <string name="hot">Gorące</string>
     <string name="week">Tydzień</string>
     <string name="month">Miesiąc</string>
+    <string name="no_answers">Brak Odpowiedzi</string>
 </resources>
