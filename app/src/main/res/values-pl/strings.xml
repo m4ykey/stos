@@ -14,4 +14,7 @@
     <string name="open_url_in_browser">Otwórz link w przeglądarce</string>
     <string name="search">Szukaj</string>
     <string name="user_profile">Konto Użytkownika</string>
+    <string name="location">Lokalizacja</string>
+    <string name="questions">Pytania</string>
+    <string name="answers">Odpowiedzi</string>
 </resources>

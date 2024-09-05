@@ -46,7 +46,9 @@ import androidx.paging.compose.itemKey
 import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.QuestionDetail
 import com.m4ykey.stos.R
+import com.m4ykey.stos.ui.components.ErrorScreen
 import com.m4ykey.stos.ui.components.OwnerProfile
+import com.m4ykey.stos.ui.components.Progressbar
 import com.m4ykey.stos.util.openUrlBrowser
 import com.m4ykey.stos.util.processHtmlEntities
 import com.m4ykey.stos.util.shareUrl
@@ -102,22 +104,8 @@ fun QuestionDetail(
         }
     ) { innerPadding ->
         when {
-            uiDetailState.isLoading -> {
-                Box(
-                    modifier = modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-            uiDetailState.isError != null -> {
-                Box(
-                    modifier = modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Error: ${uiDetailState.isError}")
-                }
-            }
+            uiDetailState.isLoading -> { Progressbar() }
+            uiDetailState.isError != null -> { ErrorScreen(text = "Error: ${uiDetailState.isError}") }
             uiDetailState.questionDetail != null -> {
                 QuestionDetailContent(
                     modifier = modifier.padding(innerPadding),

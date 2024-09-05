@@ -12,15 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun BadgeCard(
     modifier: Modifier = Modifier,
     count : Int,
     color : Color,
-    size : Dp
+    badgeSize : Dp,
+    fontSize : TextUnit
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(3.dp),
@@ -28,7 +29,7 @@ fun BadgeCard(
     ) {
         Card(
             shape = CircleShape,
-            modifier = modifier.size(size),
+            modifier = modifier.size(badgeSize),
             content = {  },
             colors = CardDefaults.cardColors(
                 containerColor = color
@@ -36,7 +37,7 @@ fun BadgeCard(
         )
         Text(
             text = count.toString(),
-            fontSize = 12.sp
+            fontSize = fontSize
         )
     }
 }
@@ -45,20 +46,22 @@ fun BadgeCard(
 fun BadgeRow(
     goldCount : Int,
     silverCount : Int,
-    bronzeCount : Int
+    bronzeCount : Int,
+    badgeSize : Dp,
+    fontSize: TextUnit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         if (goldCount > 0) {
-            BadgeCard(count = goldCount, color = Color(0xFFD1A684), size = 10.dp)
+            BadgeCard(count = goldCount, color = Color(0xFFD1A684), badgeSize = badgeSize, fontSize = fontSize)
         }
         if (silverCount > 0) {
-            BadgeCard(count = silverCount, color = Color(0xFFB4B8BC), size = 10.dp)
+            BadgeCard(count = silverCount, color = Color(0xFFB4B8BC), badgeSize = badgeSize, fontSize = fontSize)
         }
         if (bronzeCount > 0) {
-            BadgeCard(count = bronzeCount, color = Color(0xFFFFCC01), size = 10.dp)
+            BadgeCard(count = bronzeCount, color = Color(0xFFFFCC01), badgeSize = badgeSize, fontSize = fontSize)
         }
     }
 }

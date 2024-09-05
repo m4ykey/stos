@@ -13,4 +13,7 @@
     <string name="open_url_in_browser">Open URL in browser</string>
     <string name="search">Search</string>
     <string name="user_profile">User Profile</string>
+    <string name="location">Location</string>
+    <string name="questions">Questions</string>
+    <string name="answers">Answers</string>
 </resources>
