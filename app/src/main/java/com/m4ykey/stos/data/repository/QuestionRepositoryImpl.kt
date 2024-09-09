@@ -8,9 +8,9 @@ import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.model.QuestionDetail
 import com.m4ykey.network.data.repository.QuestionRepository
 import com.m4ykey.network.data.toQuestionDetail
-import com.m4ykey.network.paging.QuestionAnswerPagingSource
-import com.m4ykey.network.paging.QuestionPagingSource
-import com.m4ykey.network.paging.QuestionTagPagingSource
+import com.m4ykey.network.paging.question.QuestionAnswerPagingSource
+import com.m4ykey.network.paging.question.QuestionPagingSource
+import com.m4ykey.network.paging.question.QuestionTagPagingSource
 import com.m4ykey.network.service.QuestionService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

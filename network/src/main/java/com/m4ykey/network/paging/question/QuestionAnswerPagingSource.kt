@@ -1,4 +1,4 @@
-package com.m4ykey.network.paging
+package com.m4ykey.network.paging.question
 
 import com.m4ykey.network.core.BasePagingSource
 import com.m4ykey.network.data.model.Answer

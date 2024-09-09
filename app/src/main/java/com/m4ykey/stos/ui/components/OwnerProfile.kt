@@ -21,7 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.stos.R
 import com.m4ykey.stos.util.formatReputation
@@ -38,11 +38,12 @@ fun OwnerProfileCard(
         modifier = modifier.size(size),
         shape = CircleShape
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = owner.profileImage,
             contentDescription = stringResource(id = R.string.profile_image),
             contentScale = ContentScale.Crop,
-            modifier = modifier.fillMaxSize()
+            modifier = modifier.fillMaxSize(),
+            loading = { Progressbar() }
         )
     }
 }

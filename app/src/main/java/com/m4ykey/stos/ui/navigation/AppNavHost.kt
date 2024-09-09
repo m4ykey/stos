@@ -91,7 +91,10 @@ fun AppNavHost(
             val ownerId = backStackEntry.arguments?.getInt(Screen.OwnerScreen.argument) ?: -1
             OwnerScreen(
                 onNavigateBack = { navController.navigateUp() },
-                ownerId = ownerId
+                ownerId = ownerId,
+                onQuestionClick = { questionId ->
+                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
+                }
             )
         }
     }

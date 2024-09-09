@@ -3,6 +3,7 @@ package com.m4ykey.stos.ui.owner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,7 +11,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -27,12 +30,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.m4ykey.network.data.model.Owner
+import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.BadgeRow
 import com.m4ykey.stos.ui.components.ErrorScreen
 import com.m4ykey.stos.ui.components.OwnerProfileCard
 import com.m4ykey.stos.ui.components.Progressbar
+import com.m4ykey.stos.ui.question.QuestionItem
 import com.m4ykey.stos.util.formatReputation
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
@@ -43,13 +53,14 @@ fun OwnerScreen(
     modifier: Modifier = Modifier,
     onNavigateBack : () -> Unit,
     ownerId : Int,
-    viewModel: OwnerViewModel = koinViewModel()
+    viewModel: OwnerViewModel = koinViewModel(),
+    onQuestionClick: (Int) -> Unit
 ) {
 
     val uiState by viewModel.owner.collectAsState()
 
     LaunchedEffect(ownerId) {
-        viewModel.getOwnerById(ownerId)
+        viewModel.getOwnerQuestion(ownerId)
     }
 
     Scaffold(
@@ -74,7 +85,8 @@ fun OwnerScreen(
             uiState.owner != null -> {
                 OwnerContent(
                     modifier = modifier.padding(innerPadding),
-                    owner = uiState.owner!!
+                    owner = uiState.owner!!,
+                    onQuestionClick = onQuestionClick
                 )
             }
         }
@@ -85,8 +97,14 @@ fun OwnerScreen(
 @Composable
 fun OwnerContent(
     modifier: Modifier = Modifier,
-    owner : Owner
+    owner : Owner,
+    viewModel: OwnerViewModel = koinViewModel(),
+    onQuestionClick : (Int) -> Unit
 ) {
+
+    val uiQuestionState by viewModel.ownerQuestions.collectAsState()
+    val questionList : LazyPagingItems<Question> = uiQuestionState.questionList.collectAsLazyPagingItems()
+
     CompositionLocalProvider(
         value = LocalOverscrollConfiguration provides null
     ) {
@@ -142,6 +160,68 @@ fun OwnerContent(
                         fontSize = 15.sp
                     )
                 }
+            }
+            items(
+                count = questionList.itemCount,
+                contentType = questionList.itemContentType { "Questions" },
+                key = questionList.itemKey { question -> question.questionId }
+            ) { index ->
+                val question = questionList[index]
+                if (question != null) {
+                    QuestionItem(
+                        question = question,
+                        onQuestionClick = onQuestionClick,
+                        onOwnerClick = {  }
+                    )
+                    HorizontalDivider()
+                }
+            }
+            when (questionList.loadState.append) {
+                is LoadState.Loading -> {
+                    item {
+                        Box(
+                            modifier = modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+                is LoadState.Error -> {
+                    item {
+                        Box(
+                            modifier = modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "Error loading items")
+                        }
+                    }
+                }
+                else -> Unit
+            }
+
+            when (questionList.loadState.refresh) {
+                is LoadState.Loading -> {
+                    item {
+                        Box(
+                            modifier = modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+                is LoadState.Error -> {
+                    item {
+                        Box(
+                            modifier = modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "Error loading items")
+                        }
+                    }
+                }
+                else -> Unit
             }
         }
     }

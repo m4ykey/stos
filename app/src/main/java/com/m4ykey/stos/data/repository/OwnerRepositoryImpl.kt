@@ -1,9 +1,13 @@
 package com.m4ykey.stos.data.repository
 
+import androidx.paging.PagingData
+import com.m4ykey.network.core.createPager
 import com.m4ykey.network.core.safeApiCall
 import com.m4ykey.network.data.model.Owner
+import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.repository.OwnerRepository
 import com.m4ykey.network.data.toOwner
+import com.m4ykey.network.paging.owner.OwnerQuestionPagingSource
 import com.m4ykey.network.service.OwnerService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,4 +26,8 @@ class OwnerRepositoryImpl(private val service : OwnerService) : OwnerRepository 
             throw result.exceptionOrNull() ?: Exception("Unknown error")
         }
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun getOwnerQuestions(ownerId: Int): Flow<PagingData<Question>> = createPager {
+        OwnerQuestionPagingSource(ownerId = ownerId, service = service)
+    }
 }
