@@ -7,14 +7,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -44,6 +49,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.m4ykey.network.data.model.Answer
+import com.m4ykey.network.data.model.ClosedDetails
 import com.m4ykey.network.data.model.QuestionDetail
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.ErrorScreen
@@ -139,6 +145,11 @@ fun QuestionDetailContent(
                 .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
+            if (questionDetail.closedDetails != null) {
+                item {
+                    ClosedCard(closedDetails = questionDetail.closedDetails)
+                }
+            }
             item {
                 MarkdownText(
                     markdown = questionDetail.title,
@@ -284,4 +295,37 @@ fun ChipGroup(
             )
         }
     }
+}
+
+@Composable
+fun ClosedCard(
+    modifier: Modifier = Modifier,
+    closedDetails: ClosedDetails
+) {
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        modifier = modifier.fillMaxWidth(),
+        content = {
+            Column(
+                modifier = modifier
+                    .padding(10.dp)
+                    .fillMaxSize()
+            ) {
+                MarkdownText(
+                    markdown = closedDetails.reason,
+                    style = TextStyle(
+                        color = Color.White
+                    )
+                )
+                Spacer(modifier = modifier.height(10.dp))
+                MarkdownText(
+                    markdown = closedDetails.description,
+                    style = TextStyle(
+                        color = Color.White
+                    )
+                )
+            }
+        },
+        colors = CardDefaults.cardColors(containerColor = Color.Red)
+    )
 }

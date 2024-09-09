@@ -13,5 +13,6 @@ data class QuestionDetail(
     val lastActivityDate : Int,
     val lastEditDate : Int,
     val bodyMarkdown : String,
-    val link : String
+    val link : String,
+    val closedDetails: ClosedDetails
 )

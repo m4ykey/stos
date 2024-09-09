@@ -138,7 +138,7 @@ fun OwnerContent(
                         goldCount = owner.badgeCounts.gold,
                         silverCount = owner.badgeCounts.silver,
                         bronzeCount = owner.badgeCounts.bronze,
-                        badgeSize = 15.dp,
+                        badgeSize = 13.dp,
                         fontSize = 15.sp
                     )
                 }

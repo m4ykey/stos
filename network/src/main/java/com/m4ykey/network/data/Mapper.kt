@@ -2,11 +2,13 @@ package com.m4ykey.network.data
 
 import com.m4ykey.network.data.dto.AnswerDto
 import com.m4ykey.network.data.dto.BadgeCountsDto
+import com.m4ykey.network.data.dto.ClosedDetailsDto
 import com.m4ykey.network.data.dto.OwnerDto
 import com.m4ykey.network.data.dto.QuestionDetailDto
 import com.m4ykey.network.data.dto.QuestionDto
 import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.BadgeCounts
+import com.m4ykey.network.data.model.ClosedDetails
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.model.QuestionDetail
@@ -21,6 +23,7 @@ val owners = Owner(
     badgeCounts = badgeCounts,
     location = ""
 )
+val closedDetails = ClosedDetails("", "")
 
 fun OwnerDto.toOwner() : Owner =
     Owner(
@@ -59,7 +62,8 @@ fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
         lastActivityDate = last_activity_date ?: -1,
         lastEditDate = last_edit_date ?: -1,
         bodyMarkdown = body_markdown.orEmpty(),
-        link = link.orEmpty()
+        link = link.orEmpty(),
+        closedDetails = closed_details?.toClosedDetails() ?: closedDetails
     )
 
 fun BadgeCountsDto.toBadgeCounts() : BadgeCounts =
@@ -79,4 +83,10 @@ fun AnswerDto.toAnswer() : Answer =
         owner = owner?.toOwner() ?: owners,
         questionId = question_id ?: -1,
         upVoteCount = up_vote_count ?: -1
+    )
+
+fun ClosedDetailsDto.toClosedDetails() : ClosedDetails =
+    ClosedDetails(
+        description = description.orEmpty(),
+        reason = reason.orEmpty()
     )
