@@ -8,5 +8,6 @@ data class Answer(
     val downVoteCount : Int,
     val owner : Owner,
     val questionId : Int,
-    val upVoteCount : Int
+    val upVoteCount : Int,
+    val title : String
 )

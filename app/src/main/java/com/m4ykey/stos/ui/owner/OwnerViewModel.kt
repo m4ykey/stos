@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.OwnerRepository
 import com.m4ykey.stos.ui.owner.uistate.OwnerUiState
+import com.m4ykey.stos.ui.question.uistate.QuestionAnswerUiState
 import com.m4ykey.stos.ui.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,9 +20,23 @@ class OwnerViewModel(private val repository: OwnerRepository) : ViewModel() {
     private val _ownerQuestions = MutableStateFlow(QuestionUiState())
     val ownerQuestions : StateFlow<QuestionUiState> = _ownerQuestions.asStateFlow()
 
+    private val _ownerAnswers = MutableStateFlow(QuestionAnswerUiState())
+    val ownerAnswers : StateFlow<QuestionAnswerUiState> = _ownerAnswers.asStateFlow()
+
     suspend fun getOwnerQuestion(ownerId : Int) {
         getOwnerById(ownerId)
         getOwnerQuestions(ownerId)
+        getOwnerAnswers(ownerId)
+    }
+
+    private fun getOwnerAnswers(ownerId: Int) {
+        launchPaging(
+            scope = viewModelScope,
+            source = { repository.getOwnerAnswers(ownerId) },
+            onDataCollected = { pagingData ->
+                _ownerAnswers.value = QuestionAnswerUiState(questionAnswerList = pagingData)
+            }
+        )
     }
 
     private suspend fun getOwnerById(ownerId : Int) = viewModelScope.launch {

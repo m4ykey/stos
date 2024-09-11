@@ -3,10 +3,12 @@ package com.m4ykey.stos.data.repository
 import androidx.paging.PagingData
 import com.m4ykey.network.core.createPager
 import com.m4ykey.network.core.safeApiCall
+import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.repository.OwnerRepository
 import com.m4ykey.network.data.toOwner
+import com.m4ykey.network.paging.owner.OwnerAnswerPagingSource
 import com.m4ykey.network.paging.owner.OwnerQuestionPagingSource
 import com.m4ykey.network.service.OwnerService
 import kotlinx.coroutines.Dispatchers
@@ -29,5 +31,9 @@ class OwnerRepositoryImpl(private val service : OwnerService) : OwnerRepository 
 
     override suspend fun getOwnerQuestions(ownerId: Int): Flow<PagingData<Question>> = createPager {
         OwnerQuestionPagingSource(ownerId = ownerId, service = service)
+    }
+
+    override suspend fun getOwnerAnswers(ownerId: Int): Flow<PagingData<Answer>> = createPager {
+        OwnerAnswerPagingSource(service = service, ownerId = ownerId)
     }
 }

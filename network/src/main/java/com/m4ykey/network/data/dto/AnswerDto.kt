@@ -13,5 +13,6 @@ data class AnswerDto(
     val down_vote_count: Int?,
     val owner: OwnerDto?,
     val question_id: Int?,
-    val up_vote_count: Int?
+    val up_vote_count: Int?,
+    val title : String?
 )

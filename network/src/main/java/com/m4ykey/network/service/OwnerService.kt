@@ -1,9 +1,11 @@
 package com.m4ykey.network.service
 
+import com.m4ykey.network.core.Constants.ANSWER_FILTER
 import com.m4ykey.network.core.Constants.DEFAULT_FILTER
 import com.m4ykey.network.core.Constants.OWNER_FILTER
 import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.data.Items
+import com.m4ykey.network.data.dto.AnswerDto
 import com.m4ykey.network.data.dto.OwnerDto
 import com.m4ykey.network.data.dto.QuestionDto
 import io.ktor.client.HttpClient
@@ -41,6 +43,24 @@ class OwnerService(private val client : HttpClient) {
             parameter("page", page)
             parameter("pagesize", pageSize)
             parameter("sort", sort)
+        }.body()
+    }
+
+    suspend fun getOwnerAnswers(
+        filter : String = ANSWER_FILTER,
+        site : String = SITE,
+        ownerId: Int,
+        page : Int,
+        pageSize : Int = 20,
+        sort : String = "creation"
+    ) : Items<AnswerDto> {
+        return client.get {
+            url("users/$ownerId/answers")
+            parameter("site", site)
+            parameter("filter", filter)
+            parameter("sort", sort)
+            parameter("page", page)
+            parameter("pagesize", pageSize)
         }.body()
     }
 

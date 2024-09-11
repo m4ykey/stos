@@ -82,7 +82,8 @@ fun AnswerDto.toAnswer() : Answer =
         downVoteCount = down_vote_count ?: -1,
         owner = owner?.toOwner() ?: owners,
         questionId = question_id ?: -1,
-        upVoteCount = up_vote_count ?: -1
+        upVoteCount = up_vote_count ?: -1,
+        title = title.orEmpty()
     )
 
 fun ClosedDetailsDto.toClosedDetails() : ClosedDetails =
