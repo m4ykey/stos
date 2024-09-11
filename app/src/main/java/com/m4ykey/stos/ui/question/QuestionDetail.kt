@@ -3,7 +3,6 @@ package com.m4ykey.stos.ui.question
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -20,7 +19,6 @@ import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
@@ -34,7 +32,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -43,7 +40,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -52,9 +48,10 @@ import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.ClosedDetails
 import com.m4ykey.network.data.model.QuestionDetail
 import com.m4ykey.stos.R
-import com.m4ykey.stos.ui.components.ErrorScreen
-import com.m4ykey.stos.ui.components.OwnerProfile
-import com.m4ykey.stos.ui.components.Progressbar
+import com.m4ykey.stos.ui.components.list.LoadStateView
+import com.m4ykey.stos.ui.components.ui.ErrorScreen
+import com.m4ykey.stos.ui.components.ui.OwnerProfile
+import com.m4ykey.stos.ui.components.ui.Progressbar
 import com.m4ykey.stos.util.openUrlBrowser
 import com.m4ykey.stos.util.processHtmlEntities
 import com.m4ykey.stos.util.shareUrl
@@ -179,9 +176,7 @@ fun QuestionDetailContent(
                     onOwnerClick = onOwnerClick
                 )
             }
-            item {
-                HorizontalDivider()
-            }
+            item { HorizontalDivider() }
             if (answerList.itemCount == 0) {
                 item {
                     Text(text = stringResource(id = R.string.no_answers))
@@ -202,53 +197,8 @@ fun QuestionDetailContent(
                     }
                 }
 
-                when (answerList.loadState.append) {
-                    is LoadState.Loading -> {
-                        item {
-                            Box(
-                                modifier = modifier.fillParentMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        }
-                    }
-                    is LoadState.Error -> {
-                        item {
-                            Box(
-                                modifier = modifier.fillParentMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = "Error loading items")
-                            }
-                        }
-                    }
-                    else -> Unit
-                }
-
-                when (answerList.loadState.refresh) {
-                    is LoadState.Loading -> {
-                        item {
-                            Box(
-                                modifier = modifier.fillParentMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        }
-                    }
-                    is LoadState.Error -> {
-                        item {
-                            Box(
-                                modifier = modifier.fillParentMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = "Error loading items")
-                            }
-                        }
-                    }
-                    else -> Unit
-                }
+                item { LoadStateView(loadState = answerList.loadState.append) }
+                item { LoadStateView(loadState = answerList.loadState.refresh) }
             }
         }
     }

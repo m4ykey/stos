@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.components
+package com.m4ykey.stos.ui.components.ui
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row

@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.m4ykey.stos.R
-import com.m4ykey.stos.ui.components.ChipList
+import com.m4ykey.stos.ui.components.ui.ChipList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

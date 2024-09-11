@@ -3,7 +3,6 @@ package com.m4ykey.stos.ui.owner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -30,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -38,12 +35,12 @@ import androidx.paging.compose.itemKey
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
-import com.m4ykey.stos.ui.components.BadgeRow
-import com.m4ykey.stos.ui.components.ErrorScreen
-import com.m4ykey.stos.ui.components.OwnerProfileCard
-import com.m4ykey.stos.ui.components.Progressbar
+import com.m4ykey.stos.ui.components.list.LoadStateView
+import com.m4ykey.stos.ui.components.ui.ErrorScreen
+import com.m4ykey.stos.ui.components.ui.OwnerProfileCard
+import com.m4ykey.stos.ui.components.ui.Progressbar
+import com.m4ykey.stos.ui.components.ui.ReputationAndBadgeRow
 import com.m4ykey.stos.ui.question.QuestionItem
-import com.m4ykey.stos.util.formatReputation
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
 
@@ -115,52 +112,17 @@ fun OwnerContent(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-               OwnerProfileCard(
-                   owner = owner,
-                   size = 120.dp
-               )
-            }
+            item { OwnerProfileCard(owner = owner, size = 120.dp) }
             item {
                 MarkdownText(
                     markdown = owner.displayName,
-                    style = TextStyle(
-                        fontSize = 20.sp
-                    )
+                    style = TextStyle(fontSize = 20.sp)
                 )
             }
-            if (owner.location != null) {
-                item {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(5.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.LocationOn,
-                            contentDescription = stringResource(id = R.string.location)
-                        )
-                        Text(text = owner.location ?: "")
-                    }
-                }
+            owner.location?.let { location ->
+                item { LocationRow(location = location) }
             }
-            item {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = formatReputation(owner.reputation),
-                        fontSize = 15.sp
-                    )
-                    BadgeRow(
-                        goldCount = owner.badgeCounts.gold,
-                        silverCount = owner.badgeCounts.silver,
-                        bronzeCount = owner.badgeCounts.bronze,
-                        badgeSize = 13.dp,
-                        fontSize = 15.sp
-                    )
-                }
-            }
+            item { ReputationAndBadgeRow(owner = owner) }
             items(
                 count = questionList.itemCount,
                 contentType = questionList.itemContentType { "Questions" },
@@ -176,53 +138,22 @@ fun OwnerContent(
                     HorizontalDivider()
                 }
             }
-            when (questionList.loadState.append) {
-                is LoadState.Loading -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-                is LoadState.Error -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "Error loading items")
-                        }
-                    }
-                }
-                else -> Unit
-            }
-
-            when (questionList.loadState.refresh) {
-                is LoadState.Loading -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-                is LoadState.Error -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "Error loading items")
-                        }
-                    }
-                }
-                else -> Unit
-            }
+            item { LoadStateView(loadState = questionList.loadState.append) }
+            item { LoadStateView(loadState = questionList.loadState.refresh) }
         }
+    }
+}
+
+@Composable
+fun LocationRow(location: String) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.LocationOn,
+            contentDescription = stringResource(id = R.string.location)
+        )
+        Text(text = location)
     }
 }

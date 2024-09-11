@@ -2,13 +2,11 @@ package com.m4ykey.stos.ui.question
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,18 +25,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
-import com.m4ykey.stos.ui.components.ChipList
+import com.m4ykey.stos.ui.components.ui.ChipList
+import com.m4ykey.stos.ui.components.list.LazyVerticalColumn
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -111,70 +106,20 @@ fun QuestionTagList(
     CompositionLocalProvider(
         value = LocalOverscrollConfiguration provides null
     ) {
-        LazyColumn(modifier = modifier.fillMaxSize()) {
-            items(
-                count = questionList.itemCount,
-                key = questionList.itemKey { question -> question.questionId },
-                contentType = questionList.itemContentType { "Questions" }
-            ) { index ->
-                val question = questionList[index]
-                if (question != null) {
-                    QuestionItem(
-                        question = question,
-                        onQuestionClick = onQuestionClick,
-                        onOwnerClick = onOwnerClick
-                    )
-                    HorizontalDivider()
-                }
-            }
-
-            when (questionList.loadState.append) {
-                is LoadState.Loading -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-                is LoadState.Error -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "Error loading items")
-                        }
-                    }
-                }
-                else -> Unit
-            }
-
-            when (questionList.loadState.refresh) {
-                is LoadState.Loading -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-                is LoadState.Error -> {
-                    item {
-                        Box(
-                            modifier = modifier.fillParentMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "Error loading items")
-                        }
-                    }
-                }
-                else -> Unit
-            }
-        }
+        LazyVerticalColumn(
+            items = questionList,
+            key = { question -> question.questionId },
+            onItemContent = { question ->
+                QuestionItem(
+                    question = question,
+                    onQuestionClick = onQuestionClick,
+                    onOwnerClick = onOwnerClick
+                )
+                HorizontalDivider()
+            },
+            onLoadingContent = { CircularProgressIndicator() },
+            onErrorContent = { Text(text = "Error loading items") },
+            modifier = modifier.fillMaxSize()
+        )
     }
 }
