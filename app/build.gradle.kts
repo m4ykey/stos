@@ -102,7 +102,7 @@ dependencies {
 
     implementation("io.insert-koin:koin-androidx-compose:3.5.6")
 
-    implementation("com.google.firebase:firebase-crashlytics:19.0.3")
+    implementation("com.google.firebase:firebase-crashlytics:19.1.0")
     implementation("com.google.firebase:firebase-perf:21.0.1")
 
     implementation("com.github.jeziellago:compose-markdown:0.5.4")

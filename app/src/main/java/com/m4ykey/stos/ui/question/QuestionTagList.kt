@@ -32,7 +32,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
-import com.m4ykey.stos.ui.components.ui.ChipList
 import com.m4ykey.stos.ui.components.list.LazyVerticalColumn
 import org.koin.androidx.compose.koinViewModel
 

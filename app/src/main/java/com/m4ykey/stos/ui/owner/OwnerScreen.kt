@@ -145,11 +145,15 @@ fun OwnerContent(
             item { ReputationAndBadgeRow(owner = owner) }
             item {
                 Row(
-                    modifier = modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    modifier = modifier
+                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     ChipItem(
-                        modifier = modifier.weight(1f),
+                        modifier = modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
                         title = stringResource(id = R.string.questions),
                         selected = isQuestionSelected,
                         onSelected = {
@@ -157,8 +161,11 @@ fun OwnerContent(
                             isAnswerSelected = false
                         }
                     )
+                    Spacer(modifier = modifier.width(8.dp))
                     ChipItem(
-                        modifier = modifier.weight(1f),
+                        modifier = modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
                         title = stringResource(id = R.string.answers),
                         selected = isAnswerSelected,
                         onSelected = {
