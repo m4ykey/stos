@@ -143,38 +143,18 @@ fun OwnerContent(
                 item { LocationRow(location = location) }
             }
             item { ReputationAndBadgeRow(owner = owner) }
-            item {
-                Row(
-                    modifier = modifier
-                        .padding(horizontal = 8.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    ChipItem(
-                        modifier = modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        title = stringResource(id = R.string.questions),
-                        selected = isQuestionSelected,
-                        onSelected = {
-                            isQuestionSelected = true
-                            isAnswerSelected = false
-                        }
-                    )
-                    Spacer(modifier = modifier.width(8.dp))
-                    ChipItem(
-                        modifier = modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        title = stringResource(id = R.string.answers),
-                        selected = isAnswerSelected,
-                        onSelected = {
-                            isAnswerSelected = true
-                            isQuestionSelected = false
-                        }
-                    )
+            item { ChipSelection(
+                isQuestionSelected = isQuestionSelected,
+                isAnswerSelected = isAnswerSelected,
+                onAnswerSelected = {
+                    isAnswerSelected = true
+                    isQuestionSelected = false
+                },
+                onQuestionSelected = {
+                    isQuestionSelected = true
+                    isAnswerSelected = false
                 }
-            }
+            ) }
             if (isQuestionSelected) {
                 items(
                     count = questionList.itemCount,
@@ -266,5 +246,34 @@ fun AnswerListItem(
                 count = answer.commentCount
             )
         }
+    }
+}
+
+@Composable
+fun ChipSelection(
+    modifier: Modifier = Modifier,
+    isQuestionSelected : Boolean,
+    isAnswerSelected : Boolean,
+    onQuestionSelected : () -> Unit,
+    onAnswerSelected : () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = 8.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        ChipItem(
+            modifier = modifier.weight(1f),
+            title = stringResource(id = R.string.questions),
+            selected = isQuestionSelected,
+            onSelected = { onQuestionSelected() }
+        )
+        ChipItem(
+            modifier = modifier.weight(1f),
+            title = stringResource(id = R.string.answers),
+            selected = isAnswerSelected,
+            onSelected = { onAnswerSelected() }
+        )
     }
 }
