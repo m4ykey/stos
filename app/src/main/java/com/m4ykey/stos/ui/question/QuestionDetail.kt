@@ -215,7 +215,7 @@ fun AnswerItem(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        MarkdownText(markdown = answer.bodyMarkdown)
+        MarkdownText(markdown = processHtmlEntities(answer.bodyMarkdown))
         OwnerProfile(
             owner = answer.owner,
             size = 30.dp,
@@ -263,14 +263,14 @@ fun ClosedCard(
                     .fillMaxSize()
             ) {
                 MarkdownText(
-                    markdown = closedDetails.reason,
+                    markdown = processHtmlEntities(closedDetails.reason),
                     style = TextStyle(
                         color = Color.White
                     )
                 )
                 Spacer(modifier = modifier.height(10.dp))
                 MarkdownText(
-                    markdown = closedDetails.description,
+                    markdown = processHtmlEntities(closedDetails.description),
                     style = TextStyle(
                         color = Color.White
                     )

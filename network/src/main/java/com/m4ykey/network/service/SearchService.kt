@@ -1,0 +1,36 @@
+package com.m4ykey.network.service
+
+import com.m4ykey.network.core.Constants.DEFAULT_FILTER
+import com.m4ykey.network.core.Constants.PAGE_SIZE
+import com.m4ykey.network.core.Constants.SITE
+import com.m4ykey.network.data.Items
+import com.m4ykey.network.data.dto.QuestionDto
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.url
+
+class SearchService(private val client: HttpClient) {
+
+    suspend fun searchQuestions(
+        page : Int,
+        pageSize : Int = PAGE_SIZE,
+        filter : String = DEFAULT_FILTER,
+        inTitle : String,
+        site : String = SITE,
+        order : String = "desc",
+        sort : String = "activity"
+    ) : Items<QuestionDto> {
+        return client.get {
+            url("search/$inTitle")
+            parameter("page", page)
+            parameter("pagesize", pageSize)
+            parameter("filter", filter)
+            parameter("site", site)
+            parameter("order", order)
+            parameter("sort", sort)
+        }.body()
+    }
+
+}

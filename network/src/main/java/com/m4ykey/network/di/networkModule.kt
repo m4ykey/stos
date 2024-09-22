@@ -3,6 +3,7 @@ package com.m4ykey.network.di
 import com.m4ykey.network.BuildConfig.STACK_API_KEY
 import com.m4ykey.network.service.OwnerService
 import com.m4ykey.network.service.QuestionService
+import com.m4ykey.network.service.SearchService
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -45,4 +46,5 @@ val networkModule = module {
 
     single { QuestionService(get()) }
     single { OwnerService(get()) }
+    single { SearchService(get()) }
 }

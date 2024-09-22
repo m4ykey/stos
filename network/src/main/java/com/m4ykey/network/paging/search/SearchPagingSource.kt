@@ -1,0 +1,25 @@
+package com.m4ykey.network.paging.search
+
+import com.m4ykey.network.core.BasePagingSource
+import com.m4ykey.network.data.model.Question
+import com.m4ykey.network.data.toQuestion
+import com.m4ykey.network.service.SearchService
+
+class SearchPagingSource(
+    private val service : SearchService,
+    private val inTitle : String
+) : BasePagingSource<Question>(service) {
+
+    override suspend fun loadPage(page: Int, pageSize: Int): List<Question> {
+        return try {
+            val response = service.searchQuestions(
+                page = page,
+                pageSize = pageSize,
+                inTitle = inTitle
+            )
+            response.items.map { it.toQuestion() }
+        } catch (e : Exception) {
+            emptyList()
+        }
+    }
+}

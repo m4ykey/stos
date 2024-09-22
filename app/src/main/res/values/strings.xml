@@ -16,4 +16,5 @@
     <string name="location">Location</string>
     <string name="questions">Questions</string>
     <string name="answers">Answers</string>
+    <string name="search_questions">Search question</string>
 </resources>

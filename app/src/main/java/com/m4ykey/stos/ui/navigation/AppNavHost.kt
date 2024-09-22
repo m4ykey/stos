@@ -25,7 +25,15 @@ fun AppNavHost(
         modifier = modifier
     ) {
         composable(route = Screen.SearchScreen.route) {
-            SearchScreen()
+            SearchScreen(
+                onNavigateBack = { navController.navigateUp() },
+                onOwnerClick = { ownerId ->
+                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
+                },
+                onQuestionClick = { questionId ->
+                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
+                }
+            )
         }
         composable(route = Screen.UserScreen.route) {
             UserScreen()
