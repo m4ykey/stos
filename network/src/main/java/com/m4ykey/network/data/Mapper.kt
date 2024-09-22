@@ -23,7 +23,6 @@ val owners = Owner(
     badgeCounts = badgeCounts,
     location = ""
 )
-val closedDetails = ClosedDetails("", "")
 
 fun OwnerDto.toOwner() : Owner =
     Owner(
@@ -63,7 +62,7 @@ fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
         lastEditDate = last_edit_date ?: -1,
         bodyMarkdown = body_markdown.orEmpty(),
         link = link.orEmpty(),
-        closedDetails = closed_details?.toClosedDetails() ?: closedDetails
+        closedDetails = closed_details?.toClosedDetails() ?: ClosedDetails("", "")
     )
 
 fun BadgeCountsDto.toBadgeCounts() : BadgeCounts =
@@ -88,6 +87,6 @@ fun AnswerDto.toAnswer() : Answer =
 
 fun ClosedDetailsDto.toClosedDetails() : ClosedDetails =
     ClosedDetails(
-        description = description.orEmpty(),
-        reason = reason.orEmpty()
+        description = description,
+        reason = reason
     )

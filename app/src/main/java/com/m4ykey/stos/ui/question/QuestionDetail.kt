@@ -142,14 +142,15 @@ fun QuestionDetailContent(
                 .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if (questionDetail.closedDetails != null) {
+            val closedDetails = questionDetail.closedDetails
+            if (closedDetails.reason.isNotEmpty() && closedDetails.description.isNotEmpty()) {
                 item {
                     ClosedCard(closedDetails = questionDetail.closedDetails)
                 }
             }
             item {
                 MarkdownText(
-                    markdown = questionDetail.title,
+                    markdown = processHtmlEntities(questionDetail.title),
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium

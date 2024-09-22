@@ -6,14 +6,12 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 
-val pagingConfig = PagingConfig(
-    pageSize = 20,
-    enablePlaceholders = false
-)
-
 fun <T : Any> createPager(pagingSourceFactory : () -> PagingSource<Int, T>) : Flow<PagingData<T>> {
     return Pager(
-        config = pagingConfig,
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
         pagingSourceFactory = pagingSourceFactory
     ).flow
 }

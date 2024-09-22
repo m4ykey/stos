@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Keep
 @Serializable
 data class ClosedDetailsDto(
-    val description : String?,
-    val reason : String?
+    val description : String,
+    val reason : String
 )

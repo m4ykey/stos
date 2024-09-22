@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -33,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -55,6 +57,7 @@ import com.m4ykey.stos.ui.components.ui.Progressbar
 import com.m4ykey.stos.ui.components.ui.QuestionCount
 import com.m4ykey.stos.ui.components.ui.ReputationAndBadgeRow
 import com.m4ykey.stos.ui.question.QuestionItem
+import com.m4ykey.stos.util.openUrlBrowser
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
 
@@ -73,6 +76,7 @@ fun OwnerScreen(
     }
 
     val uiState by viewModel.owner.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -84,6 +88,14 @@ fun OwnerScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.back)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { openUrlBrowser(context, uiState.owner?.link ?: "") }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Public,
+                            contentDescription = stringResource(id = R.string.open_url_in_browser)
                         )
                     }
                 }

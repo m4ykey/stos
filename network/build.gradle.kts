@@ -58,7 +58,7 @@ dependencies {
 
     implementation("androidx.paging:paging-compose:3.3.2")
 
-    implementation("io.insert-koin:koin-androidx-compose:3.5.6")
+    implementation("io.insert-koin:koin-androidx-compose:4.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
