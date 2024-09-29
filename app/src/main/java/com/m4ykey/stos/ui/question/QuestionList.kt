@@ -13,7 +13,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -31,20 +30,13 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun QuestionList(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     viewModel: QuestionViewModel = koinViewModel(),
-    sort: String,
     onQuestionClick: (Int) -> Unit,
     onOwnerClick: (Int) -> Unit
 ) {
     val uiState by viewModel.questions.collectAsState()
     val questionList: LazyPagingItems<Question> = uiState.questionList.collectAsLazyPagingItems()
-
-    LaunchedEffect(sort) {
-        if (viewModel.shouldLoadData(sort)) {
-            viewModel.getQuestions(sort = sort)
-        }
-    }
 
     LazyVerticalColumn(
         items = questionList,

@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.ui.ChipItem
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,10 +37,17 @@ fun QuestionHome(
     onQuestionClick : (Int) -> Unit,
     onSearchClick : () -> Unit,
     onUserClick : () -> Unit,
-    onOwnerClick : (Int) -> Unit
+    onOwnerClick : (Int) -> Unit,
+    viewModel: QuestionViewModel = koinViewModel()
 ) {
 
     var sortType by remember { mutableStateOf("hot") }
+
+    LaunchedEffect(key1 = sortType) {
+        if (viewModel.shouldLoadData(sortType)) {
+            viewModel.getQuestions(sort = sortType)
+        }
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -72,10 +81,9 @@ fun QuestionHome(
             )
             Spacer(modifier = modifier.height(5.dp))
             QuestionList(
-                sort = sortType,
+                modifier = modifier.padding(10.dp),
                 onQuestionClick = onQuestionClick,
-                onOwnerClick = onOwnerClick,
-                modifier = modifier.padding(10.dp)
+                onOwnerClick = onOwnerClick
             )
         }
     }
