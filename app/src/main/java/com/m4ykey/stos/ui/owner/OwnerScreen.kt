@@ -22,7 +22,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -48,6 +47,7 @@ import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
+import com.m4ykey.stos.ui.components.list.EmptyList
 import com.m4ykey.stos.ui.components.list.LoadStateView
 import com.m4ykey.stos.ui.components.ui.ChipItem
 import com.m4ykey.stos.ui.components.ui.ErrorScreen
@@ -168,34 +168,42 @@ fun OwnerContent(
                 }
             ) }
             if (isQuestionSelected) {
-                items(
-                    count = questionList.itemCount,
-                    contentType = questionList.itemContentType { "Questions" },
-                    key = questionList.itemKey { question -> question.questionId }
-                ) { index ->
-                    val question = questionList[index]
-                    if (question != null) {
-                        QuestionItem(
-                            question = question,
-                            onQuestionClick = onQuestionClick,
-                            onOwnerClick = {  }
-                        )
-                        HorizontalDivider()
+                if (questionList.itemCount == 0) {
+                    item { EmptyList() }
+                } else {
+                    items(
+                        count = questionList.itemCount,
+                        contentType = questionList.itemContentType { "Questions" },
+                        key = questionList.itemKey { question -> question.questionId }
+                    ) { index ->
+                        val question = questionList[index]
+                        if (question != null) {
+                            QuestionItem(
+                                question = question,
+                                onQuestionClick = onQuestionClick,
+                                onOwnerClick = {  }
+                            )
+                            HorizontalDivider()
+                        }
                     }
                 }
             } else if (isAnswerSelected) {
-                items(
-                    count = answerList.itemCount,
-                    contentType = answerList.itemContentType { "Answers" },
-                    key = answerList.itemKey { answer -> answer.answerId }
-                ) { index ->
-                    val answer = answerList[index]
-                    if (answer != null) {
-                        AnswerListItem(
-                            answer = answer,
-                            onAnswerClick = onQuestionClick
-                        )
-                        HorizontalDivider()
+                if (answerList.itemCount == 0) {
+                    item { EmptyList() }
+                } else {
+                    items(
+                        count = answerList.itemCount,
+                        contentType = answerList.itemContentType { "Answers" },
+                        key = answerList.itemKey { answer -> answer.answerId }
+                    ) { index ->
+                        val answer = answerList[index]
+                        if (answer != null) {
+                            AnswerListItem(
+                                answer = answer,
+                                onAnswerClick = onQuestionClick
+                            )
+                            HorizontalDivider()
+                        }
                     }
                 }
             }
@@ -215,7 +223,7 @@ fun LocationRow(location: String) {
             imageVector = Icons.Outlined.LocationOn,
             contentDescription = stringResource(id = R.string.location)
         )
-        Text(text = location)
+        MarkdownText(markdown = location)
     }
 }
 

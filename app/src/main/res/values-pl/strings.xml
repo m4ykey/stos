@@ -18,4 +18,5 @@
     <string name="questions">Pytania</string>
     <string name="answers">Odpowiedzi</string>
     <string name="search_questions">Wyszukaj pytanie</string>
+    <string name="nothing_found">Nic nie znaleziono</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.m4ykey.stos.ui.question
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -102,23 +100,21 @@ fun QuestionTagList(
         }
     }
 
-    CompositionLocalProvider(
-        value = LocalOverscrollConfiguration provides null
-    ) {
-        LazyVerticalColumn(
-            items = questionList,
-            key = { question -> question.questionId },
-            onItemContent = { question ->
-                QuestionItem(
-                    question = question,
-                    onQuestionClick = onQuestionClick,
-                    onOwnerClick = onOwnerClick
-                )
-                HorizontalDivider()
-            },
-            onLoadingContent = { CircularProgressIndicator() },
-            onErrorContent = { Text(text = "Error loading items") },
-            modifier = modifier.fillMaxSize()
-        )
-    }
+    LazyVerticalColumn(
+        items = questionList,
+        key = { question -> question.questionId },
+        onItemContent = { question ->
+            QuestionItem(
+                question = question,
+                onQuestionClick = onQuestionClick,
+                onOwnerClick = onOwnerClick
+            )
+            HorizontalDivider()
+        },
+        onLoadingContent = { CircularProgressIndicator() },
+        onErrorContent = { Text(text = "Error loading items") },
+        modifier = modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    )
 }

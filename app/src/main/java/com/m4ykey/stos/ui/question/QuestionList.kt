@@ -1,7 +1,5 @@
 package com.m4ykey.stos.ui.question
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +13,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,7 +29,6 @@ import com.m4ykey.stos.ui.components.ui.QuestionCount
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun QuestionList(
     modifier : Modifier = Modifier,
@@ -50,25 +46,21 @@ fun QuestionList(
         }
     }
 
-    CompositionLocalProvider(
-        value = LocalOverscrollConfiguration provides null
-    ) {
-        LazyVerticalColumn(
-            items = questionList,
-            key = { question -> question.questionId },
-            onItemContent = { question ->
-                QuestionItem(
-                    question = question,
-                    onQuestionClick = onQuestionClick,
-                    onOwnerClick = onOwnerClick
-                )
-                HorizontalDivider()
-            },
-            onLoadingContent = { CircularProgressIndicator() },
-            onErrorContent = { Text(text = "Error loading items") },
-            modifier = modifier.fillMaxSize()
-        )
-    }
+    LazyVerticalColumn(
+        items = questionList,
+        key = { question -> question.questionId },
+        onItemContent = { question ->
+            QuestionItem(
+                question = question,
+                onQuestionClick = onQuestionClick,
+                onOwnerClick = onOwnerClick
+            )
+            HorizontalDivider()
+        },
+        onLoadingContent = { CircularProgressIndicator() },
+        onErrorContent = { Text(text = "Error loading items") },
+        modifier = modifier.fillMaxSize()
+    )
 }
 
 @Composable

@@ -17,4 +17,5 @@
     <string name="questions">Questions</string>
     <string name="answers">Answers</string>
     <string name="search_questions">Search question</string>
+    <string name="nothing_found">Nothing Found</string>
 </resources>

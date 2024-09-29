@@ -74,7 +74,8 @@ fun QuestionHome(
             QuestionList(
                 sort = sortType,
                 onQuestionClick = onQuestionClick,
-                onOwnerClick = onOwnerClick
+                onOwnerClick = onOwnerClick,
+                modifier = modifier.padding(10.dp)
             )
         }
     }

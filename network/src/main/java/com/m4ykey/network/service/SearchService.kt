@@ -19,17 +19,16 @@ class SearchService(private val client: HttpClient) {
         filter : String = DEFAULT_FILTER,
         inTitle : String,
         site : String = SITE,
-        order : String = "desc",
         sort : String = "activity"
     ) : Items<QuestionDto> {
         return client.get {
-            url("search/$inTitle")
+            url("search")
             parameter("page", page)
             parameter("pagesize", pageSize)
             parameter("filter", filter)
             parameter("site", site)
-            parameter("order", order)
             parameter("sort", sort)
+            parameter("intitle", inTitle)
         }.body()
     }
 
