@@ -53,6 +53,8 @@ fun SearchScreen(
     val uiState by viewModel.search.collectAsState()
     val searchList : LazyPagingItems<Question> = uiState.searchList.collectAsLazyPagingItems()
 
+    var isSearching by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -74,7 +76,9 @@ fun SearchScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            SearchComponent(viewModel = viewModel)
+            SearchComponent(
+                onSearch = { isSearching = true }
+            )
             Spacer(modifier = modifier.height(10.dp))
             LazyVerticalColumn(
                 modifier = modifier.fillMaxSize(),
@@ -87,7 +91,9 @@ fun SearchScreen(
                     )
                     HorizontalDivider()
                 },
-                onLoadingContent = { CircularProgressIndicator() },
+                onLoadingContent = {
+                    if (isSearching) CircularProgressIndicator()
+                },
                 onErrorContent = { Text(text = "Error loading items") }
             )
         }
@@ -97,7 +103,8 @@ fun SearchScreen(
 @Composable
 fun SearchComponent(
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = koinViewModel()
+    viewModel: SearchViewModel = koinViewModel(),
+    onSearch : () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -123,6 +130,7 @@ fun SearchComponent(
                 onSearch = {
                     if (text.isNotBlank()) {
                         viewModel.searchQuestions(text)
+                        onSearch()
                     }
                 }
             ),
