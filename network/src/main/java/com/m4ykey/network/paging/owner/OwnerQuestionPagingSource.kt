@@ -11,15 +11,11 @@ class OwnerQuestionPagingSource(
 ) : BasePagingSource<Question>(service) {
 
     override suspend fun loadPage(page: Int, pageSize: Int): List<Question> {
-        return try {
-            val response = service.getOwnerQuestions(
-                page = page,
-                pageSize = pageSize,
-                ownerId = ownerId
-            )
-            response.items.map { it.toQuestion() }
-        } catch (e : Exception) {
-            emptyList()
-        }
+        val response = service.getOwnerQuestions(
+            page = page,
+            pageSize = pageSize,
+            ownerId = ownerId
+        )
+        return response.items.map { it.toQuestion() }
     }
 }

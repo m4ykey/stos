@@ -3,6 +3,8 @@ package com.m4ykey.network.service
 import com.m4ykey.network.core.Constants.ANSWER_FILTER
 import com.m4ykey.network.core.Constants.DEFAULT_FILTER
 import com.m4ykey.network.core.Constants.OWNER_FILTER
+import com.m4ykey.network.core.Constants.PAGE
+import com.m4ykey.network.core.Constants.PAGE_SIZE
 import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.AnswerDto
@@ -32,8 +34,8 @@ class OwnerService(private val client : HttpClient) {
         site : String = SITE,
         ownerId : Int,
         filter : String = DEFAULT_FILTER,
-        page : Int,
-        pageSize : Int = 20,
+        page : Int = PAGE,
+        pageSize : Int = PAGE_SIZE,
         sort : String = "creation"
     ) : Items<QuestionDto> {
         return client.get {
@@ -50,8 +52,8 @@ class OwnerService(private val client : HttpClient) {
         filter : String = ANSWER_FILTER,
         site : String = SITE,
         ownerId: Int,
-        page : Int,
-        pageSize : Int = 20,
+        page : Int = PAGE,
+        pageSize : Int = PAGE_SIZE,
         sort : String = "creation"
     ) : Items<AnswerDto> {
         return client.get {

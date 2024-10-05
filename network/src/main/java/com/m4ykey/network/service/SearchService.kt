@@ -1,6 +1,7 @@
 package com.m4ykey.network.service
 
 import com.m4ykey.network.core.Constants.DEFAULT_FILTER
+import com.m4ykey.network.core.Constants.PAGE
 import com.m4ykey.network.core.Constants.PAGE_SIZE
 import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.data.Items
@@ -14,7 +15,7 @@ import io.ktor.client.request.url
 class SearchService(private val client: HttpClient) {
 
     suspend fun searchQuestions(
-        page : Int,
+        page : Int = PAGE,
         pageSize : Int = PAGE_SIZE,
         filter : String = DEFAULT_FILTER,
         inTitle : String,
@@ -31,5 +32,4 @@ class SearchService(private val client: HttpClient) {
             parameter("intitle", inTitle)
         }.body()
     }
-
 }

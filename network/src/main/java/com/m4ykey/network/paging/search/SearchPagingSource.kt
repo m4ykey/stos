@@ -11,15 +11,11 @@ class SearchPagingSource(
 ) : BasePagingSource<Question>(service) {
 
     override suspend fun loadPage(page: Int, pageSize: Int): List<Question> {
-        return try {
-            val response = service.searchQuestions(
-                page = page,
-                pageSize = pageSize,
-                inTitle = inTitle
-            )
-            response.items.map { it.toQuestion() }
-        } catch (e : Exception) {
-            emptyList()
-        }
+        val response = service.searchQuestions(
+            page = page,
+            pageSize = pageSize,
+            inTitle = inTitle
+        )
+        return response.items.map { it.toQuestion() }
     }
 }

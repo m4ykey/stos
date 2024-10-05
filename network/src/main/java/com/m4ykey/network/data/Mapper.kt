@@ -13,14 +13,14 @@ import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.model.QuestionDetail
 
-val badgeCounts = BadgeCounts(0,0,0)
-val owners = Owner(
+private val DEFAULT_BADGE_COUNTS = BadgeCounts(0,0,0)
+private val DEFAULT_OWNER = Owner(
     displayName = "",
     link = "",
     profileImage = "",
     reputation = -1,
     userId = -1,
-    badgeCounts = badgeCounts,
+    badgeCounts = DEFAULT_BADGE_COUNTS,
     location = ""
 )
 
@@ -32,7 +32,7 @@ fun OwnerDto.toOwner() : Owner =
         profileImage = profile_image.orEmpty(),
         reputation = reputation ?: -1,
         userId = user_id ?: -1,
-        badgeCounts = badge_counts?.toBadgeCounts() ?: badgeCounts
+        badgeCounts = badge_counts?.toBadgeCounts() ?: DEFAULT_BADGE_COUNTS
     )
 
 fun QuestionDto.toQuestion() : Question =
@@ -44,7 +44,7 @@ fun QuestionDto.toQuestion() : Question =
         upVoteCount = up_vote_count ?: -1,
         answerCount = answer_count ?: -1,
         downVoteCount = down_vote_count ?: -1,
-        owner = owner?.toOwner() ?: owners
+        owner = owner?.toOwner() ?: DEFAULT_OWNER
     )
 
 fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
@@ -56,7 +56,7 @@ fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
         upVoteCount = up_vote_count ?: -1,
         answerCount = answer_count ?: -1,
         downVoteCount = down_vote_count ?: -1,
-        owner = owner?.toOwner() ?: owners,
+        owner = owner?.toOwner() ?: DEFAULT_OWNER,
         tags = tags ?: emptyList(),
         lastActivityDate = last_activity_date ?: -1,
         lastEditDate = last_edit_date ?: -1,
@@ -79,7 +79,7 @@ fun AnswerDto.toAnswer() : Answer =
         commentCount = comment_count ?: -1,
         creationDate = creation_date ?: -1,
         downVoteCount = down_vote_count ?: -1,
-        owner = owner?.toOwner() ?: owners,
+        owner = owner?.toOwner() ?: DEFAULT_OWNER,
         questionId = question_id ?: -1,
         upVoteCount = up_vote_count ?: -1,
         title = title.orEmpty()
