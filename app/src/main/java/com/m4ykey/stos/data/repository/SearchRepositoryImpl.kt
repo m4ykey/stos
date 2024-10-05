@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.flowOn
 
 class SearchRepositoryImpl(private val service : SearchService) : SearchRepository {
 
-    override suspend fun searchQuestions(inTitle: String): Flow<PagingData<Question>> = createPager {
-        SearchPagingSource(service = service, inTitle = inTitle)
+    override suspend fun searchQuestions(inTitle: String?, tagged : String?): Flow<PagingData<Question>> = createPager {
+        SearchPagingSource(service = service, inTitle = inTitle, tagged = tagged)
     }.flowOn(Dispatchers.IO)
 
 }

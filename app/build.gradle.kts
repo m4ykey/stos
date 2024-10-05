@@ -111,6 +111,8 @@ dependencies {
 
     implementation("com.airbnb.android:lottie-compose:6.5.2")
 
+    implementation("org.tensorflow:tensorflow-lite:2.16.1")
+
     testImplementation("junit:junit:4.13.2")
 
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

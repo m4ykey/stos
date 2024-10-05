@@ -16,10 +16,10 @@ class SearchViewModel(
     private val _search = MutableStateFlow(SearchUiState())
     val search : StateFlow<SearchUiState> = _search.asStateFlow()
 
-    fun searchQuestions(inTitle : String) {
+    fun searchQuestions(inTitle : String?, tagged : String?) {
         launchPaging(
             scope = viewModelScope,
-            source = { repository.searchQuestions(inTitle) },
+            source = { repository.searchQuestions(inTitle, tagged) },
             onDataCollected = { pagingData ->
                 _search.value = SearchUiState(searchList = pagingData)
             }

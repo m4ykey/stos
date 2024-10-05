@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
-    suspend fun searchQuestions(inTitle : String) : Flow<PagingData<Question>>
+    suspend fun searchQuestions(inTitle : String? = null, tagged : String? = null) : Flow<PagingData<Question>>
 
 }

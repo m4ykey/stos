@@ -233,8 +233,7 @@ fun ChipGroup(
     onTagClick : (String) -> Unit
 ) {
     FlowRow(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

@@ -1,5 +1,10 @@
 package com.m4ykey.stos.ui.search
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,7 +34,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -37,6 +45,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.list.LazyVerticalColumn
+import com.m4ykey.stos.ui.question.ChipGroup
 import com.m4ykey.stos.ui.question.QuestionItem
 import org.koin.androidx.compose.koinViewModel
 
@@ -44,16 +53,21 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    onNavigateBack : () -> Unit,
+    onNavigateBack: () -> Unit,
     viewModel: SearchViewModel = koinViewModel(),
-    onQuestionClick : (Int) -> Unit,
-    onOwnerClick : (Int) -> Unit
+    onQuestionClick: (Int) -> Unit,
+    onOwnerClick: (Int) -> Unit
 ) {
 
     val uiState by viewModel.search.collectAsState()
-    val searchList : LazyPagingItems<Question> = uiState.searchList.collectAsLazyPagingItems()
+    val searchList: LazyPagingItems<Question> = uiState.searchList.collectAsLazyPagingItems()
 
     var isSearching by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) }
+
+    val tags = listOf(
+        "java", "kotlin", "android"
+    )
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -76,12 +90,24 @@ fun SearchScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            SearchComponent(
-                onSearch = { isSearching = true }
-            )
+            SearchComponent(onSearch = { isSearching = true })
             Spacer(modifier = modifier.height(10.dp))
+            if (expanded) {
+                ChipGroup(
+                    tags = tags,
+                    onTagClick = { tag -> viewModel.searchQuestions(null, tag) },
+                    modifier = modifier.padding(start = 10.dp, end = 10.dp)
+                )
+            }
+            TagExpandedButton(
+                expanded = expanded,
+                onClick = { expanded = !expanded },
+                modifier = modifier.align(Alignment.CenterHorizontally)
+            )
             LazyVerticalColumn(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier
+                    .padding(10.dp)
+                    .fillMaxSize(),
                 items = searchList,
                 onItemContent = { question ->
                     QuestionItem(
@@ -101,10 +127,34 @@ fun SearchScreen(
 }
 
 @Composable
+fun TagExpandedButton(
+    modifier: Modifier = Modifier,
+    expanded: Boolean,
+    onClick: () -> Unit
+) {
+    val rotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        animationSpec = tween(durationMillis = 250),
+        label = "button animation"
+    )
+
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowDown,
+            contentDescription = null,
+            modifier = modifier.graphicsLayer(rotationZ = rotation)
+        )
+    }
+}
+
+@Composable
 fun SearchComponent(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = koinViewModel(),
-    onSearch : () -> Unit
+    onSearch: () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -117,7 +167,10 @@ fun SearchComponent(
                 .padding(horizontal = 10.dp),
             label = { Text(text = stringResource(id = R.string.search_questions)) },
             leadingIcon = {
-                Icon(imageVector = Icons.Default.Search, contentDescription = stringResource(id = R.string.search))
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(id = R.string.search)
+                )
             },
             trailingIcon = {
                 if (text.isNotEmpty()) {
@@ -129,7 +182,7 @@ fun SearchComponent(
             keyboardActions = KeyboardActions(
                 onSearch = {
                     if (text.isNotBlank()) {
-                        viewModel.searchQuestions(text)
+                        viewModel.searchQuestions(text, null)
                         onSearch()
                     }
                 }

@@ -7,14 +7,16 @@ import com.m4ykey.network.service.SearchService
 
 class SearchPagingSource(
     private val service : SearchService,
-    private val inTitle : String
+    private val inTitle : String? = null,
+    private val tagged : String? = null
 ) : BasePagingSource<Question>(service) {
 
     override suspend fun loadPage(page: Int, pageSize: Int): List<Question> {
         val response = service.searchQuestions(
             page = page,
             pageSize = pageSize,
-            inTitle = inTitle
+            inTitle = inTitle,
+            tagged = tagged
         )
         return response.items.map { it.toQuestion() }
     }

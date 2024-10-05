@@ -18,9 +18,10 @@ class SearchService(private val client: HttpClient) {
         page : Int = PAGE,
         pageSize : Int = PAGE_SIZE,
         filter : String = DEFAULT_FILTER,
-        inTitle : String,
+        inTitle : String? = null,
         site : String = SITE,
-        sort : String = "activity"
+        sort : String = "activity",
+        tagged : String? = null
     ) : Items<QuestionDto> {
         return client.get {
             url("search")
@@ -29,7 +30,9 @@ class SearchService(private val client: HttpClient) {
             parameter("filter", filter)
             parameter("site", site)
             parameter("sort", sort)
-            parameter("intitle", inTitle)
+
+            inTitle?.let { parameter("intitle", it) }
+            tagged?.let { parameter("tagged", it) }
         }.body()
     }
 }
