@@ -1,6 +1,5 @@
 package com.m4ykey.stos.ui.question
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -80,7 +79,6 @@ fun QuestionTagList(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun QuestionTagList(
     modifier : Modifier = Modifier,

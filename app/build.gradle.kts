@@ -19,7 +19,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.1.1"
+        versionName = "0.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -80,7 +80,7 @@ dependencies {
     implementation(project(":network"))
 
     val lifecycle = "2.8.6"
-    val bom = "2024.09.02"
+    val bom = "2024.09.03"
     val paging = "3.3.2"
 
     implementation("androidx.core:core-ktx:1.13.1")
@@ -91,9 +91,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.navigation:navigation-compose:2.8.1")
+    implementation("androidx.navigation:navigation-compose:2.8.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
-    implementation("androidx.compose.material:material-icons-extended:1.7.2")
+    implementation("androidx.compose.material:material-icons-extended:1.7.3")
     implementation("androidx.paging:paging-compose:$paging")
     implementation("androidx.paging:paging-runtime-ktx:$paging")
     implementation("androidx.browser:browser:1.8.0")
@@ -102,7 +102,7 @@ dependencies {
 
     implementation("io.insert-koin:koin-androidx-compose:4.0.0")
 
-    implementation("com.google.firebase:firebase-crashlytics:19.1.0")
+    implementation("com.google.firebase:firebase-crashlytics:19.2.0")
     implementation("com.google.firebase:firebase-perf:21.0.1")
 
     implementation("com.github.jeziellago:compose-markdown:0.5.4")

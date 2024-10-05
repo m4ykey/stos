@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -105,13 +107,12 @@ fun ChipList(
         stringResource(id = R.string.month) to "month"
     )
 
-    Row(
+    LazyRow(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 5.dp)
-            .horizontalScroll(rememberScrollState())
     ) {
-        chipList.forEach { (label, sortKey) ->
+        items(chipList) { (label, sortKey) ->
             ChipItem(
                 modifier = modifier.padding(horizontal = 5.dp),
                 title = label,

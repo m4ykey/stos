@@ -45,7 +45,7 @@ android {
 
 dependencies {
 
-    val ktor = "2.3.12"
+    val ktor = "3.0.0-rc-2"
 
     implementation("io.ktor:ktor-client-core:$ktor")
     implementation("io.ktor:ktor-client-serialization:$ktor")

@@ -59,6 +59,7 @@ import com.m4ykey.stos.ui.components.ui.ReputationAndBadgeRow
 import com.m4ykey.stos.ui.question.QuestionItem
 import com.m4ykey.stos.util.openUrlBrowser
 import dev.jeziellago.compose.markdowntext.MarkdownText
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -169,7 +170,12 @@ fun OwnerContent(
             ) }
             if (isQuestionSelected) {
                 if (questionList.itemCount == 0) {
-                    item { EmptyList() }
+                    item {
+                        LaunchedEffect(Unit) {
+                            delay(1500L)
+                        }
+                        EmptyList()
+                    }
                 } else {
                     items(
                         count = questionList.itemCount,
@@ -189,7 +195,12 @@ fun OwnerContent(
                 }
             } else if (isAnswerSelected) {
                 if (answerList.itemCount == 0) {
-                    item { EmptyList() }
+                    item {
+                        LaunchedEffect(Unit) {
+                            delay(1500L)
+                        }
+                        EmptyList()
+                    }
                 } else {
                     items(
                         count = answerList.itemCount,
