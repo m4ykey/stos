@@ -3,10 +3,10 @@ Stack is a mobile application that allows you to solve your programming problems
 The app is fully built in Jetpack Compose and uses new solutions such as [Ktor](https://ktor.io/) or [Koin](https://insert-koin.io/)
 
 ## TODO
-- [  ] Allowing the user to link the app to his account
-- [  ] Improving application optimization and UI
-- [  ] Adding TensorFlow to teach the tags that interest you
-- [  ] Adding tests
+- [ ] Allowing the user to link the app to his account
+- [ ] Improving application optimization and UI
+- [ ] Adding TensorFlow to teach the tags that interest you
+- [ ] Adding tests
 
 ## Project Setup
 1. Clone repository and open project in the latest version of Android Studio.
