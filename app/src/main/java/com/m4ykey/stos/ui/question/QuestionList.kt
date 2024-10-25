@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.network.data.model.Question
@@ -25,6 +30,7 @@ import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.list.LazyVerticalColumn
 import com.m4ykey.stos.ui.components.ui.OwnerProfile
 import com.m4ykey.stos.ui.components.ui.QuestionCount
+import com.m4ykey.stos.ui.components.ui.formatCreationDate
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
 
@@ -68,12 +74,27 @@ fun QuestionItem(
             .fillMaxWidth()
             .clickable { onQuestionClick(question.questionId) }
     ) {
-        OwnerProfile(
-            owner = question.owner,
-            size = 26.dp,
-            isBadgeCounts = false,
-            onOwnerClick = onOwnerClick
-        )
+        Row(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            OwnerProfile(
+                owner = question.owner,
+                size = 26.dp,
+                isBadgeCounts = false,
+                onOwnerClick = onOwnerClick
+            )
+            Spacer(modifier = modifier.weight(1f))
+            Text(
+                text = formatCreationDate(creationDate = question.creationDate),
+                fontSize = 13.sp
+            )
+            IconButton(onClick = {  }) {
+                Icon(
+                    imageVector = Icons.Default.MoreHoriz,
+                    contentDescription = null
+                )
+            }
+        }
         Spacer(modifier = modifier.height(5.dp))
         MarkdownText(markdown = question.title)
         Spacer(modifier = modifier.height(5.dp))

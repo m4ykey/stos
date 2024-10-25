@@ -1,6 +1,5 @@
 package com.m4ykey.network.di
 
-import android.app.Application
 import android.util.Log
 import com.m4ykey.network.BuildConfig.STACK_API_KEY
 import com.m4ykey.network.service.OwnerService
@@ -18,17 +17,10 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import okhttp3.Cache
 import org.koin.dsl.module
-import java.io.File
 
 val networkModule = module {
     single {
-
-        val cacheSize = 10L * 1024 * 1024
-        val cacheDir = File(get<Application>().cacheDir, "http_cache")
-        val cache = Cache(cacheDir, cacheSize)
-
         HttpClient(OkHttp) {
             defaultRequest {
                 url {
@@ -36,12 +28,6 @@ val networkModule = module {
                     host = "api.stackexchange.com"
                     path("2.3")
                     parameters.append("key", STACK_API_KEY)
-                }
-            }
-
-            engine {
-                config {
-                    cache(cache)
                 }
             }
 

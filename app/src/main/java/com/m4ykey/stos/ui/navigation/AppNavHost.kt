@@ -36,7 +36,9 @@ fun AppNavHost(
             )
         }
         composable(route = Screen.UserScreen.route) {
-            UserScreen()
+            UserScreen(
+                onNavigateBack = { navController.navigateUp() }
+            )
         }
         composable(route = Screen.QuestionHome.route) {
             QuestionHome(

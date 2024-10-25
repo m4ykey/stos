@@ -18,4 +18,7 @@
     <string name="answers">Answers</string>
     <string name="search_questions">Search question</string>
     <string name="nothing_found">Nothing Found</string>
+    <string name="days">days</string>
+    <string name="hours">h</string>
+    <string name="sec">sec</string>
 </resources>
