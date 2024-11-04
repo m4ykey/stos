@@ -9,18 +9,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
@@ -68,6 +76,8 @@ fun QuestionItem(
     onQuestionClick: (Int) -> Unit,
     onOwnerClick : (Int) -> Unit
 ) {
+    var isSheetOpen by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .padding(10.dp)
@@ -81,16 +91,21 @@ fun QuestionItem(
                 owner = question.owner,
                 size = 26.dp,
                 isBadgeCounts = false,
-                onOwnerClick = onOwnerClick
+                onOwnerClick = onOwnerClick,
+                modifier = modifier.align(Alignment.CenterVertically)
             )
             Spacer(modifier = modifier.weight(1f))
             Text(
                 text = formatCreationDate(creationDate = question.creationDate),
-                fontSize = 13.sp
+                fontSize = 13.sp,
+                modifier = modifier.align(Alignment.CenterVertically)
             )
-            IconButton(onClick = {  }) {
+            IconButton(
+                onClick = { isSheetOpen = true },
+                modifier = modifier.align(Alignment.CenterVertically)
+            ) {
                 Icon(
-                    imageVector = Icons.Default.MoreHoriz,
+                    imageVector = Icons.Default.MoreVert,
                     contentDescription = null
                 )
             }
@@ -121,5 +136,45 @@ fun QuestionItem(
                 count = question.viewCount
             )
         }
+    }
+    if (isSheetOpen) {
+        OpenBottomSheet()
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OpenBottomSheet(
+    modifier: Modifier = Modifier
+) {
+
+    val sheetState = rememberModalBottomSheetState()
+
+    ModalBottomSheet(
+        onDismissRequest = {  },
+        sheetState = sheetState,
+        modifier = modifier.clip(RoundedCornerShape(10.dp))
+    ) {
+        Column {
+            BottomSheetItem(icon = Icons.Default.Translate, text = stringResource(R.string.translate))
+        }
+    }
+}
+
+@Composable
+fun BottomSheetItem(
+    modifier: Modifier = Modifier,
+    text : String,
+    icon : ImageVector
+) {
+    Row(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null
+        )
+        Spacer(modifier = modifier.width(10.dp))
+        Text(text = text)
     }
 }

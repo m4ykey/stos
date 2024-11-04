@@ -6,6 +6,7 @@ import com.m4ykey.network.core.Constants.DETAIL_FILTER
 import com.m4ykey.network.core.Constants.PAGE
 import com.m4ykey.network.core.Constants.PAGE_SIZE
 import com.m4ykey.network.core.Constants.SITE
+import com.m4ykey.network.core.withRetry
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.AnswerDto
 import com.m4ykey.network.data.dto.QuestionDetailDto
@@ -26,15 +27,17 @@ class QuestionService(private val client : HttpClient) {
         site : String = SITE,
         order : String = "desc"
     ) : Items<QuestionDto> {
-        return client.get {
-            url("questions")
-            parameter("site", site)
-            parameter("page", page)
-            parameter("pagesize", pageSize)
-            parameter("filter", filter)
-            parameter("sort", sort)
-            parameter("order", order)
-        }.body()
+        return withRetry {
+            client.get {
+                url("questions")
+                parameter("site", site)
+                parameter("page", page)
+                parameter("pagesize", pageSize)
+                parameter("filter", filter)
+                parameter("sort", sort)
+                parameter("order", order)
+            }.body()
+        }
     }
 
     suspend fun getQuestionDetail(
@@ -42,11 +45,13 @@ class QuestionService(private val client : HttpClient) {
         questionId : Int,
         site : String = SITE
     ) : Items<QuestionDetailDto> {
-        return client.get {
-            url("questions/$questionId")
-            parameter("site", site)
-            parameter("filter", filter)
-        }.body()
+        return withRetry {
+            client.get {
+                url("questions/$questionId")
+                parameter("site", site)
+                parameter("filter", filter)
+            }.body()
+        }
     }
 
     suspend fun getQuestionTag(
@@ -58,16 +63,18 @@ class QuestionService(private val client : HttpClient) {
         order : String = "desc",
         pageSize : Int = PAGE_SIZE
     ) : Items<QuestionDto> {
-        return client.get {
-            url("questions")
-            parameter("site", site)
-            parameter("page", page)
-            parameter("pagesize", pageSize)
-            parameter("filter", filter)
-            parameter("order", order)
-            parameter("sort", sort)
-            parameter("tagged", tag)
-        }.body()
+        return withRetry {
+            client.get {
+                url("questions")
+                parameter("site", site)
+                parameter("page", page)
+                parameter("pagesize", pageSize)
+                parameter("filter", filter)
+                parameter("order", order)
+                parameter("sort", sort)
+                parameter("tagged", tag)
+            }.body()
+        }
     }
 
     suspend fun getQuestionAnswer(
@@ -77,13 +84,15 @@ class QuestionService(private val client : HttpClient) {
         pageSize: Int = PAGE_SIZE,
         filter: String = ANSWER_FILTER
     ) : Items<AnswerDto> {
-        return client.get {
-            url("questions/$questionId/answers")
-            parameter("site", site)
-            parameter("page", page)
-            parameter("pagesize", pageSize)
-            parameter("filter", filter)
-        }.body()
+        return withRetry {
+            client.get {
+                url("questions/$questionId/answers")
+                parameter("site", site)
+                parameter("page", page)
+                parameter("pagesize", pageSize)
+                parameter("filter", filter)
+            }.body()
+        }
     }
 
 }

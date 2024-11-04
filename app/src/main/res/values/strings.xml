@@ -21,4 +21,5 @@
     <string name="days">days</string>
     <string name="hours">h</string>
     <string name="sec">sec</string>
+    <string name="translate">Translate</string>
 </resources>

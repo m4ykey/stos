@@ -6,6 +6,7 @@ import com.m4ykey.network.core.Constants.OWNER_FILTER
 import com.m4ykey.network.core.Constants.PAGE
 import com.m4ykey.network.core.Constants.PAGE_SIZE
 import com.m4ykey.network.core.Constants.SITE
+import com.m4ykey.network.core.withRetry
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.AnswerDto
 import com.m4ykey.network.data.dto.OwnerDto
@@ -23,11 +24,13 @@ class OwnerService(private val client : HttpClient) {
         filter : String = OWNER_FILTER,
         ownerId : Int
     ) : Items<OwnerDto> {
-        return client.get {
-            url("users/$ownerId")
-            parameter("site", site)
-            parameter("filter", filter)
-        }.body()
+        return withRetry {
+            client.get {
+                url("users/$ownerId")
+                parameter("site", site)
+                parameter("filter", filter)
+            }.body()
+        }
     }
 
     suspend fun getOwnerQuestions(
@@ -38,14 +41,16 @@ class OwnerService(private val client : HttpClient) {
         pageSize : Int = PAGE_SIZE,
         sort : String = "creation"
     ) : Items<QuestionDto> {
-        return client.get {
-            url("users/$ownerId/questions")
-            parameter("site", site)
-            parameter("filter", filter)
-            parameter("page", page)
-            parameter("pagesize", pageSize)
-            parameter("sort", sort)
-        }.body()
+        return withRetry {
+            client.get {
+                url("users/$ownerId/questions")
+                parameter("site", site)
+                parameter("filter", filter)
+                parameter("page", page)
+                parameter("pagesize", pageSize)
+                parameter("sort", sort)
+            }.body()
+        }
     }
 
     suspend fun getOwnerAnswers(
@@ -56,14 +61,16 @@ class OwnerService(private val client : HttpClient) {
         pageSize : Int = PAGE_SIZE,
         sort : String = "creation"
     ) : Items<AnswerDto> {
-        return client.get {
-            url("users/$ownerId/answers")
-            parameter("site", site)
-            parameter("filter", filter)
-            parameter("sort", sort)
-            parameter("page", page)
-            parameter("pagesize", pageSize)
-        }.body()
+        return withRetry {
+            client.get {
+                url("users/$ownerId/answers")
+                parameter("site", site)
+                parameter("filter", filter)
+                parameter("sort", sort)
+                parameter("page", page)
+                parameter("pagesize", pageSize)
+            }.body()
+        }
     }
 
 }

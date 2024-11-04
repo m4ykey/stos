@@ -22,4 +22,5 @@
     <string name="days">dni</string>
     <string name="hours">godz.</string>
     <string name="sec">sek</string>
+    <string name="translate">Przetłumacz</string>
 </resources>

@@ -4,6 +4,7 @@ import com.m4ykey.network.core.Constants.DEFAULT_FILTER
 import com.m4ykey.network.core.Constants.PAGE
 import com.m4ykey.network.core.Constants.PAGE_SIZE
 import com.m4ykey.network.core.Constants.SITE
+import com.m4ykey.network.core.withRetry
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.QuestionDto
 import io.ktor.client.HttpClient
@@ -23,16 +24,18 @@ class SearchService(private val client: HttpClient) {
         sort : String = "activity",
         tagged : String? = null
     ) : Items<QuestionDto> {
-        return client.get {
-            url("search")
-            parameter("page", page)
-            parameter("pagesize", pageSize)
-            parameter("filter", filter)
-            parameter("site", site)
-            parameter("sort", sort)
+        return withRetry {
+            client.get {
+                url("search")
+                parameter("page", page)
+                parameter("pagesize", pageSize)
+                parameter("filter", filter)
+                parameter("site", site)
+                parameter("sort", sort)
 
-            inTitle?.let { parameter("intitle", it) }
-            tagged?.let { parameter("tagged", it) }
-        }.body()
+                inTitle?.let { parameter("intitle", it) }
+                tagged?.let { parameter("tagged", it) }
+            }.body()
+        }
     }
 }
