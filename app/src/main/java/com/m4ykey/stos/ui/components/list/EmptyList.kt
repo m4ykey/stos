@@ -19,7 +19,9 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.m4ykey.stos.R
 
 @Composable
-fun EmptyList(modifier: Modifier = Modifier) {
+fun EmptyList(
+    modifier: Modifier = Modifier
+) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.empty))
     val lottieProgress by animateLottieCompositionAsState(
         composition = composition,

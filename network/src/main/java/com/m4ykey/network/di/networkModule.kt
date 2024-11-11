@@ -6,8 +6,10 @@ import com.m4ykey.network.service.OwnerService
 import com.m4ykey.network.service.QuestionService
 import com.m4ykey.network.service.SearchService
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -21,7 +23,7 @@ import org.koin.dsl.module
 
 val networkModule = module {
     single {
-        HttpClient(OkHttp) {
+        HttpClient(CIO) {
             defaultRequest {
                 url {
                     protocol = URLProtocol.HTTPS
@@ -29,6 +31,14 @@ val networkModule = module {
                     path("2.3")
                     parameters.append("key", STACK_API_KEY)
                 }
+            }
+
+            install(UserAgent) {
+                agent = "MyApp/1.0"
+            }
+
+            install(HttpCallValidator) {
+
             }
 
             install(Logging) {

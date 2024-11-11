@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -30,8 +30,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
@@ -78,9 +79,11 @@ fun QuestionItem(
     modifier: Modifier = Modifier,
     question: Question,
     onQuestionClick: (Int) -> Unit,
-    onOwnerClick : (Int) -> Unit
+    onOwnerClick : (Int) -> Unit,
+    viewModel: QuestionViewModel = koinViewModel()
 ) {
     var isSheetOpen by remember { mutableStateOf(false) }
+    val translateText by viewModel.translatedText.collectAsState()
 
     Column(
         modifier = modifier
@@ -115,7 +118,7 @@ fun QuestionItem(
             }
         }
         Spacer(modifier = modifier.height(5.dp))
-        MarkdownText(markdown = question.title)
+        MarkdownText(markdown = translateText[question.questionId] ?: question.title)
         Spacer(modifier = modifier.height(5.dp))
         Row(
             modifier = modifier.fillMaxWidth()
@@ -143,7 +146,10 @@ fun QuestionItem(
     }
     if (isSheetOpen) {
         OpenBottomSheet(
-            onDismissRequest = { isSheetOpen = false }
+            onDismissRequest = { isSheetOpen = false },
+            onTranslateClick = {
+
+            }
         )
     }
 }
@@ -152,7 +158,8 @@ fun QuestionItem(
 @Composable
 fun OpenBottomSheet(
     modifier: Modifier = Modifier,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    onTranslateClick : () -> Unit
 ) {
 
     val sheetState = rememberModalBottomSheetState()
@@ -165,13 +172,44 @@ fun OpenBottomSheet(
                 onDismissRequest()
             }
         },
-        sheetState = sheetState,
-        modifier = modifier.clip(RoundedCornerShape(10.dp))
+        sheetState = sheetState
     ) {
-
+        Column(
+            modifier = modifier.padding(10.dp)
+        ) {
+            BottomSheetItem(
+                icon = Icons.Default.Translate,
+                text = stringResource(R.string.translate),
+                onItemClick = {
+                    onTranslateClick()
+                    coroutineScope.launch { sheetState.hide() }
+                }
+            )
+        }
     }
 
     LaunchedEffect(Unit) {
         coroutineScope.launch { sheetState.show() }
+    }
+}
+
+@Composable
+fun BottomSheetItem(
+    modifier: Modifier = Modifier,
+    text : String,
+    icon : ImageVector,
+    onItemClick : () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onItemClick() }
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null
+        )
+        Spacer(modifier = modifier.width(10.dp))
+        Text(text = text)
     }
 }

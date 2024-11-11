@@ -26,6 +26,9 @@ class QuestionViewModel(
     private val _questionAnswer = MutableStateFlow(QuestionAnswerUiState())
     val questionAnswer : StateFlow<QuestionAnswerUiState> = _questionAnswer.asStateFlow()
 
+    private val _translatedTexts = MutableStateFlow<Map<Int, String>>(emptyMap())
+    val translatedText : StateFlow<Map<Int, String>> get() = _translatedTexts
+
     private var currentSort : String? = null
     private var currentTag : String? = null
 
@@ -33,7 +36,7 @@ class QuestionViewModel(
         return sort != currentSort || tag != currentTag || _questions.value.questionList.count() == 0
     }
 
-    suspend fun getQuestionDetailAnswer(questionId : Int) {
+    fun getQuestionDetailAnswer(questionId : Int) {
         getQuestionAnswer(questionId)
         getQuestionDetail(questionId)
     }
@@ -48,7 +51,7 @@ class QuestionViewModel(
         )
     }
 
-    private suspend fun getQuestionDetail(questionId : Int) = viewModelScope.launch {
+    private fun getQuestionDetail(questionId : Int) = viewModelScope.launch {
         _questionDetail.value = QuestionDetailUiState(isLoading = true)
         try {
             repository.getQuestionDetail(questionId).collect { detail ->
