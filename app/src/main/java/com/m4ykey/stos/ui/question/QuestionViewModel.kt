@@ -26,9 +26,6 @@ class QuestionViewModel(
     private val _questionAnswer = MutableStateFlow(QuestionAnswerUiState())
     val questionAnswer : StateFlow<QuestionAnswerUiState> = _questionAnswer.asStateFlow()
 
-    private val _translatedTexts = MutableStateFlow<Map<Int, String>>(emptyMap())
-    val translatedText : StateFlow<Map<Int, String>> get() = _translatedTexts
-
     private var currentSort : String? = null
     private var currentTag : String? = null
 

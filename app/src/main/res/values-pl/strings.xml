@@ -23,4 +23,6 @@
     <string name="hours">godz.</string>
     <string name="sec">sek</string>
     <string name="translate">Przetłumacz</string>
+    <string name="home">Ekran Główny</string>
+    <string name="favorite">Ulubione</string>
 </resources>

@@ -22,4 +22,6 @@
     <string name="hours">h</string>
     <string name="sec">sec</string>
     <string name="translate">Translate</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
 </resources>

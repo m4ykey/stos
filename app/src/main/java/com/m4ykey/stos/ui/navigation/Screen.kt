@@ -33,4 +33,7 @@ object Screen {
         val route = "$baseRoute/{$argument}"
         fun createRoute(ownerId : Int) = "$baseRoute/$ownerId"
     }
+    object FavoriteScreen {
+        const val route = "favorite_screen"
+    }
 }

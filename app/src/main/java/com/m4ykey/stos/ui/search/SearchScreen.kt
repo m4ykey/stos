@@ -62,9 +62,7 @@ fun SearchScreen(
     var isSearching by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
 
-    val tags = listOf(
-        "java", "kotlin", "android"
-    )
+    val tags by remember { mutableStateOf(listOf("java", "kotlin", "android")) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
