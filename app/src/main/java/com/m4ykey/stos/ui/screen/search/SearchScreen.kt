@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.search
+package com.m4ykey.stos.ui.screen.search
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -42,8 +42,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.list.LazyVerticalColumn
-import com.m4ykey.stos.ui.question.ChipGroup
-import com.m4ykey.stos.ui.question.QuestionItem
+import com.m4ykey.stos.ui.screen.question.ChipGroup
+import com.m4ykey.stos.ui.screen.question.QuestionItem
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

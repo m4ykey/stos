@@ -1,12 +1,12 @@
-package com.m4ykey.stos.ui.owner
+package com.m4ykey.stos.ui.screen.owner
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.OwnerRepository
-import com.m4ykey.stos.ui.owner.uistate.OwnerUiState
-import com.m4ykey.stos.ui.question.uistate.QuestionAnswerUiState
-import com.m4ykey.stos.ui.question.uistate.QuestionUiState
+import com.m4ykey.stos.ui.screen.owner.uistate.OwnerUiState
+import com.m4ykey.stos.ui.screen.question.uistate.QuestionAnswerUiState
+import com.m4ykey.stos.ui.screen.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +23,7 @@ class OwnerViewModel(private val repository: OwnerRepository) : ViewModel() {
     private val _ownerAnswers = MutableStateFlow(QuestionAnswerUiState())
     val ownerAnswers : StateFlow<QuestionAnswerUiState> = _ownerAnswers.asStateFlow()
 
-    suspend fun getOwnerQuestion(ownerId : Int) {
+    fun getOwnerQuestion(ownerId : Int) {
         getOwnerById(ownerId)
         getOwnerQuestions(ownerId)
         getOwnerAnswers(ownerId)
@@ -39,7 +39,7 @@ class OwnerViewModel(private val repository: OwnerRepository) : ViewModel() {
         )
     }
 
-    private suspend fun getOwnerById(ownerId : Int) = viewModelScope.launch {
+    private fun getOwnerById(ownerId : Int) = viewModelScope.launch {
         _owner.value = OwnerUiState(isLoading = true)
         try {
             repository.getOwnerById(ownerId).collect { owner ->

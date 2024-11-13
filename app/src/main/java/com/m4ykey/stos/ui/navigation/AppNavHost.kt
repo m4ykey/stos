@@ -7,12 +7,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.m4ykey.stos.ui.owner.OwnerScreen
-import com.m4ykey.stos.ui.question.QuestionDetail
-import com.m4ykey.stos.ui.question.QuestionHome
-import com.m4ykey.stos.ui.question.QuestionTagList
-import com.m4ykey.stos.ui.search.SearchScreen
-import com.m4ykey.stos.ui.user.UserScreen
+import com.m4ykey.stos.ui.screen.favorite.FavoriteScreen
+import com.m4ykey.stos.ui.screen.owner.OwnerScreen
+import com.m4ykey.stos.ui.screen.question.QuestionDetail
+import com.m4ykey.stos.ui.screen.question.QuestionHome
+import com.m4ykey.stos.ui.screen.question.QuestionTagList
+import com.m4ykey.stos.ui.screen.search.SearchScreen
+import com.m4ykey.stos.ui.screen.user.UserScreen
 
 @Composable
 fun AppNavHost(
@@ -106,6 +107,9 @@ fun AppNavHost(
                     navController.navigate(Screen.QuestionDetail.createRoute(questionId))
                 }
             )
+        }
+        composable(route = Screen.FavoriteScreen.route) {
+            FavoriteScreen()
         }
     }
 }

@@ -11,7 +11,10 @@ fun <T : Any> createPager(pagingSourceFactory : () -> PagingSource<Int, T>) : Fl
     return Pager(
         config = PagingConfig(
             pageSize = PAGE_SIZE,
-            enablePlaceholders = false
+            enablePlaceholders = false,
+            prefetchDistance = 2,
+            initialLoadSize = PAGE_SIZE,
+            maxSize = PAGE_SIZE * 2
         ),
         pagingSourceFactory = pagingSourceFactory
     ).flow

@@ -1,12 +1,12 @@
-package com.m4ykey.stos.ui.question.uistate
+package com.m4ykey.stos.ui.screen.search.uistate
 
 import androidx.paging.PagingData
 import com.m4ykey.network.data.model.Question
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-data class QuestionUiState(
+data class SearchUiState(
     val isLoading : Boolean = false,
     val isError : String? = null,
-    val questionList : Flow<PagingData<Question>> = emptyFlow()
+    val searchList : Flow<PagingData<Question>> = emptyFlow()
 )

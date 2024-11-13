@@ -1,12 +1,12 @@
-package com.m4ykey.stos.ui.question
+package com.m4ykey.stos.ui.screen.question
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.QuestionRepository
-import com.m4ykey.stos.ui.question.uistate.QuestionAnswerUiState
-import com.m4ykey.stos.ui.question.uistate.QuestionDetailUiState
-import com.m4ykey.stos.ui.question.uistate.QuestionUiState
+import com.m4ykey.stos.ui.screen.question.uistate.QuestionAnswerUiState
+import com.m4ykey.stos.ui.screen.question.uistate.QuestionDetailUiState
+import com.m4ykey.stos.ui.screen.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.owner
+package com.m4ykey.stos.ui.screen.owner
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
@@ -56,7 +56,7 @@ import com.m4ykey.stos.ui.components.ui.OwnerProfileCard
 import com.m4ykey.stos.ui.components.ui.Progressbar
 import com.m4ykey.stos.ui.components.ui.QuestionCount
 import com.m4ykey.stos.ui.components.ui.ReputationAndBadgeRow
-import com.m4ykey.stos.ui.question.QuestionItem
+import com.m4ykey.stos.ui.screen.question.QuestionItem
 import com.m4ykey.stos.util.openUrlBrowser
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay

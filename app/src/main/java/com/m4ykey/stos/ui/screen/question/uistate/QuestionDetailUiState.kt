@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.question.uistate
+package com.m4ykey.stos.ui.screen.question.uistate
 
 import com.m4ykey.network.data.model.QuestionDetail
 

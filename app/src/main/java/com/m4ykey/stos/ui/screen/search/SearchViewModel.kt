@@ -1,10 +1,10 @@
-package com.m4ykey.stos.ui.search
+package com.m4ykey.stos.ui.screen.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.SearchRepository
-import com.m4ykey.stos.ui.search.uistate.SearchUiState
+import com.m4ykey.stos.ui.screen.search.uistate.SearchUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.question
+package com.m4ykey.stos.ui.screen.question
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration

@@ -4,6 +4,7 @@ import com.m4ykey.network.core.BasePagingSource
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.toQuestion
 import com.m4ykey.network.service.SearchService
+import kotlinx.coroutines.delay
 
 class SearchPagingSource(
     private val service : SearchService,
@@ -18,6 +19,11 @@ class SearchPagingSource(
             inTitle = inTitle,
             tagged = tagged
         )
+
+        response.backoff?.let {
+            delay(it * 1000L)
+        }
+
         return response.items.map { it.toQuestion() }
     }
 }

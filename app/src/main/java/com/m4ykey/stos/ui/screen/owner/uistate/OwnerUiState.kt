@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.owner.uistate
+package com.m4ykey.stos.ui.screen.owner.uistate
 
 import com.m4ykey.network.data.model.Owner
 
