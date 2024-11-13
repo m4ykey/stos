@@ -30,6 +30,8 @@ class OwnerViewModel(private val repository: OwnerRepository) : ViewModel() {
     }
 
     private fun getOwnerAnswers(ownerId: Int) {
+        _ownerAnswers.value = QuestionAnswerUiState(isLoading = true, isError = null)
+
         launchPaging(
             scope = viewModelScope,
             source = { repository.getOwnerAnswers(ownerId) },
@@ -51,6 +53,8 @@ class OwnerViewModel(private val repository: OwnerRepository) : ViewModel() {
     }
 
     private fun getOwnerQuestions(ownerId: Int) {
+        _ownerQuestions.value = QuestionUiState(isError = null, isLoading = true)
+
         launchPaging(
             scope = viewModelScope,
             source = { repository.getOwnerQuestions(ownerId) },

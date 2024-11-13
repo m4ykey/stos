@@ -39,6 +39,8 @@ class QuestionViewModel(
     }
 
     private fun getQuestionAnswer(questionId : Int) {
+        _questionAnswer.value = QuestionAnswerUiState(isLoading = true, isError = null)
+
         launchPaging(
             scope = viewModelScope,
             source = { repository.getQuestionAnswer(questionId) },
@@ -61,11 +63,16 @@ class QuestionViewModel(
 
     fun getQuestions(sort : String) {
         currentSort = sort
+        _questions.value = QuestionUiState(isLoading = true, isError = null)
+
         launchPaging(
             scope = viewModelScope,
             source = { repository.getQuestions(sort) },
             onDataCollected = { pagingData ->
-                _questions.value = QuestionUiState(questionList = pagingData)
+                _questions.value = QuestionUiState(
+                    questionList = pagingData,
+                    isLoading = false
+                )
             }
         )
     }
@@ -73,6 +80,8 @@ class QuestionViewModel(
     fun getQuestionsTag(tag : String, sort : String) {
         currentTag = tag
         currentSort = sort
+        _questions.value = QuestionUiState(isLoading = true, isError = null)
+
         launchPaging(
             scope = viewModelScope,
             source = { repository.getQuestionTag(tag, sort) },

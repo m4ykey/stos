@@ -17,6 +17,8 @@ class SearchViewModel(
     val search : StateFlow<SearchUiState> = _search.asStateFlow()
 
     fun searchQuestions(inTitle : String?, tagged : String?) {
+        _search.value = SearchUiState(isError = null, isLoading = true)
+
         launchPaging(
             scope = viewModelScope,
             source = { repository.searchQuestions(inTitle, tagged) },
