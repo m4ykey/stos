@@ -46,6 +46,7 @@ android {
 dependencies {
 
     val ktor = "3.0.1"
+    val serialization = "1.7.3"
 
     implementation("io.ktor:ktor-client-core:$ktor")
     implementation("io.ktor:ktor-client-serialization:$ktor")
@@ -57,8 +58,8 @@ dependencies {
     implementation("io.ktor:ktor-client-android:$ktor")
     implementation("io.ktor:ktor-client-cio:$ktor")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serialization")
 
     implementation("androidx.paging:paging-compose:3.3.4")
 
