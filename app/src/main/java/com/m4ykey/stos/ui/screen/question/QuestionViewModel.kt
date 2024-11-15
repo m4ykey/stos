@@ -51,7 +51,7 @@ class QuestionViewModel(
     }
 
     private fun getQuestionDetail(questionId : Int) = viewModelScope.launch {
-        _questionDetail.value = QuestionDetailUiState(isLoading = true)
+        _questionDetail.value = QuestionDetailUiState(isLoading = true, isError = null)
         try {
             repository.getQuestionDetail(questionId).collect { detail ->
                 _questionDetail.value = QuestionDetailUiState(questionDetail = detail)

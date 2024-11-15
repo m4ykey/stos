@@ -64,7 +64,11 @@ fun SearchScreen(
     var isSearching by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
 
-    val tags by remember { mutableStateOf(listOf("java", "kotlin", "android")) }
+    val tagsList = listOf(
+        "java", "kotlin", "android", "c", "c++", "python", "javascript"
+    )
+
+    val tags by remember { mutableStateOf(tagsList) }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
