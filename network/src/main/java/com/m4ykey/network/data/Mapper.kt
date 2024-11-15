@@ -62,7 +62,8 @@ fun QuestionDetailDto.toQuestionDetail() : QuestionDetail =
         lastEditDate = last_edit_date ?: -1,
         bodyMarkdown = body_markdown.orEmpty(),
         link = link.orEmpty(),
-        closedDetails = closed_details?.toClosedDetails() ?: ClosedDetails("", "")
+        closedDetails = closed_details?.toClosedDetails() ?: ClosedDetails("", ""),
+        commentCount = comment_count ?: -1
     )
 
 fun BadgeCountsDto.toBadgeCounts() : BadgeCounts =

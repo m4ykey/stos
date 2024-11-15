@@ -2,19 +2,24 @@ package com.m4ykey.stos.ui.screen.question
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.Comment
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
@@ -33,6 +38,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -69,7 +75,8 @@ fun QuestionDetail(
     onNavigateBack : () -> Unit,
     onTagClick: (String) -> Unit,
     viewModel: QuestionViewModel = koinViewModel(),
-    onOwnerClick: (Int) -> Unit
+    onOwnerClick: (Int) -> Unit,
+    onCommentClick: (Int) -> Unit
 ) {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -122,7 +129,8 @@ fun QuestionDetail(
                     modifier = modifier.padding(innerPadding),
                     questionDetail = uiDetailState.questionDetail!!,
                     onTagClick = onTagClick,
-                    onOwnerClick = onOwnerClick
+                    onOwnerClick = onOwnerClick,
+                    onCommentClick = onCommentClick
                 )
             }
         }
@@ -136,7 +144,8 @@ fun QuestionDetailContent(
     questionDetail: QuestionDetail,
     onTagClick: (String) -> Unit,
     viewModel: QuestionViewModel = koinViewModel(),
-    onOwnerClick : (Int) -> Unit
+    onOwnerClick : (Int) -> Unit,
+    onCommentClick: (Int) -> Unit
 ) {
     val uiAnswerState by viewModel.questionAnswer.collectAsState()
     val answerList : LazyPagingItems<Answer> = uiAnswerState.questionAnswerList.collectAsLazyPagingItems()
@@ -178,19 +187,11 @@ fun QuestionDetailContent(
                 )
             }
             item {
-                Column {
-                    Text(
-                        text = stringResource(R.string.asked) + " "
-                                + formatCreationDate(creationDate = questionDetail.creationDate),
-                        fontSize = 13.sp
-                    )
-                    OwnerProfile(
-                        owner = questionDetail.owner,
-                        size = 30.dp,
-                        isBadgeCounts = true,
-                        onOwnerClick = onOwnerClick
-                    )
-                }
+                DisplayOwnerWithComments(
+                    onOwnerClick = onOwnerClick,
+                    questionDetail = questionDetail,
+                    onCommentClick = onCommentClick
+                )
             }
             item { HorizontalDivider() }
             if (answerList.itemCount == 0) {
@@ -200,7 +201,7 @@ fun QuestionDetailContent(
             } else {
                 item {
                     Text(
-                        text = stringResource(R.string.answers) + ": " + answerList.itemCount.toString(),
+                        text = stringResource(R.string.answers) + ": " + questionDetail.answerCount,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -225,6 +226,48 @@ fun QuestionDetailContent(
                 item { LoadStateView(loadState = answerList.loadState.append) }
                 item { LoadStateView(loadState = answerList.loadState.refresh) }
             }
+        }
+    }
+}
+
+@Composable
+fun DisplayOwnerWithComments(
+    modifier: Modifier = Modifier,
+    questionDetail: QuestionDetail,
+    onOwnerClick: (Int) -> Unit,
+    onCommentClick : (Int) -> Unit
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = modifier.wrapContentHeight()) {
+            Text(
+                text = stringResource(R.string.asked) + " "
+                        + formatCreationDate(creationDate = questionDetail.creationDate),
+                fontSize = 13.sp
+            )
+            OwnerProfile(
+                owner = questionDetail.owner,
+                size = 30.dp,
+                isBadgeCounts = true,
+                onOwnerClick = onOwnerClick
+            )
+        }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.clickable { onCommentClick(questionDetail.questionId) }
+        ) {
+            Icon(
+                contentDescription = stringResource(R.string.comments),
+                imageVector = Icons.AutoMirrored.Outlined.Comment,
+                modifier = modifier.size(21.dp)
+            )
+            Text(
+                text = stringResource(R.string.comments) + ": " + questionDetail.commentCount,
+                fontSize = 12.sp
+            )
         }
     }
 }

@@ -25,4 +25,5 @@
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
     <string name="asked">Asked</string>
+    <string name="comments">Comments</string>
 </resources>

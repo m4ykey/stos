@@ -19,5 +19,6 @@ data class QuestionDetailDto(
     val up_vote_count: Int?,
     val view_count: Int?,
     val link : String?,
-    val closed_details : ClosedDetailsDto? = null
+    val closed_details : ClosedDetailsDto? = null,
+    val comment_count : Int?
 )

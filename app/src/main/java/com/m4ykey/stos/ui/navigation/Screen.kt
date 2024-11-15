@@ -1,6 +1,7 @@
 package com.m4ykey.stos.ui.navigation
 
 object Screen {
+
     object QuestionHome {
         const val route = "question_home"
     }
@@ -33,7 +34,15 @@ object Screen {
         val route = "$baseRoute/{$argument}"
         fun createRoute(ownerId : Int) = "$baseRoute/$ownerId"
     }
+
     object FavoriteScreen {
         const val route = "favorite_screen"
+    }
+
+    object QuestionDetailComment {
+        private const val baseRoute = "question_detail_comment"
+        const val argument = "questionId"
+        val route = "$baseRoute/{$argument}"
+        fun createRoute(questionId: Int) = "$baseRoute/$questionId"
     }
 }

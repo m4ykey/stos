@@ -26,4 +26,5 @@
     <string name="home">Ekran Główny</string>
     <string name="favorite">Ulubione</string>
     <string name="asked">Zapytano</string>
+    <string name="comments">Komentarze</string>
 </resources>

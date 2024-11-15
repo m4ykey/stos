@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.m4ykey.stos.ui.screen.favorite.FavoriteScreen
 import com.m4ykey.stos.ui.screen.owner.OwnerScreen
 import com.m4ykey.stos.ui.screen.question.QuestionDetail
+import com.m4ykey.stos.ui.screen.question.QuestionDetailComment
 import com.m4ykey.stos.ui.screen.question.QuestionHome
 import com.m4ykey.stos.ui.screen.question.QuestionTagList
 import com.m4ykey.stos.ui.screen.search.SearchScreen
@@ -72,6 +73,9 @@ fun AppNavHost(
                 },
                 onOwnerClick = { ownerId ->
                     navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
+                },
+                onCommentClick = {
+                    navController.navigate(Screen.QuestionDetailComment.createRoute(questionId))
                 }
             )
         }
@@ -107,6 +111,15 @@ fun AppNavHost(
                     navController.navigate(Screen.QuestionDetail.createRoute(questionId))
                 }
             )
+        }
+        composable(
+            route = Screen.QuestionDetailComment.route,
+            arguments = listOf(navArgument(Screen.QuestionDetailComment.argument) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            val questionId = backStackEntry.arguments?.getInt(Screen.QuestionDetailComment.argument) ?: -1
+            QuestionDetailComment(questionId = questionId)
         }
         composable(route = Screen.FavoriteScreen.route) {
             FavoriteScreen()
