@@ -196,7 +196,9 @@ fun OwnerContent(
                                 onQuestionClick = onQuestionClick,
                                 onOwnerClick = {  }
                             )
-                            HorizontalDivider()
+                            if (index < questionList.itemCount - 1) {
+                                HorizontalDivider()
+                            }
                         }
                     }
                 }
@@ -220,7 +222,9 @@ fun OwnerContent(
                                 answer = answer,
                                 onAnswerClick = onQuestionClick
                             )
-                            HorizontalDivider()
+                            if (index < answerList.itemCount - 1) {
+                                HorizontalDivider()
+                            }
                         }
                     }
                 }

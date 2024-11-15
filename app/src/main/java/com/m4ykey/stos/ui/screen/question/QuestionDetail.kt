@@ -54,6 +54,7 @@ import com.m4ykey.stos.ui.components.list.LoadStateView
 import com.m4ykey.stos.ui.components.ui.ErrorScreen
 import com.m4ykey.stos.ui.components.ui.OwnerProfile
 import com.m4ykey.stos.ui.components.ui.Progressbar
+import com.m4ykey.stos.ui.components.ui.formatCreationDate
 import com.m4ykey.stos.util.openUrlBrowser
 import com.m4ykey.stos.util.processHtmlEntities
 import com.m4ykey.stos.util.shareUrl
@@ -177,12 +178,19 @@ fun QuestionDetailContent(
                 )
             }
             item {
-                OwnerProfile(
-                    owner = questionDetail.owner,
-                    size = 30.dp,
-                    isBadgeCounts = true,
-                    onOwnerClick = onOwnerClick
-                )
+                Column {
+                    Text(
+                        text = stringResource(R.string.asked) + " "
+                                + formatCreationDate(creationDate = questionDetail.creationDate),
+                        fontSize = 13.sp
+                    )
+                    OwnerProfile(
+                        owner = questionDetail.owner,
+                        size = 30.dp,
+                        isBadgeCounts = true,
+                        onOwnerClick = onOwnerClick
+                    )
+                }
             }
             item { HorizontalDivider() }
             if (answerList.itemCount == 0) {
@@ -190,6 +198,13 @@ fun QuestionDetailContent(
                     Text(text = stringResource(id = R.string.no_answers))
                 }
             } else {
+                item {
+                    Text(
+                        text = stringResource(R.string.answers) + ": " + answerList.itemCount.toString(),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
                 items(
                     count = answerList.itemCount,
                     key = answerList.itemKey { answer -> answer.answerId },
@@ -201,7 +216,9 @@ fun QuestionDetailContent(
                             answer = answer,
                             onOwnerClick = onOwnerClick
                         )
-                        HorizontalDivider()
+                        if (index < answerList.itemCount - 1) {
+                            HorizontalDivider()
+                        }
                     }
                 }
 
