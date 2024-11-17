@@ -3,12 +3,14 @@ package com.m4ykey.network.data
 import com.m4ykey.network.data.dto.AnswerDto
 import com.m4ykey.network.data.dto.BadgeCountsDto
 import com.m4ykey.network.data.dto.ClosedDetailsDto
+import com.m4ykey.network.data.dto.CommentDto
 import com.m4ykey.network.data.dto.OwnerDto
 import com.m4ykey.network.data.dto.QuestionDetailDto
 import com.m4ykey.network.data.dto.QuestionDto
 import com.m4ykey.network.data.model.Answer
 import com.m4ykey.network.data.model.BadgeCounts
 import com.m4ykey.network.data.model.ClosedDetails
+import com.m4ykey.network.data.model.Comment
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.model.QuestionDetail
@@ -23,6 +25,16 @@ private val DEFAULT_OWNER = Owner(
     badgeCounts = DEFAULT_BADGE_COUNTS,
     location = ""
 )
+
+fun CommentDto.toComment() : Comment =
+    Comment(
+        score = score ?: -1,
+        commentId = comment_id ?: -1,
+        creationDate = creation_date ?: -1,
+        edited = edited ?: false,
+        postId = post_id ?: 1,
+        owner = owner?.toOwner() ?: DEFAULT_OWNER
+    )
 
 fun OwnerDto.toOwner() : Owner =
     Owner(

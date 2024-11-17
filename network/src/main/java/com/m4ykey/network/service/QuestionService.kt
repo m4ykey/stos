@@ -1,6 +1,7 @@
 package com.m4ykey.network.service
 
 import com.m4ykey.network.core.Constants.ANSWER_FILTER
+import com.m4ykey.network.core.Constants.COMMENT_QUESTION_FILTER
 import com.m4ykey.network.core.Constants.DEFAULT_FILTER
 import com.m4ykey.network.core.Constants.DETAIL_FILTER
 import com.m4ykey.network.core.Constants.PAGE
@@ -9,6 +10,7 @@ import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.core.withRetry
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.AnswerDto
+import com.m4ykey.network.data.dto.CommentDto
 import com.m4ykey.network.data.dto.QuestionDetailDto
 import com.m4ykey.network.data.dto.QuestionDto
 import io.ktor.client.HttpClient
@@ -18,6 +20,26 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 
 class QuestionService(private val client : HttpClient) {
+
+    suspend fun getQuestionsComment(
+        page : Int = PAGE,
+        pageSize : Int = PAGE_SIZE,
+        questionId : Int,
+        sort : String = "creation",
+        site : String = SITE,
+        filter : String = COMMENT_QUESTION_FILTER
+    ) : Items<CommentDto> {
+        return withRetry {
+            client.get {
+                url("questions/$questionId/comments")
+                parameter("site", site)
+                parameter("page", page)
+                parameter("pagesize", pageSize)
+                parameter("sort", sort)
+                parameter("filter", filter)
+            }.body()
+        }
+    }
 
     suspend fun getQuestions(
         filter : String = DEFAULT_FILTER,
@@ -94,5 +116,4 @@ class QuestionService(private val client : HttpClient) {
             }.body()
         }
     }
-
 }
