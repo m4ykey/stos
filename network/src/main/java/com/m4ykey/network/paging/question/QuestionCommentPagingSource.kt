@@ -18,7 +18,7 @@ class QuestionCommentPagingSource(
             questionId = questionId
         )
 
-        response.backoff?.let {
+        response.backoff?.takeIf { it > 0}?.let {
             delay(it * 1000L)
         }
 

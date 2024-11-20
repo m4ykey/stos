@@ -42,6 +42,7 @@ fun QuestionList(
     val questionList: LazyPagingItems<Question> = uiState.questionList.collectAsLazyPagingItems()
 
     LazyVerticalColumn(
+        modifier = modifier.fillMaxSize(),
         items = questionList,
         key = { question -> question.questionId },
         onItemContent = { question ->
@@ -53,8 +54,7 @@ fun QuestionList(
             HorizontalDivider()
         },
         onLoadingContent = { CircularProgressIndicator() },
-        onErrorContent = { Text(text = "Error loading items") },
-        modifier = modifier.fillMaxSize()
+        onErrorContent = { Text(text = "Error loading items") }
     )
 }
 

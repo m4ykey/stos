@@ -119,7 +119,13 @@ fun AppNavHost(
             })
         ) { backStackEntry ->
             val questionId = backStackEntry.arguments?.getInt(Screen.QuestionDetailComment.argument) ?: -1
-            QuestionDetailComment(questionId = questionId)
+            QuestionDetailComment(
+                questionId = questionId,
+                onNavigateBack = { navController.navigateUp() },
+                onOwnerClick = { ownerId ->
+                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
+                }
+            )
         }
         composable(route = Screen.FavoriteScreen.route) {
             FavoriteScreen()

@@ -33,7 +33,8 @@ fun CommentDto.toComment() : Comment =
         creationDate = creation_date ?: -1,
         edited = edited ?: false,
         postId = post_id ?: 1,
-        owner = owner?.toOwner() ?: DEFAULT_OWNER
+        owner = owner?.toOwner() ?: DEFAULT_OWNER,
+        bodyMarkdown = body_markdown.orEmpty()
     )
 
 fun OwnerDto.toOwner() : Owner =

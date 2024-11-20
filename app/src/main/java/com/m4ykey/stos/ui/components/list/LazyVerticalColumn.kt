@@ -9,9 +9,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
@@ -21,27 +18,15 @@ import androidx.paging.compose.LazyPagingItems
 @Composable
 fun <T: Any> LazyVerticalColumn(
     modifier: Modifier,
-    items : LazyPagingItems<T>,
-    key : ((item : T) -> Any)? = null,
-    contentType : (index : Int) -> Any? = { null },
-    onItemContent : @Composable (item : T) -> Unit,
-    onLoadingContent : @Composable () -> Unit = { CircularProgressIndicator() },
-    onErrorContent : @Composable () -> Unit = { Text(text = "Error loading items") },
-    loadThreshold : Int = 20
+    items: LazyPagingItems<T>,
+    key: ((item: T) -> Any)? = null,
+    contentType: (index: Int) -> Any? = { null },
+    onItemContent: @Composable (item: T) -> Unit,
+    onLoadingContent: @Composable () -> Unit = { CircularProgressIndicator() },
+    onErrorContent: @Composable () -> Unit = { Text(text = "Error loading items") }
 ) {
     val listState = rememberLazyListState()
-    val firstVisibleItemIndex = remember { derivedStateOf { listState.firstVisibleItemIndex } }
-    val totalItemCount = items.itemCount
-
     val loadState = items.loadState
-    val isEndOfPaginationReached = loadState.append is LoadState.NotLoading &&
-            loadState.append.endOfPaginationReached
-
-    LaunchedEffect(firstVisibleItemIndex.value, totalItemCount) {
-        if (!isEndOfPaginationReached && firstVisibleItemIndex.value >= totalItemCount - loadThreshold) {
-            items.retry()
-        }
-    }
 
     CompositionLocalProvider(
         value = LocalOverscrollConfiguration provides null

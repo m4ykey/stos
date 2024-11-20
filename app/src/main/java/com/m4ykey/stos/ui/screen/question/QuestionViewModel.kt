@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.QuestionRepository
 import com.m4ykey.stos.ui.screen.question.uistate.QuestionAnswerUiState
+import com.m4ykey.stos.ui.screen.question.uistate.QuestionCommentUiState
 import com.m4ykey.stos.ui.screen.question.uistate.QuestionDetailUiState
 import com.m4ykey.stos.ui.screen.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
@@ -18,13 +18,16 @@ class QuestionViewModel(
 ) : ViewModel() {
 
     private val _questions = MutableStateFlow(QuestionUiState())
-    val questions : StateFlow<QuestionUiState> = _questions.asStateFlow()
+    val questions = _questions.asStateFlow()
 
     private val _questionDetail = MutableStateFlow(QuestionDetailUiState())
-    val questionDetail : StateFlow<QuestionDetailUiState> = _questionDetail.asStateFlow()
+    val questionDetail = _questionDetail.asStateFlow()
 
     private val _questionAnswer = MutableStateFlow(QuestionAnswerUiState())
-    val questionAnswer : StateFlow<QuestionAnswerUiState> = _questionAnswer.asStateFlow()
+    val questionAnswer = _questionAnswer.asStateFlow()
+
+    private val _questionComment = MutableStateFlow(QuestionCommentUiState())
+    val questionComment = _questionComment
 
     private var currentSort : String? = null
     private var currentTag : String? = null
@@ -36,6 +39,18 @@ class QuestionViewModel(
     fun getQuestionDetailAnswer(questionId : Int) {
         getQuestionAnswer(questionId)
         getQuestionDetail(questionId)
+    }
+
+    fun getQuestionComments(questionId: Int) {
+        _questionComment.value = QuestionCommentUiState(isLoading = true, isError = null)
+
+        launchPaging(
+            scope = viewModelScope,
+            onDataCollected = { pagingData ->
+                _questionComment.value = QuestionCommentUiState(commentList = pagingData)
+            },
+            source = { repository.getQuestionComment(questionId) }
+        )
     }
 
     private fun getQuestionAnswer(questionId : Int) {

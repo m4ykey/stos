@@ -106,6 +106,9 @@ fun QuestionTagList(
     }
 
     LazyVerticalColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(10.dp),
         items = questionList,
         key = { question -> question.questionId },
         onItemContent = { question ->
@@ -117,9 +120,6 @@ fun QuestionTagList(
             HorizontalDivider()
         },
         onLoadingContent = { CircularProgressIndicator() },
-        onErrorContent = { Text(text = "Error loading items") },
-        modifier = modifier
-            .fillMaxSize()
-            .padding(10.dp)
+        onErrorContent = { Text(text = "Error loading items") }
     )
 }

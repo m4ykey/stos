@@ -6,7 +6,7 @@ object Constants {
     const val DETAIL_FILTER = "!DcE0YS24YL_mqpd5duiXouFXYQRF2u9uqSUSTr1qyAjRO8x_n(h08c"
     const val ANSWER_FILTER = "!PEu5RmW_JeX9sU83vfz-PzWQx6c0mdt.glqia7i2P45JE2"
     const val OWNER_FILTER = "!N6lQEjtcqPMFa(wW4vPUehV.gszds-wq"
-    const val COMMENT_QUESTION_FILTER = "!)Q0(FrJuoyO(4YbM7)w6mnsa"
+    const val COMMENT_QUESTION_FILTER = "!)Q0(FrJuoyO(4YbM7)w6mnop"
 
     const val SITE = "stackoverflow"
     const val PAGE_SIZE = 20

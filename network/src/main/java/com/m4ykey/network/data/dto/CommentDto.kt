@@ -11,5 +11,7 @@ data class CommentDto(
     val edited: Boolean?,
     val owner: OwnerDto?,
     val post_id: Int?,
-    val score: Int?
+    val score: Int?,
+    val body : String?,
+    val body_markdown : String?
 )

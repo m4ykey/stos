@@ -83,6 +83,7 @@ dependencies {
     val lifecycle = "2.8.7"
     val bom = "2024.11.00"
     val paging = "3.3.4"
+    val coil = "3.0.3"
 
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
@@ -99,7 +100,8 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:$paging")
     implementation("androidx.browser:browser:1.8.0")
 
-    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.coil-kt.coil3:coil-compose:$coil")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:$coil")
 
     implementation("io.insert-koin:koin-androidx-compose:4.0.0")
 

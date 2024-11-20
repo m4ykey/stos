@@ -6,5 +6,6 @@ data class Comment(
     val edited: Boolean,
     val owner: Owner,
     val postId: Int,
-    val score: Int
+    val score: Int,
+    val bodyMarkdown : String
 )
