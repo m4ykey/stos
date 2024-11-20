@@ -28,7 +28,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.m4ykey.stos.R
-import com.m4ykey.stos.ui.components.ui.ChipItem
+import com.m4ykey.stos.ui.components.ui.items.ChipItem
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

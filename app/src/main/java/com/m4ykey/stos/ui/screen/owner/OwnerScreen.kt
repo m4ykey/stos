@@ -51,13 +51,13 @@ import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.list.EmptyList
 import com.m4ykey.stos.ui.components.list.LoadStateView
-import com.m4ykey.stos.ui.components.ui.ChipItem
+import com.m4ykey.stos.ui.components.ui.items.ChipItem
 import com.m4ykey.stos.ui.components.ui.ErrorScreen
-import com.m4ykey.stos.ui.components.ui.OwnerProfile
-import com.m4ykey.stos.ui.components.ui.OwnerProfileCard
+import com.m4ykey.stos.ui.components.ui.owner.OwnerProfile
+import com.m4ykey.stos.ui.components.ui.owner.OwnerProfileCard
 import com.m4ykey.stos.ui.components.ui.Progressbar
 import com.m4ykey.stos.ui.components.ui.QuestionCount
-import com.m4ykey.stos.ui.components.ui.ReputationAndBadgeRow
+import com.m4ykey.stos.ui.components.ui.owner.ReputationAndBadgeRow
 import com.m4ykey.stos.ui.screen.question.QuestionItem
 import com.m4ykey.stos.util.openUrlBrowser
 import dev.jeziellago.compose.markdowntext.MarkdownText

@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.components.ui
+package com.m4ykey.stos.ui.components.ui.items
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth

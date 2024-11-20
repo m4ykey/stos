@@ -3,18 +3,12 @@ package com.m4ykey.stos.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.m4ykey.stos.ui.screen.favorite.FavoriteScreen
-import com.m4ykey.stos.ui.screen.owner.OwnerScreen
-import com.m4ykey.stos.ui.screen.question.QuestionDetail
-import com.m4ykey.stos.ui.screen.question.QuestionDetailComment
-import com.m4ykey.stos.ui.screen.question.QuestionHome
-import com.m4ykey.stos.ui.screen.question.QuestionTagList
-import com.m4ykey.stos.ui.screen.search.SearchScreen
-import com.m4ykey.stos.ui.screen.user.UserScreen
+import com.m4ykey.stos.ui.navigation.nav_graph.addFavoriteScreens
+import com.m4ykey.stos.ui.navigation.nav_graph.addOwnerScreens
+import com.m4ykey.stos.ui.navigation.nav_graph.addQuestionScreens
+import com.m4ykey.stos.ui.navigation.nav_graph.addSearchScreens
+import com.m4ykey.stos.ui.navigation.nav_graph.addUserScreens
 
 @Composable
 fun AppNavHost(
@@ -26,109 +20,10 @@ fun AppNavHost(
         startDestination = Screen.QuestionHome.route,
         modifier = modifier
     ) {
-        composable(route = Screen.SearchScreen.route) {
-            SearchScreen(
-                onNavigateBack = { navController.navigateUp() },
-                onOwnerClick = { ownerId ->
-                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
-                },
-                onQuestionClick = { questionId ->
-                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
-                }
-            )
-        }
-        composable(route = Screen.UserScreen.route) {
-            UserScreen(
-                onNavigateBack = { navController.navigateUp() }
-            )
-        }
-        composable(route = Screen.QuestionHome.route) {
-            QuestionHome(
-                onQuestionClick = { questionId ->
-                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
-                },
-                onSearchClick = {
-                    navController.navigate(Screen.SearchScreen.route)
-                },
-                onUserClick = {
-                    navController.navigate(Screen.UserScreen.route)
-                },
-                onOwnerClick = { ownerId ->
-                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
-                }
-            )
-        }
-        composable(
-            route = Screen.QuestionDetail.route,
-            arguments = listOf(navArgument(Screen.QuestionDetail.argument) {
-                type = NavType.IntType
-            })
-        ) { backStackEntry ->
-            val questionId = backStackEntry.arguments?.getInt(Screen.QuestionDetail.argument) ?: -1
-            QuestionDetail(
-                questionId = questionId,
-                onNavigateBack = { navController.navigateUp() },
-                onTagClick = { tag ->
-                    navController.navigate(Screen.QuestionTag.createRoute(tag))
-                },
-                onOwnerClick = { ownerId ->
-                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
-                },
-                onCommentClick = {
-                    navController.navigate(Screen.QuestionDetailComment.createRoute(questionId))
-                }
-            )
-        }
-        composable(
-            route = Screen.QuestionTag.route,
-            arguments = listOf(navArgument(Screen.QuestionTag.argument) {
-                type = NavType.StringType
-            })
-        ) { backStackEntry ->
-            val tag = backStackEntry.arguments?.getString(Screen.QuestionTag.argument) ?: ""
-            QuestionTagList(
-                tag = tag,
-                onNavigateBack = { navController.navigateUp() },
-                onQuestionClick = { questionId ->
-                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
-                },
-                onOwnerClick = { ownerId ->
-                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
-                }
-            )
-        }
-        composable(
-            route = Screen.OwnerScreen.route,
-            arguments = listOf(navArgument(Screen.OwnerScreen.argument) {
-                type = NavType.IntType
-            })
-        ) { backStackEntry ->
-            val ownerId = backStackEntry.arguments?.getInt(Screen.OwnerScreen.argument) ?: -1
-            OwnerScreen(
-                onNavigateBack = { navController.navigateUp() },
-                ownerId = ownerId,
-                onQuestionClick = { questionId ->
-                    navController.navigate(Screen.QuestionDetail.createRoute(questionId))
-                }
-            )
-        }
-        composable(
-            route = Screen.QuestionDetailComment.route,
-            arguments = listOf(navArgument(Screen.QuestionDetailComment.argument) {
-                type = NavType.IntType
-            })
-        ) { backStackEntry ->
-            val questionId = backStackEntry.arguments?.getInt(Screen.QuestionDetailComment.argument) ?: -1
-            QuestionDetailComment(
-                questionId = questionId,
-                onNavigateBack = { navController.navigateUp() },
-                onOwnerClick = { ownerId ->
-                    navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
-                }
-            )
-        }
-        composable(route = Screen.FavoriteScreen.route) {
-            FavoriteScreen()
-        }
+        addSearchScreens(navController)
+        addUserScreens(navController)
+        addQuestionScreens(navController)
+        addOwnerScreens(navController)
+        addFavoriteScreens(navController)
     }
 }

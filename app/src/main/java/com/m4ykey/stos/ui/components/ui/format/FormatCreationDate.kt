@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.components.ui
+package com.m4ykey.stos.ui.components.ui.format
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

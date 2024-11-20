@@ -58,9 +58,9 @@ import com.m4ykey.network.data.model.QuestionDetail
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.list.LoadStateView
 import com.m4ykey.stos.ui.components.ui.ErrorScreen
-import com.m4ykey.stos.ui.components.ui.OwnerProfile
+import com.m4ykey.stos.ui.components.ui.owner.OwnerProfile
 import com.m4ykey.stos.ui.components.ui.Progressbar
-import com.m4ykey.stos.ui.components.ui.formatCreationDate
+import com.m4ykey.stos.ui.components.ui.format.formatCreationDate
 import com.m4ykey.stos.util.openUrlBrowser
 import com.m4ykey.stos.util.processHtmlEntities
 import com.m4ykey.stos.util.shareUrl

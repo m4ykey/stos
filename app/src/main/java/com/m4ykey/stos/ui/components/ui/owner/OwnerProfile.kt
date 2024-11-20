@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.components.ui
+package com.m4ykey.stos.ui.components.ui.owner
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
 import com.m4ykey.network.data.model.Owner
 import com.m4ykey.stos.R
+import com.m4ykey.stos.ui.components.ui.Progressbar
 import com.m4ykey.stos.util.formatReputation
 import com.m4ykey.stos.util.processHtmlEntities
 import dev.jeziellago.compose.markdowntext.MarkdownText

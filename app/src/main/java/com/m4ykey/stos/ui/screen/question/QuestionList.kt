@@ -25,9 +25,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.stos.R
 import com.m4ykey.stos.ui.components.list.LazyVerticalColumn
-import com.m4ykey.stos.ui.components.ui.OwnerProfile
+import com.m4ykey.stos.ui.components.ui.owner.OwnerProfile
 import com.m4ykey.stos.ui.components.ui.QuestionCount
-import com.m4ykey.stos.ui.components.ui.formatCreationDate
+import com.m4ykey.stos.ui.components.ui.format.formatCreationDate
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.koin.androidx.compose.koinViewModel
 

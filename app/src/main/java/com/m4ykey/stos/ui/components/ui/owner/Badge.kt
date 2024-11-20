@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.components.ui
+package com.m4ykey.stos.ui.components.ui.owner
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

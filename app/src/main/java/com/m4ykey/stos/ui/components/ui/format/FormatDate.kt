@@ -1,4 +1,4 @@
-package com.m4ykey.stos.ui.components.ui
+package com.m4ykey.stos.ui.components.ui.format
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
