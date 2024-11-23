@@ -27,7 +27,7 @@ class QuestionViewModel(
     val questionAnswer = _questionAnswer.asStateFlow()
 
     private val _questionComment = MutableStateFlow(QuestionCommentUiState())
-    val questionComment = _questionComment
+    val questionComment = _questionComment.asStateFlow()
 
     private var currentSort : String? = null
     private var currentTag : String? = null
@@ -46,10 +46,10 @@ class QuestionViewModel(
 
         launchPaging(
             scope = viewModelScope,
+            source = { repository.getQuestionComment(questionId) },
             onDataCollected = { pagingData ->
                 _questionComment.value = QuestionCommentUiState(commentList = pagingData)
-            },
-            source = { repository.getQuestionComment(questionId) }
+            }
         )
     }
 
