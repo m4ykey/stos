@@ -1,13 +1,15 @@
 package com.m4ykey.network.di
 
+import android.app.Application
 import android.util.Log
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.m4ykey.network.BuildConfig.STACK_API_KEY
 import com.m4ykey.network.service.OwnerService
 import com.m4ykey.network.service.QuestionService
 import com.m4ykey.network.service.SearchService
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.HttpCallValidator
+import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -23,7 +25,16 @@ import org.koin.dsl.module
 
 val networkModule = module {
     single {
-        HttpClient(CIO) {
+        val context : Application = get()
+
+        val chuckerInterceptor = ChuckerInterceptor.Builder(context)
+            .collector(ChuckerCollector(context))
+            .maxContentLength(250000L)
+            .redactHeaders(emptySet())
+            .alwaysReadResponseBody(false)
+            .build()
+
+        HttpClient(OkHttp) {
             defaultRequest {
                 url {
                     protocol = URLProtocol.HTTPS
@@ -35,10 +46,6 @@ val networkModule = module {
 
             install(UserAgent) {
                 agent = "MyApp/1.0"
-            }
-
-            install(HttpCallValidator) {
-
             }
 
             install(Logging) {
@@ -64,6 +71,10 @@ val networkModule = module {
                 requestTimeoutMillis = 10_000
                 connectTimeoutMillis = 10_000
                 socketTimeoutMillis = 10_000
+            }
+
+            engine {
+                addInterceptor(chuckerInterceptor)
             }
         }
     }

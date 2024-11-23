@@ -47,6 +47,7 @@ dependencies {
 
     val ktor = "3.0.1"
     val serialization = "1.7.3"
+    val chucker = "4.0.0"
 
     implementation("io.ktor:ktor-client-core:$ktor")
     implementation("io.ktor:ktor-client-serialization:$ktor")
@@ -64,6 +65,9 @@ dependencies {
     implementation("androidx.paging:paging-compose:3.3.4")
 
     implementation("io.insert-koin:koin-androidx-compose:4.0.0")
+
+    debugImplementation("com.github.chuckerteam.chucker:library:$chucker")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:$chucker")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
