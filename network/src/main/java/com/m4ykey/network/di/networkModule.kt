@@ -5,9 +5,9 @@ import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.m4ykey.network.BuildConfig.STACK_API_KEY
-import com.m4ykey.network.service.OwnerService
-import com.m4ykey.network.service.QuestionService
-import com.m4ykey.network.service.SearchService
+import com.m4ykey.network.service.owner.KtorOwnerService
+import com.m4ykey.network.service.question.KtorQuestionService
+import com.m4ykey.network.service.search.KtorSearchService
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
@@ -79,7 +79,7 @@ val networkModule = module {
         }
     }
 
-    single { QuestionService(get()) }
-    single { OwnerService(get()) }
-    single { SearchService(get()) }
+    single { KtorQuestionService(get()) }
+    single { KtorOwnerService(get()) }
+    single { KtorSearchService(get()) }
 }

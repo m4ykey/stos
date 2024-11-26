@@ -6,7 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Items<T>(
     @SerialName("items")
-    val items : List<T> = emptyList(),
-    @SerialName("backoff")
-    val backoff : Int? = 0
+    val items : List<T> = emptyList()
 )

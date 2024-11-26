@@ -71,12 +71,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun QuestionDetail(
     modifier: Modifier = Modifier,
-    questionId : Int,
-    onNavigateBack : () -> Unit,
+    questionId: Int,
+    onNavigateBack: () -> Unit,
     onTagClick: (String) -> Unit,
     viewModel: QuestionViewModel = koinViewModel(),
-    onOwnerClick: (Int) -> Unit,
-    onCommentClick: (Int) -> Unit
+    onOwnerClick: (Int) -> Unit
 ) {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -129,8 +128,7 @@ fun QuestionDetail(
                     modifier = modifier.padding(innerPadding),
                     questionDetail = uiDetailState.questionDetail!!,
                     onTagClick = onTagClick,
-                    onOwnerClick = onOwnerClick,
-                    onCommentClick = onCommentClick
+                    onOwnerClick = onOwnerClick
                 )
             }
         }
@@ -144,8 +142,7 @@ fun QuestionDetailContent(
     questionDetail: QuestionDetail,
     onTagClick: (String) -> Unit,
     viewModel: QuestionViewModel = koinViewModel(),
-    onOwnerClick : (Int) -> Unit,
-    onCommentClick: (Int) -> Unit
+    onOwnerClick : (Int) -> Unit
 ) {
     val uiAnswerState by viewModel.questionAnswer.collectAsState()
     val answerList : LazyPagingItems<Answer> = uiAnswerState.questionAnswerList.collectAsLazyPagingItems()
@@ -189,8 +186,7 @@ fun QuestionDetailContent(
             item {
                 DisplayOwnerWithComments(
                     onOwnerClick = onOwnerClick,
-                    questionDetail = questionDetail,
-                    onCommentClick = onCommentClick
+                    questionDetail = questionDetail
                 )
             }
             item { HorizontalDivider() }
@@ -234,8 +230,7 @@ fun QuestionDetailContent(
 fun DisplayOwnerWithComments(
     modifier: Modifier = Modifier,
     questionDetail: QuestionDetail,
-    onOwnerClick: (Int) -> Unit,
-    onCommentClick : (Int) -> Unit
+    onOwnerClick: (Int) -> Unit
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -257,7 +252,7 @@ fun DisplayOwnerWithComments(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.clickable { onCommentClick(questionDetail.questionId) }
+            modifier = modifier.clickable {  }
         ) {
             Icon(
                 contentDescription = stringResource(R.string.comments),

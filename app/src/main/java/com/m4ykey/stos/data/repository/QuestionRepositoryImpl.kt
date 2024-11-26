@@ -4,26 +4,20 @@ import androidx.paging.PagingData
 import com.m4ykey.network.core.createPager
 import com.m4ykey.network.core.safeApiCall
 import com.m4ykey.network.data.model.Answer
-import com.m4ykey.network.data.model.Comment
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.model.QuestionDetail
 import com.m4ykey.network.data.repository.QuestionRepository
 import com.m4ykey.network.data.toQuestionDetail
 import com.m4ykey.network.paging.question.QuestionAnswerPagingSource
-import com.m4ykey.network.paging.question.QuestionCommentPagingSource
 import com.m4ykey.network.paging.question.QuestionPagingSource
 import com.m4ykey.network.paging.question.QuestionTagPagingSource
-import com.m4ykey.network.service.QuestionService
+import com.m4ykey.network.service.question.KtorQuestionService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class QuestionRepositoryImpl(private val service : QuestionService) : QuestionRepository {
-
-    override suspend fun getQuestionComment(questionId: Int): Flow<PagingData<Comment>> = flow<PagingData<Comment>> {
-        QuestionCommentPagingSource(questionId = questionId, service = service)
-    }.flowOn(Dispatchers.IO)
+class QuestionRepositoryImpl(private val service : KtorQuestionService) : QuestionRepository {
 
     override suspend fun getQuestions(sort  : String) : Flow<PagingData<Question>> = createPager {
         QuestionPagingSource(service, sort)

@@ -1,16 +1,8 @@
-package com.m4ykey.network.service
+package com.m4ykey.network.service.question
 
-import com.m4ykey.network.core.Constants.ANSWER_FILTER
-import com.m4ykey.network.core.Constants.COMMENT_QUESTION_FILTER
-import com.m4ykey.network.core.Constants.DEFAULT_FILTER
-import com.m4ykey.network.core.Constants.DETAIL_FILTER
-import com.m4ykey.network.core.Constants.PAGE
-import com.m4ykey.network.core.Constants.PAGE_SIZE
-import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.core.withRetry
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.AnswerDto
-import com.m4ykey.network.data.dto.CommentDto
 import com.m4ykey.network.data.dto.QuestionDetailDto
 import com.m4ykey.network.data.dto.QuestionDto
 import io.ktor.client.HttpClient
@@ -19,35 +11,17 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 
-class QuestionService(private val client : HttpClient) {
+class KtorQuestionService(
+    private val client : HttpClient
+) : QuestionService {
 
-    suspend fun getQuestionsComment(
-        page : Int = PAGE,
-        pageSize : Int = PAGE_SIZE,
-        questionId : Int,
-        sort : String = "creation",
-        site : String = SITE,
-        filter : String = COMMENT_QUESTION_FILTER
-    ) : Items<CommentDto> {
-        return withRetry {
-            client.get {
-                url("questions/$questionId/comments")
-                parameter("site", site)
-                parameter("page", page)
-                parameter("pagesize", pageSize)
-                parameter("sort", sort)
-                parameter("filter", filter)
-            }.body()
-        }
-    }
-
-    suspend fun getQuestions(
-        filter : String = DEFAULT_FILTER,
+    override suspend fun getQuestions(
+        filter : String,
         sort : String,
-        page : Int = PAGE,
-        pageSize : Int = PAGE_SIZE,
-        site : String = SITE,
-        order : String = "desc"
+        page : Int,
+        pageSize : Int,
+        site : String,
+        order : String
     ) : Items<QuestionDto> {
         return withRetry {
             client.get {
@@ -62,10 +36,10 @@ class QuestionService(private val client : HttpClient) {
         }
     }
 
-    suspend fun getQuestionDetail(
-        filter: String = DETAIL_FILTER,
+    override suspend fun getQuestionDetail(
+        filter: String,
         questionId : Int,
-        site : String = SITE
+        site : String
     ) : Items<QuestionDetailDto> {
         return withRetry {
             client.get {
@@ -76,14 +50,14 @@ class QuestionService(private val client : HttpClient) {
         }
     }
 
-    suspend fun getQuestionTag(
-        filter: String = DEFAULT_FILTER,
+    override suspend fun getQuestionTag(
+        filter: String,
         tag: String,
         sort: String,
-        page: Int = PAGE,
-        site : String = SITE,
-        order : String = "desc",
-        pageSize : Int = PAGE_SIZE
+        page: Int,
+        site : String,
+        order : String,
+        pageSize : Int
     ) : Items<QuestionDto> {
         return withRetry {
             client.get {
@@ -99,12 +73,12 @@ class QuestionService(private val client : HttpClient) {
         }
     }
 
-    suspend fun getQuestionAnswer(
+    override suspend fun getQuestionAnswer(
         questionId : Int,
-        site : String = SITE,
-        page : Int = PAGE,
-        pageSize: Int = PAGE_SIZE,
-        filter: String = ANSWER_FILTER
+        site : String,
+        page : Int,
+        pageSize: Int,
+        filter: String
     ) : Items<AnswerDto> {
         return withRetry {
             client.get {

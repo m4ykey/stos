@@ -1,9 +1,5 @@
-package com.m4ykey.network.service
+package com.m4ykey.network.service.search
 
-import com.m4ykey.network.core.Constants.DEFAULT_FILTER
-import com.m4ykey.network.core.Constants.PAGE
-import com.m4ykey.network.core.Constants.PAGE_SIZE
-import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.core.withRetry
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.QuestionDto
@@ -13,16 +9,18 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 
-class SearchService(private val client: HttpClient) {
+class KtorSearchService(
+    private val client: HttpClient
+) : SearchService {
 
-    suspend fun searchQuestions(
-        page : Int = PAGE,
-        pageSize : Int = PAGE_SIZE,
-        filter : String = DEFAULT_FILTER,
-        inTitle : String? = null,
-        site : String = SITE,
-        sort : String = "activity",
-        tagged : String? = null
+    override suspend fun searchQuestions(
+        page : Int,
+        pageSize : Int,
+        filter : String,
+        inTitle : String?,
+        site : String,
+        sort : String,
+        tagged : String?
     ) : Items<QuestionDto> {
         return withRetry {
             client.get {

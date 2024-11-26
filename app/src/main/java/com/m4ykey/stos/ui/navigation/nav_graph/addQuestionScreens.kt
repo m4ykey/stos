@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.m4ykey.stos.ui.navigation.Screen
 import com.m4ykey.stos.ui.screen.question.QuestionDetail
-import com.m4ykey.stos.ui.screen.question.QuestionDetailComment
 import com.m4ykey.stos.ui.screen.question.QuestionHome
 import com.m4ykey.stos.ui.screen.question.QuestionTagList
 
@@ -43,9 +42,6 @@ fun NavGraphBuilder.addQuestionScreens(navController : NavHostController) {
             },
             onOwnerClick = { ownerId ->
                 navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
-            },
-            onCommentClick = {
-                navController.navigate(Screen.QuestionDetailComment.createRoute(questionId))
             }
         )
     }
@@ -62,21 +58,6 @@ fun NavGraphBuilder.addQuestionScreens(navController : NavHostController) {
             onQuestionClick = { questionId ->
                 navController.navigate(Screen.QuestionDetail.createRoute(questionId))
             },
-            onOwnerClick = { ownerId ->
-                navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
-            }
-        )
-    }
-    composable(
-        route = Screen.QuestionDetailComment.route,
-        arguments = listOf(navArgument(Screen.QuestionDetailComment.argument) {
-            type = NavType.IntType
-        })
-    ) { backStackEntry ->
-        val questionId = backStackEntry.arguments?.getInt(Screen.QuestionDetailComment.argument) ?: -1
-        QuestionDetailComment(
-            questionId = questionId,
-            onNavigateBack = { navController.navigateUp() },
             onOwnerClick = { ownerId ->
                 navController.navigate(Screen.OwnerScreen.createRoute(ownerId))
             }

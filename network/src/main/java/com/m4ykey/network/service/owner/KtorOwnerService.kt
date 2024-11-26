@@ -1,11 +1,5 @@
-package com.m4ykey.network.service
+package com.m4ykey.network.service.owner
 
-import com.m4ykey.network.core.Constants.ANSWER_FILTER
-import com.m4ykey.network.core.Constants.DEFAULT_FILTER
-import com.m4ykey.network.core.Constants.OWNER_FILTER
-import com.m4ykey.network.core.Constants.PAGE
-import com.m4ykey.network.core.Constants.PAGE_SIZE
-import com.m4ykey.network.core.Constants.SITE
 import com.m4ykey.network.core.withRetry
 import com.m4ykey.network.data.Items
 import com.m4ykey.network.data.dto.AnswerDto
@@ -17,11 +11,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 
-class OwnerService(private val client : HttpClient) {
+class KtorOwnerService(
+    private val client : HttpClient
+) : OwnerService {
 
-    suspend fun getOwnerById(
-        site : String = SITE,
-        filter : String = OWNER_FILTER,
+    override suspend fun getOwnerById(
+        site : String,
+        filter : String,
         ownerId : Int
     ) : Items<OwnerDto> {
         return withRetry {
@@ -33,13 +29,13 @@ class OwnerService(private val client : HttpClient) {
         }
     }
 
-    suspend fun getOwnerQuestions(
-        site : String = SITE,
+    override suspend fun getOwnerQuestions(
+        site : String,
         ownerId : Int,
-        filter : String = DEFAULT_FILTER,
-        page : Int = PAGE,
-        pageSize : Int = PAGE_SIZE,
-        sort : String = "creation"
+        filter : String,
+        page : Int,
+        pageSize : Int,
+        sort : String
     ) : Items<QuestionDto> {
         return withRetry {
             client.get {
@@ -53,13 +49,13 @@ class OwnerService(private val client : HttpClient) {
         }
     }
 
-    suspend fun getOwnerAnswers(
-        filter : String = ANSWER_FILTER,
-        site : String = SITE,
+    override suspend fun getOwnerAnswers(
+        filter : String,
+        site : String,
         ownerId: Int,
-        page : Int = PAGE,
-        pageSize : Int = PAGE_SIZE,
-        sort : String = "creation"
+        page : Int,
+        pageSize : Int,
+        sort : String
     ) : Items<AnswerDto> {
         return withRetry {
             client.get {

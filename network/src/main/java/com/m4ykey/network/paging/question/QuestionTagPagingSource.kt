@@ -1,9 +1,11 @@
 package com.m4ykey.network.paging.question
 
 import com.m4ykey.network.core.BasePagingSource
+import com.m4ykey.network.core.Constants.MAX_RETRIES
+import com.m4ykey.network.core.Constants.RETRY_DELAY_MS
 import com.m4ykey.network.data.model.Question
 import com.m4ykey.network.data.toQuestion
-import com.m4ykey.network.service.QuestionService
+import com.m4ykey.network.service.question.QuestionService
 import kotlinx.coroutines.delay
 
 class QuestionTagPagingSource(
@@ -13,17 +15,20 @@ class QuestionTagPagingSource(
 ) : BasePagingSource<Question>(service) {
 
     override suspend fun loadPage(page: Int, pageSize: Int): List<Question> {
-        val response = service.getQuestionTag(
-            tag = tag,
-            sort = sort,
-            page = page,
-            pageSize = pageSize
-        )
-
-        response.backoff?.takeIf { it > 0}?.let {
-            delay(it * 1000L)
+        repeat(MAX_RETRIES) { attempt ->
+            try {
+                val response = service.getQuestionTag(
+                    page = page,
+                    pageSize = pageSize,
+                    sort = sort,
+                    tag = tag
+                )
+                return response.items.map { it.toQuestion() }
+            } catch (e : Exception) {
+                if (attempt == MAX_RETRIES - 1) throw e
+                delay(RETRY_DELAY_MS)
+            }
         }
-
-        return response.items.map { it.toQuestion() }
+        throw IllegalStateException("Unreachable code")
     }
 }

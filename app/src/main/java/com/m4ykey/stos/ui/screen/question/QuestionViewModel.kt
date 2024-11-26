@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.m4ykey.network.core.launchPaging
 import com.m4ykey.network.data.repository.QuestionRepository
 import com.m4ykey.stos.ui.screen.question.uistate.QuestionAnswerUiState
-import com.m4ykey.stos.ui.screen.question.uistate.QuestionCommentUiState
 import com.m4ykey.stos.ui.screen.question.uistate.QuestionDetailUiState
 import com.m4ykey.stos.ui.screen.question.uistate.QuestionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,9 +25,6 @@ class QuestionViewModel(
     private val _questionAnswer = MutableStateFlow(QuestionAnswerUiState())
     val questionAnswer = _questionAnswer.asStateFlow()
 
-    private val _questionComment = MutableStateFlow(QuestionCommentUiState())
-    val questionComment = _questionComment.asStateFlow()
-
     private var currentSort : String? = null
     private var currentTag : String? = null
 
@@ -39,18 +35,6 @@ class QuestionViewModel(
     fun getQuestionDetailAnswer(questionId : Int) {
         getQuestionAnswer(questionId)
         getQuestionDetail(questionId)
-    }
-
-    fun getQuestionComments(questionId: Int) {
-        _questionComment.value = QuestionCommentUiState(isLoading = true, isError = null)
-
-        launchPaging(
-            scope = viewModelScope,
-            source = { repository.getQuestionComment(questionId) },
-            onDataCollected = { pagingData ->
-                _questionComment.value = QuestionCommentUiState(commentList = pagingData)
-            }
-        )
     }
 
     private fun getQuestionAnswer(questionId : Int) {

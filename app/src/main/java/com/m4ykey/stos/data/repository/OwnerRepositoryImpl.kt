@@ -10,13 +10,13 @@ import com.m4ykey.network.data.repository.OwnerRepository
 import com.m4ykey.network.data.toOwner
 import com.m4ykey.network.paging.owner.OwnerAnswerPagingSource
 import com.m4ykey.network.paging.owner.OwnerQuestionPagingSource
-import com.m4ykey.network.service.OwnerService
+import com.m4ykey.network.service.owner.KtorOwnerService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class OwnerRepositoryImpl(private val service : OwnerService) : OwnerRepository {
+class OwnerRepositoryImpl(private val service : KtorOwnerService) : OwnerRepository {
 
     override suspend fun getOwnerById(ownerId: Int): Flow<Owner> = flow {
         val result = safeApiCall {
