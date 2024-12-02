@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.compose.rememberNavController
-import com.m4ykey.stos.ui.navigation.AppNavigation
 import com.m4ykey.stos.ui.theme.StosTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,11 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
-            val navHostController = rememberNavController()
-
             StosTheme {
-                AppNavigation(navHostController = navHostController)
             }
         }
     }
