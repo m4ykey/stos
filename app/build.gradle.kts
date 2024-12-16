@@ -78,11 +78,9 @@ android {
 
 dependencies {
 
-    implementation(project(":network"))
-
     val lifecycle = "2.8.7"
-    val bom = "2024.11.00"
-    val paging = "3.3.4"
+    val bom = "2024.12.01"
+    val paging = "3.3.5"
     val coil = "3.0.3"
 
     implementation("androidx.core:core-ktx:1.15.0")
@@ -93,9 +91,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.navigation:navigation-compose:2.8.4")
+    implementation("androidx.navigation:navigation-compose:2.8.5")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
-    implementation("androidx.compose.material:material-icons-extended:1.7.5")
+    implementation("androidx.compose.material:material-icons-extended:1.7.6")
     implementation("androidx.paging:paging-compose:$paging")
     implementation("androidx.paging:paging-runtime-ktx:$paging")
     implementation("androidx.browser:browser:1.8.0")
@@ -105,10 +103,8 @@ dependencies {
 
     implementation("io.insert-koin:koin-androidx-compose:4.0.0")
 
-    implementation("com.google.firebase:firebase-crashlytics:19.2.1")
-    implementation("com.google.firebase:firebase-perf:21.0.2")
-
-    implementation("com.github.jeziellago:compose-markdown:0.5.4")
+    implementation("com.google.firebase:firebase-crashlytics:19.3.0")
+    implementation("com.google.firebase:firebase-perf:21.0.3")
 
     implementation("org.jetbrains:annotations:24.1.0")
 
