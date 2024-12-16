@@ -1,8 +1,8 @@
 package com.m4ykey.stos
 
 import android.app.Application
-import com.m4ykey.network.di.networkModule
-import com.m4ykey.stos.di.appModule
+import com.m4ykey.stos.di.networkModule
+import com.m4ykey.stos.di.repositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -11,7 +11,7 @@ class StosApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@StosApp)
-            modules(appModule, networkModule)
+            modules(networkModule, repositoryModule)
         }
     }
 }
