@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Keep
 data class BadgeCountsDto(
-    val bronze : Int,
-    val silver : Int,
-    val gold : Int
+    val bronze : Int? = null,
+    val silver : Int? = null,
+    val gold : Int? = null
 )

@@ -18,23 +18,23 @@ fun BadgeCountsDto.toBadgeCounts() : BadgeCounts {
 fun OwnerDto.toOwner() : Owner {
     return Owner(
         link = link,
-        displayName = display_name,
-        profileImage = profile_image,
+        displayName = displayName,
+        profileImage = profileImage,
         reputation = reputation,
-        userId = user_id,
-        badgeCounts = badgeCounts.toBadgeCounts()
+        userId = userId,
+        badgeCounts = badgeCounts?.toBadgeCounts()
     )
 }
 
 fun QuestionDto.toQuestion() : Question {
     return Question(
-        answerCount = answer_count,
-        creationDate = creation_date,
-        questionId = question_id,
-        downVoteCount = down_vote_count,
-        title = title,
-        viewCount = view_count,
+        answerCount = answerCount,
+        creationDate = creationDate,
+        questionId = questionId,
+        downVoteCount = downVoteCount,
+        title = title.orEmpty(),
+        viewCount = viewCount,
         owner = owner.toOwner(),
-        upVoteCount = up_vote_count
+        upVoteCount = upVoteCount
     )
 }

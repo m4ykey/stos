@@ -18,6 +18,6 @@ class QuestionPagingSource(
             sort = sort,
             order = order
         )
-        return response.items.map { it.toQuestion() }
+        return response.items?.map { it.toQuestion() }!!
     }
 }

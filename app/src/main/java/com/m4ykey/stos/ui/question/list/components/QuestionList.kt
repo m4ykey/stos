@@ -1,5 +1,6 @@
 package com.m4ykey.stos.ui.question.list.components
 
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,8 +25,9 @@ fun QuestionList(
             key = { index ->
                 questions[index]?.questionId ?: index
             }
-        ) { question ->
-            val item = questions[question]
+        ) { index ->
+            val item = questions[index]
+            Log.i("QuestionList", "Processing item at index $index: ${item?.questionId ?: "null"}")
             if (item != null) {
                 QuestionListItem(
                     question = item,
@@ -33,6 +35,8 @@ fun QuestionList(
                         onQuestionClick(item)
                     }
                 )
+            } else {
+                Log.i("QuestionList", "Item at index $index is null")
             }
         }
     }

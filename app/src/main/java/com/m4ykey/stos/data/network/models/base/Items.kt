@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Keep
 data class Items<T>(
-    val items : List<T>
+    val items : List<T>? = emptyList()
 )

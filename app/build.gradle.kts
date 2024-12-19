@@ -104,6 +104,7 @@ dependencies {
     val chucker = "4.0.0"
     val markwon = "4.6.2"
     val room = "2.6.1"
+    val koin = "4.0.0"
 
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
@@ -123,7 +124,11 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:$coil")
     implementation("io.coil-kt.coil3:coil-network-okhttp:$coil")
 
-    implementation("io.insert-koin:koin-androidx-compose:4.0.0")
+    implementation("io.insert-koin:koin-androidx-compose:$koin")
+    implementation("io.insert-koin:koin-android:$koin")
+    implementation("io.insert-koin:koin-core:$koin")
+    implementation("io.insert-koin:koin-compose:$koin")
+    implementation("io.insert-koin:koin-compose-viewmodel:$koin")
 
     implementation("com.google.firebase:firebase-crashlytics:19.3.0")
     implementation("com.google.firebase:firebase-perf:21.0.3")
