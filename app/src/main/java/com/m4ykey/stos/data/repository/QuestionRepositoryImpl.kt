@@ -11,11 +11,7 @@ class QuestionRepositoryImpl(
     private val service : QuestionService
 ) : QuestionRepository {
 
-    override fun getQuestions(sort : String, order : String): Flow<PagingData<Question>> = createPager {
-        QuestionPagingSource(
-            order = order,
-            sort = sort,
-            service = service
-        )
+    override fun getQuestions(sort: String, order: String): Flow<PagingData<Question>> = createPager {
+        QuestionPagingSource(sort = sort, order = order, service = service)
     }
 }
