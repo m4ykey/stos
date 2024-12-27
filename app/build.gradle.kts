@@ -102,7 +102,6 @@ dependencies {
     val ktor = "3.0.1"
     val serialization = "1.7.3"
     val chucker = "4.0.0"
-    val markwon = "4.6.2"
     val room = "2.6.1"
     val koin = "4.0.0"
 
@@ -143,14 +142,7 @@ dependencies {
     ksp("androidx.room:room-compiler:$room")
     implementation("androidx.room:room-ktx:$room")
 
-    implementation("io.noties.markwon:core:$markwon")
-    implementation("io.noties.markwon:ext-strikethrough:$markwon")
-    implementation("io.noties.markwon:ext-tables:$markwon")
-    implementation("io.noties.markwon:ext-tasklist:$markwon")
-    implementation("io.noties.markwon:html:$markwon")
-    implementation("io.noties.markwon:image-coil:$markwon")
-    implementation("io.noties.markwon:inline-parser:$markwon")
-    implementation("io.noties.markwon:linkify:$markwon")
+    implementation("com.github.jeziellago:compose-markdown:0.5.6")
 
     implementation("io.ktor:ktor-client-core:$ktor")
     implementation("io.ktor:ktor-client-serialization:$ktor")
@@ -167,8 +159,6 @@ dependencies {
 
     implementation("androidx.paging:paging-compose:$paging")
     implementation("androidx.paging:paging-runtime-ktx:$paging")
-
-    implementation("io.insert-koin:koin-androidx-compose:4.0.0")
 
     debugImplementation("com.github.chuckerteam.chucker:library:$chucker")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:$chucker")

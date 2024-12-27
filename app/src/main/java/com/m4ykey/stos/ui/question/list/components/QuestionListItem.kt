@@ -12,12 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.R
 import com.m4ykey.stos.domain.models.questions.Question
 import com.m4ykey.stos.ui.owner.components.OwnerCard
 import com.m4ykey.stos.ui.owner.components.formatReputation
+import dev.jeziellago.compose.markdowntext.MarkdownText
 
 @Composable
 fun QuestionListItem(
@@ -39,9 +41,11 @@ fun QuestionListItem(
             )
             Spacer(modifier = Modifier.width(5.dp))
             Column {
-                Text(
-                    text = question.owner.displayName,
-                    fontSize = 15.sp
+                MarkdownText(
+                    markdown = question.owner.displayName,
+                    style = TextStyle(
+                        fontSize = 15.sp
+                    )
                 )
                 Text(
                     text = formatReputation(question.owner.reputation),
@@ -54,8 +58,8 @@ fun QuestionListItem(
                 fontSize = 14.sp
             )
         }
-        Text(
-            text = question.title
+        MarkdownText(
+            markdown = question.title
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

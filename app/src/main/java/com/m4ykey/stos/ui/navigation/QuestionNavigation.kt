@@ -8,7 +8,10 @@ import com.m4ykey.stos.ui.question.list.QuestionListScreenMain
 fun NavGraphBuilder.questionNavigation(navController : NavHostController) {
     composable(route = Route.QuestionList.route) {
         QuestionListScreenMain(
-            onQuestionClick = { questionId -> }
+            onQuestionClick = { questionId -> },
+            onSearchClick = {
+
+            }
         )
     }
 }

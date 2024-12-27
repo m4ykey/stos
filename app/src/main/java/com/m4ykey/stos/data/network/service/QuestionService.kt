@@ -12,10 +12,18 @@ import io.ktor.client.request.url
 
 class QuestionService(private val client : HttpClient) {
 
+    suspend fun searchQuestions(
+
+    ) : Items<QuestionDto> {
+        return client.get {
+
+        }.body()
+    }
+
     suspend fun getQuestions(
         site : String = SITE,
-        page : Int = 1,
-        pageSize : Int = 10,
+        page : Int,
+        pageSize : Int,
         filter : String = QUESTION_FILTER,
         sort : String,
         order : String
