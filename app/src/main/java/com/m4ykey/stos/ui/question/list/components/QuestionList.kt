@@ -1,11 +1,14 @@
 package com.m4ykey.stos.ui.question.list.components
 
 import android.util.Log
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.m4ykey.stos.domain.models.questions.Question
 
@@ -34,6 +37,9 @@ fun QuestionList(
                     onClick = {
                         onQuestionClick(item)
                     }
+                )
+                HorizontalDivider(
+                    modifier = modifier.padding(horizontal = 5.dp)
                 )
             } else {
                 Log.i("QuestionList", "Item at index $index is null")
