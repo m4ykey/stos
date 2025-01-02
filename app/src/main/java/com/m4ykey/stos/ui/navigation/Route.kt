@@ -6,4 +6,8 @@ object Route {
         const val route = "question_list"
     }
 
+    object QuestionSearch {
+        const val route = "question_search"
+    }
+
 }

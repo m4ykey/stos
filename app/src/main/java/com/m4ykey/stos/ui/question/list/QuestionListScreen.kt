@@ -32,19 +32,57 @@ import com.m4ykey.stos.ui.question.list.components.ChipList
 import com.m4ykey.stos.ui.question.list.components.QuestionList
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionListScreen(
-    state : QuestionListState,
+    state: QuestionListState,
     onAction: (QuestionListAction) -> Unit,
-    onSearchClick: () -> Unit
+    modifier: Modifier = Modifier
 ) {
+    state.errorMessage?.let {
+        Text(
+            text = state.errorMessage.toString(),
+            textAlign = TextAlign.Center
+        )
+    }
+    if (state.isLoading) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            CircularProgressIndicator()
+        }
+    } else {
+        Column(
+            modifier = modifier.fillMaxSize()
+        ) {
+            ChipList(
+                selectedChip = state.sort,
+                onChipSelected = { selectedSort ->
+                    onAction(QuestionListAction.OnSortClick(selectedSort))
+                }
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            QuestionList(
+                questions = state.questionResults.collectAsLazyPagingItems(),
+                onQuestionClick = { question -> onAction(QuestionListAction.OnQuestionClick(question)) },
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun QuestionListScreenMain(
+    viewModel: QuestionViewModel = koinViewModel(),
+    onQuestionClick : (Question) -> Unit,
+    onSearchClick : () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
@@ -60,58 +98,15 @@ fun QuestionListScreen(
             )
         }
     ) { innerPadding ->
-        state.errorMessage?.let {
-            Text(
-                text = state.errorMessage.toString(),
-                textAlign = TextAlign.Center
-            )
-        }
-        if (state.isLoading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator()
+        QuestionListScreen(
+            modifier = Modifier.padding(innerPadding),
+            state = state,
+            onAction = { action ->
+                when (action) {
+                    is QuestionListAction.OnQuestionClick -> onQuestionClick(action.question)
+                    else -> viewModel.onAction(action)
+                }
             }
-        } else {
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                ChipList(
-                    selectedChip = state.sort,
-                    onChipSelected = { selectedSort ->
-                        onAction(QuestionListAction.OnSortClick(selectedSort))
-                    }
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                QuestionList(
-                    questions = state.questionResults.collectAsLazyPagingItems(),
-                    onQuestionClick = { question -> onAction(QuestionListAction.OnQuestionClick(question)) },
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-        }
+        )
     }
-}
-
-@Composable
-fun QuestionListScreenMain(
-    viewModel: QuestionViewModel = koinViewModel(),
-    onQuestionClick : (Question) -> Unit,
-    onSearchClick : () -> Unit
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    QuestionListScreen(
-        state = state,
-        onAction = { action ->
-            when (action) {
-                is QuestionListAction.OnQuestionClick -> onQuestionClick(action.question)
-                else -> viewModel.onAction(action)
-            }
-        },
-        onSearchClick = onSearchClick
-    )
 }
