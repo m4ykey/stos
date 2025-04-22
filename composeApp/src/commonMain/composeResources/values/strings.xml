@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="request_timeout">Request timed out</string>
+    <string name="server_problem">Server problem</string>
+    <string name="client_error">Request error</string>
+    <string name="parse_error">Failed to process response</string>
+    <string name="too_many_requests">Too many requests</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="unknown_error">Unknown error</string>
+</resources>
