@@ -63,6 +63,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.coil3.compose)
             implementation(libs.coil3.network.okhttp)
+            implementation(libs.koin.compose.viewmodel)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
