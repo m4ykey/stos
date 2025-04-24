@@ -64,6 +64,8 @@ kotlin {
             implementation(libs.coil3.compose)
             implementation(libs.coil3.network.okhttp)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.markdown.renderer.m3)
+            implementation(libs.markdown.renderer)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

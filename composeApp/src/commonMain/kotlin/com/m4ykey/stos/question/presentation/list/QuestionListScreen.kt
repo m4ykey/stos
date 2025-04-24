@@ -1,7 +1,9 @@
 package com.m4ykey.stos.question.presentation.list
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,9 +22,12 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.m4ykey.stos.question.domain.model.Question
+import com.m4ykey.stos.question.presentation.QuestionListAction
 import com.m4ykey.stos.question.presentation.QuestionViewModel
+import com.m4ykey.stos.question.presentation.components.chip.ChipList
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,12 +76,22 @@ fun QuestionListScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
+            ChipList(
+                selectedChip = state.value.sort,
+                onChipSelected = { selectedSort ->
+                    viewModel.onAction(QuestionListAction.OnSortClick(selectedSort))
+                }
+            )
+            Spacer(modifier = Modifier.height(5.dp))
             LazyColumn(
                 state = listState,
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(state.value.questions) { questions ->
-                    QuestionItem(questions)
+                    QuestionItem(
+                        question = questions,
+                        onQuestionClick = onQuestionClick
+                    )
                 }
             }
         }

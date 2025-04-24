@@ -81,6 +81,9 @@ class QuestionViewModel(
     fun onAction(action : QuestionListAction) {
         when (action) {
             is QuestionListAction.OnQuestionClick -> {}
+            is QuestionListAction.OnSortClick -> {
+                _state.update { it.copy(sort = action.sort) }
+            }
         }
     }
 }

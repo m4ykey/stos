@@ -11,7 +11,9 @@ fun App() {
     MaterialTheme {
         QuestionListScreen(
             onSearchClick = {},
-            onQuestionClick = {}
+            onQuestionClick = { question ->
+
+            }
         )
     }
 }
