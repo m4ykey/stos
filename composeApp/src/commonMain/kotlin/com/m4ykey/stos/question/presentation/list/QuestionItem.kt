@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -35,11 +36,14 @@ fun QuestionItem(
     question : Question,
     onQuestionClick : (Question) -> Unit
 ) {
+    val formattedReputation = remember(question.owner.reputation) { formatReputation(question.owner.reputation) }
+    val formattedDate = remember(question.creationDate) { formatCreationDate(question.creationDate.toLong()) }
+
     Column(
         modifier = Modifier
             .padding(10.dp)
             .wrapContentWidth()
-            .clickable { onQuestionClick }
+            .clickable { onQuestionClick(question) }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -55,13 +59,13 @@ fun QuestionItem(
                 )
                 Text(
                     fontSize = 13.sp,
-                    text = formatReputation(question.owner.reputation)
+                    text = formattedReputation
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 fontSize = 14.sp,
-                text = formatCreationDate(question.creationDate.toLong())
+                text = formattedDate
             )
         }
         Markdown(
@@ -73,15 +77,18 @@ fun QuestionItem(
         ) {
             QuestionCount(
                 count = getVoteCount(question.downVoteCount > 1, question).toInt(),
-                iconRes = getArrowPosition(question.downVoteCount > 1)
+                iconRes = getArrowPosition(question.downVoteCount > 1),
+                modifier = Modifier.weight(1f)
             )
             QuestionCount(
                 count = question.answerCount,
-                iconRes = getAnswerCountPainter()
+                iconRes = getAnswerCountPainter(),
+                modifier = Modifier.weight(1f)
             )
             QuestionCount(
                 count = question.viewCount,
-                iconRes = getViewsCountPainter()
+                iconRes = getViewsCountPainter(),
+                modifier = Modifier.weight(1f)
             )
         }
     }

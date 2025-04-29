@@ -66,6 +66,9 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.markdown.renderer.m3)
             implementation(libs.markdown.renderer)
+            implementation(libs.markdown.renderer.code)
+            implementation(libs.markdown.renderer.coil3)
+            implementation(libs.androidx.navigation)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

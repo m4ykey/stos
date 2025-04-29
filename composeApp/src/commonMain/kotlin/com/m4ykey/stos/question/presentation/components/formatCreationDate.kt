@@ -1,12 +1,10 @@
 package com.m4ykey.stos.question.presentation.components
 
-import androidx.compose.runtime.Composable
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 expect fun getString(id : String) : String
 
-@Composable
 fun formatCreationDate(date : Long) : String {
     val currentSystemTime = Clock.System.now()
     val creationDate = Instant.fromEpochSeconds(date)
