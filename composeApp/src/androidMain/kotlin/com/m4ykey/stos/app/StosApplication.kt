@@ -1,4 +1,4 @@
-package com.m4ykey.stos
+package com.m4ykey.stos.app
 
 import android.app.Application
 import com.m4ykey.stos.di.initModules
