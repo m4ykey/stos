@@ -12,7 +12,7 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
     composable(Route.QuestionHome.route) {
         QuestionListScreen(
             onQuestionClick = { questionId ->
-                navHostController.navigate(Route.QuestionDetail.createRoute(questionId.questionId))
+                navHostController.navigate(Route.QuestionDetail.createRoute(questionId))
             },
             onSearchClick = {}
         )

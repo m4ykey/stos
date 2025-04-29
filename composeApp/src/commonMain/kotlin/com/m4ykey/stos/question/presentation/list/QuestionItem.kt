@@ -34,7 +34,7 @@ import stos.composeapp.generated.resources.views
 @Composable
 fun QuestionItem(
     question : Question,
-    onQuestionClick : (Question) -> Unit
+    onQuestionClick : (Int) -> Unit
 ) {
     val formattedReputation = remember(question.owner.reputation) { formatReputation(question.owner.reputation) }
     val formattedDate = remember(question.creationDate) { formatCreationDate(question.creationDate.toLong()) }
@@ -43,7 +43,7 @@ fun QuestionItem(
         modifier = Modifier
             .padding(10.dp)
             .wrapContentWidth()
-            .clickable { onQuestionClick(question) }
+            .clickable { onQuestionClick(question.questionId) }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -77,18 +77,15 @@ fun QuestionItem(
         ) {
             QuestionCount(
                 count = getVoteCount(question.downVoteCount > 1, question).toInt(),
-                iconRes = getArrowPosition(question.downVoteCount > 1),
-                modifier = Modifier.weight(1f)
+                iconRes = getArrowPosition(question.downVoteCount > 1)
             )
             QuestionCount(
                 count = question.answerCount,
-                iconRes = getAnswerCountPainter(),
-                modifier = Modifier.weight(1f)
+                iconRes = getAnswerCountPainter()
             )
             QuestionCount(
                 count = question.viewCount,
-                iconRes = getViewsCountPainter(),
-                modifier = Modifier.weight(1f)
+                iconRes = getViewsCountPainter()
             )
         }
     }

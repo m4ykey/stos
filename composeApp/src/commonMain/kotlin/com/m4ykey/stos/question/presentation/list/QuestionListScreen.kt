@@ -33,7 +33,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun QuestionListScreen(
     viewModel: QuestionViewModel = koinViewModel(),
-    onQuestionClick : (Question) -> Unit,
+    onQuestionClick : (Int) -> Unit,
     onSearchClick : () -> Unit
 ) {
     val state = viewModel.qListState.collectAsStateWithLifecycle()
