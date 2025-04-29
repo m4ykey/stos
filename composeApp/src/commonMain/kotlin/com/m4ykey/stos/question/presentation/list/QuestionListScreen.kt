@@ -25,7 +25,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.m4ykey.stos.question.domain.model.Question
-import com.m4ykey.stos.question.presentation.QuestionListAction
 import com.m4ykey.stos.question.presentation.QuestionViewModel
 import com.m4ykey.stos.question.presentation.components.chip.ChipList
 import org.koin.compose.viewmodel.koinViewModel
@@ -37,7 +36,7 @@ fun QuestionListScreen(
     onQuestionClick : (Question) -> Unit,
     onSearchClick : () -> Unit
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state = viewModel.qListState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberLazyListState()
 
