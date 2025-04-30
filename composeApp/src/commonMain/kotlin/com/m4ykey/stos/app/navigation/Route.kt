@@ -9,7 +9,12 @@ object Route {
     object QuestionDetail {
         const val route = "question_detail"
         val routeWithArgs = "$route/{id}"
+        fun createRoute(id : Int) = "$route/$id"
+    }
 
+    object OwnerHome {
+        const val route = "owner_home"
+        val routeWithArgs = "$route/{id}"
         fun createRoute(id : Int) = "$route/$id"
     }
 

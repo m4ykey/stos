@@ -14,7 +14,10 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
             onQuestionClick = { questionId ->
                 navHostController.navigate(Route.QuestionDetail.createRoute(questionId))
             },
-            onSearchClick = {}
+            onSearchClick = {},
+            onOwnerClick = { userId ->
+                navHostController.navigate(Route.OwnerHome.createRoute(userId))
+            }
         )
     }
     composable(
@@ -24,7 +27,10 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
         val id = navBackStackEntry.arguments?.getInt("id") ?: return@composable
         QuestionDetailScreen(
             id = id,
-            onNavBack = { navHostController.navigateUp() }
+            onNavBack = { navHostController.navigateUp() },
+            onTagClick = { tag ->
+
+            }
         )
     }
 }

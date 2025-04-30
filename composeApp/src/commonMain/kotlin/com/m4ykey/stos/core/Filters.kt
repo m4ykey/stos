@@ -1,4 +1,4 @@
-package com.m4ykey.stos.question.data.network
+package com.m4ykey.stos.core
 
 object Filters {
 

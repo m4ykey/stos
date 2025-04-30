@@ -34,7 +34,8 @@ import stos.composeapp.generated.resources.views
 @Composable
 fun QuestionItem(
     question : Question,
-    onQuestionClick : (Int) -> Unit
+    onQuestionClick : (Int) -> Unit,
+    onOwnerClick : (Int) -> Unit
 ) {
     val formattedReputation = remember(question.owner.reputation) { formatReputation(question.owner.reputation) }
     val formattedDate = remember(question.creationDate) { formatCreationDate(question.creationDate.toLong()) }
@@ -49,7 +50,9 @@ fun QuestionItem(
             modifier = Modifier.fillMaxWidth()
         ) {
             OwnerCard(
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier
+                    .clickable { onOwnerClick(question.owner.userId) }
+                    .align(Alignment.CenterVertically),
                 owner = question.owner
             )
             Spacer(modifier = Modifier.width(5.dp))
