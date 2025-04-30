@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.runtime.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -36,14 +37,14 @@ fun QuestionListScreen(
     onQuestionClick : (Int) -> Unit,
     onSearchClick : () -> Unit
 ) {
-    val state = viewModel.qListState.collectAsStateWithLifecycle()
+    val state by viewModel.qListState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberLazyListState()
 
     val shouldLoadMore = remember {
         derivedStateOf {
             val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            lastVisible != null && lastVisible.index >= state.value.questions.size - 3
+            lastVisible != null && lastVisible.index >= state.questions.size - 3
         }
     }
 
@@ -76,7 +77,7 @@ fun QuestionListScreen(
                 .padding(padding)
         ) {
             ChipList(
-                selectedChip = state.value.sort,
+                selectedChip = state.sort,
                 onChipSelected = { selectedSort ->
                     viewModel.onAction(QuestionListAction.OnSortClick(selectedSort))
                 }
@@ -86,7 +87,10 @@ fun QuestionListScreen(
                 state = listState,
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(state.value.questions) { questions ->
+                items(
+                    items = state.questions,
+                    key = { it.questionId }
+                ) { questions ->
                     QuestionItem(
                         question = questions,
                         onQuestionClick = onQuestionClick

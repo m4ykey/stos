@@ -38,7 +38,7 @@ class QuestionService(
     ): Items<QuestionDetailDto> {
         return client.get {
             url {
-                appendPathSegments("questions/{$id}")
+                appendPathSegments("questions/$id")
                 parameters.append("site", site)
                 parameters.append("filter", filter)
             }

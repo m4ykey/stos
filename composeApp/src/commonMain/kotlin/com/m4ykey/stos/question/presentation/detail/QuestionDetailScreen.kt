@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,7 +25,12 @@ fun QuestionDetailScreen(
     onNavBack : () -> Unit,
     viewModel: QuestionViewModel = koinViewModel()
 ) {
-    val state = viewModel.qDetailState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = id) {
+        viewModel.loadQuestionById(id)
+    }
+
+    val state by viewModel.qDetailState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
@@ -38,7 +45,7 @@ fun QuestionDetailScreen(
                 },
                 title = {
                     Text(
-                        text = state.value.question?.title!!
+                        text = state.question?.title ?: ""
                     )
                 },
                 navigationIcon = {
