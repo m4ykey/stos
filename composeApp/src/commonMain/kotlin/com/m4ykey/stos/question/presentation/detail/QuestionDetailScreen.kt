@@ -17,19 +17,23 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.m4ykey.stos.core.data.htmlDecode
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.presentation.QuestionViewModel
+import com.m4ykey.stos.question.presentation.components.MarkdownText
 import com.m4ykey.stos.question.presentation.components.chip.ChipItem
-import com.mikepenz.markdown.m3.Markdown
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,25 +75,27 @@ fun QuestionDetailScreen(
             )
         }
     ) { padding ->
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
+        Box {
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+                state.errorMessage != null -> {
+                    Text(
+                        text = state.errorMessage.orEmpty(),
+                        color = Color.Red,
+                        fontSize = 16.sp,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                state.question != null -> {
+                    QuestionDetailContent(
+                        item = state.question!!,
+                        onTagClick = onTagClick,
+                        paddingValues = padding
+                    )
+                }
             }
-        }
-        if (state.errorMessage != null) {
-
-        }
-        if (state.question != null) {
-            QuestionDetailContent(
-                item = state.question!!,
-                onTagClick = onTagClick,
-                paddingValues = padding
-            )
         }
     }
 }
@@ -108,12 +114,12 @@ fun QuestionDetailContent(
             .fillMaxSize()
     ) {
         item {
-            Markdown(
-                content = item.title.htmlDecode()
+            MarkdownText(
+                content = item.title
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Markdown(
-                content = item.bodyMarkdown.htmlDecode()
+            MarkdownText(
+                content = item.bodyMarkdown
             )
         }
         item {

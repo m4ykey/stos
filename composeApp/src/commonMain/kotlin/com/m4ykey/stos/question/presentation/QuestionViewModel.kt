@@ -9,16 +9,16 @@ import com.m4ykey.stos.question.presentation.list.QuestionListAction
 import com.m4ykey.stos.question.presentation.list.QuestionListState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.qualifier._q
 
 class QuestionViewModel(
-    private val repository : QuestionRepository
+    private val repository: QuestionRepository
 ) : ViewModel() {
 
     private val _qListState = MutableStateFlow(QuestionListState())
@@ -31,32 +31,42 @@ class QuestionViewModel(
         observeSortingChanges()
     }
 
-    fun loadQuestionById(id : Int) {
+    fun loadQuestionById(id: Int) {
         viewModelScope.launch {
             _qDetailState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            repository.getQuestionById(id).collect { result ->
-                when (result) {
-                    is ApiResult.Success -> {
-                        _qDetailState.update {
-                            it.copy(
-                                isLoading = false,
-                                errorMessage = null,
-                                question = result.data
-                            )
-                        }
+            repository.getQuestionById(id)
+                .catch { exception ->
+                    _qDetailState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = exception.message
+                        )
                     }
-                    is ApiResult.Failure -> {
-                        _qDetailState.update {
-                            it.copy(
-                                isLoading = false,
-                                question = null,
-                                errorMessage = result.exception.message
-                            )
+                }
+                .collect { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            _qDetailState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = null,
+                                    question = result.data
+                                )
+                            }
+                        }
+
+                        is ApiResult.Failure -> {
+                            _qDetailState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    question = null,
+                                    errorMessage = result.exception.message
+                                )
+                            }
                         }
                     }
                 }
-            }
         }
     }
 
@@ -88,7 +98,9 @@ class QuestionViewModel(
                 pageSize = 20,
                 page = current.currentPage,
                 sort = current.sort.name
-            ).collect { result ->
+            ).catch { exception ->
+                _qListState.update { it.copy(isLoading = false, errorMessage = exception.message) }
+            }.collect { result ->
                 when (result) {
                     is ApiResult.Success -> {
                         val newItems = result.data
@@ -101,6 +113,7 @@ class QuestionViewModel(
                             )
                         }
                     }
+
                     is ApiResult.Failure -> {
                         _qListState.update {
                             it.copy(
@@ -114,11 +127,12 @@ class QuestionViewModel(
         }
     }
 
-    fun onAction(action : QuestionListAction) {
+    fun onAction(action: QuestionListAction) {
         when (action) {
             is QuestionListAction.OnQuestionClick -> {
                 _qDetailState.update { it.copy(selectedQuestionId = action.question.questionId) }
             }
+
             is QuestionListAction.OnSortClick -> {
                 _qListState.update { it.copy(sort = action.sort) }
             }

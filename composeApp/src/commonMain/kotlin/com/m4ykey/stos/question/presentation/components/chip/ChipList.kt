@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.m4ykey.stos.question.presentation.list.QuestionSort
-import com.m4ykey.stos.question.presentation.list.QuestionSort.HOT
 import com.m4ykey.stos.question.presentation.list.QuestionSort.ACTIVITY
-import com.m4ykey.stos.question.presentation.list.QuestionSort.VOTES
 import com.m4ykey.stos.question.presentation.list.QuestionSort.CREATION
-import com.m4ykey.stos.question.presentation.list.QuestionSort.WEEK
+import com.m4ykey.stos.question.presentation.list.QuestionSort.HOT
 import com.m4ykey.stos.question.presentation.list.QuestionSort.MONTH
+import com.m4ykey.stos.question.presentation.list.QuestionSort.VOTES
+import com.m4ykey.stos.question.presentation.list.QuestionSort.WEEK
 import org.jetbrains.compose.resources.stringResource
 import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.activity

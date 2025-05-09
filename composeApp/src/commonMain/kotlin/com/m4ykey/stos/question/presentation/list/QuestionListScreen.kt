@@ -15,9 +15,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -25,13 +27,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.presentation.QuestionViewModel
+import com.m4ykey.stos.question.presentation.components.QuestionItem
 import com.m4ykey.stos.question.presentation.components.chip.ChipList
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -49,15 +55,16 @@ fun QuestionListScreen(
 
     val shouldLoadMore = remember {
         derivedStateOf {
-            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            lastVisible != null && lastVisible.index >= state.questions.size - 3
+            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+            lastVisible != null && lastVisible >= state.questions.size - 3
         }
     }
 
-    LaunchedEffect(shouldLoadMore.value) {
-        if (shouldLoadMore.value) {
-            viewModel.loadNextPage()
-        }
+    LaunchedEffect(Unit) {
+        snapshotFlow { shouldLoadMore.value }
+            .collect { shouldLoad ->
+                if (shouldLoad) viewModel.loadNextPage()
+            }
     }
 
     Scaffold(
@@ -77,29 +84,31 @@ fun QuestionListScreen(
             )
         }
     ) { padding ->
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
+        Box {
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+                state.errorMessage != null -> {
+                    Text(
+                        text = state.errorMessage.orEmpty(),
+                        color = Color.Red,
+                        fontSize = 16.sp,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                state.questions.isNotEmpty() -> {
+                    QuestionListContent(
+                        padding = padding,
+                        listState = listState,
+                        onOwnerClick = onOwnerClick,
+                        onQuestionClick = onQuestionClick,
+                        sort = state.sort,
+                        questions = state.questions,
+                        onAction = { action -> viewModel.onAction(action) }
+                    )
+                }
             }
-        }
-        if (state.questions.isNotEmpty()) {
-            QuestionListContent(
-                padding = padding,
-                listState = listState,
-                onOwnerClick = onOwnerClick,
-                onQuestionClick = onQuestionClick,
-                sort = state.sort,
-                questions = state.questions,
-                onAction = { action -> viewModel.onAction(action) }
-            )
-        }
-        if (state.errorMessage != null) {
-
         }
     }
 }
@@ -128,7 +137,8 @@ fun QuestionListContent(
         Spacer(modifier = Modifier.height(5.dp))
         LazyColumn(
             state = listState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(10.dp)
         ) {
             items(
                 items = questions,
@@ -138,6 +148,9 @@ fun QuestionListContent(
                     question = questions,
                     onQuestionClick = onQuestionClick,
                     onOwnerClick = onOwnerClick
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 5.dp)
                 )
             }
         }

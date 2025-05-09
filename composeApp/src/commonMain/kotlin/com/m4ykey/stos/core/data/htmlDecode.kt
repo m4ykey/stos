@@ -29,6 +29,7 @@ private fun String.replaceDiacriticalMarks() : String {
         .replace("&#169;", "©")
         .replace("&#8482;", "™")
         .replace("&#246;", "ö")
+        .replace("&#199;", "Ç")
 }
 
 private fun String.replaceSymbols() : String {

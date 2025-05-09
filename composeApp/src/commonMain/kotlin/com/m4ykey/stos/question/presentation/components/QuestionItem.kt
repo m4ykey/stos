@@ -1,4 +1,4 @@
-package com.m4ykey.stos.question.presentation.list
+package com.m4ykey.stos.question.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,22 +8,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.m4ykey.stos.core.data.htmlDecode
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.domain.model.Question
-import com.m4ykey.stos.question.presentation.components.QuestionCount
-import com.m4ykey.stos.question.presentation.components.formatCreationDate
-import com.m4ykey.stos.question.presentation.components.formatReputation
-import com.mikepenz.markdown.m3.Markdown
 import org.jetbrains.compose.resources.painterResource
 import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.answer_count
@@ -37,13 +30,13 @@ fun QuestionItem(
     onQuestionClick : (Int) -> Unit,
     onOwnerClick : (Int) -> Unit
 ) {
-    val formattedReputation = remember(question.owner.reputation) { formatReputation(question.owner.reputation) }
-    val formattedDate = remember(question.creationDate) { formatCreationDate(question.creationDate.toLong()) }
+    val formattedReputation = formatReputation(question.owner.reputation)
+    val formattedDate = formatCreationDate(question.creationDate.toLong())
 
     Column(
         modifier = Modifier
             .padding(10.dp)
-            .wrapContentWidth()
+            .fillMaxWidth()
             .clickable { onQuestionClick(question.questionId) }
     ) {
         Row(
@@ -57,8 +50,8 @@ fun QuestionItem(
             )
             Spacer(modifier = Modifier.width(5.dp))
             Column {
-                Markdown(
-                    content = question.owner.displayName.htmlDecode()
+                MarkdownText(
+                    content = question.owner.displayName
                 )
                 Text(
                     fontSize = 13.sp,
@@ -71,8 +64,8 @@ fun QuestionItem(
                 text = formattedDate
             )
         }
-        Markdown(
-            content = question.title.htmlDecode().trimIndent()
+        MarkdownText(
+            content = question.title
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
