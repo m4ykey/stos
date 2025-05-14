@@ -8,7 +8,14 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.aboutLibraries)
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
 }
+
+val versionMajor = 1
+val versionMinor = 0
+val versionPatch = 0
 
 kotlin {
     androidTarget {
@@ -30,7 +37,7 @@ kotlin {
     }
     
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
         
@@ -41,6 +48,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.client.android)
             implementation(libs.koin.android)
+            implementation(libs.coil3.network.okhttp)
+            implementation(libs.androidx.browser)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -62,13 +71,16 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.datetime)
             implementation(libs.coil3.compose)
-            implementation(libs.coil3.network.okhttp)
             implementation(libs.koin.compose.viewmodel)
-            implementation(libs.markdown.renderer.m3)
-            implementation(libs.markdown.renderer)
-            implementation(libs.markdown.renderer.code)
-            implementation(libs.markdown.renderer.coil3)
             implementation(libs.androidx.navigation)
+            implementation(libs.coil3.network.ktor)
+            implementation(libs.sqlite.bundled)
+            implementation(libs.room.runtime)
+            implementation(libs.bundles.markdown)
+            implementation(libs.bundles.aboutlibraries)
+            implementation(libs.androidx.icons.extended)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -78,7 +90,14 @@ kotlin {
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
+        dependencies {
+            ksp(libs.room.compiler)
+        }
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 android {
@@ -89,8 +108,8 @@ android {
         applicationId = "com.m4ykey.stos"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100
+        versionName = "$versionMajor.$versionMinor.$versionPatch"
     }
     packaging {
         resources {
@@ -99,12 +118,14 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
@@ -122,4 +143,10 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+tasks.register("release") {
+    group = "build"
+    dependsOn("assembleRelease")
+    dependsOn("packageReleaseDistributionForCurrentOS")
 }

@@ -1,17 +1,22 @@
 package com.m4ykey.stos.question.presentation.detail
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,10 +35,18 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.m4ykey.stos.core.network.openBrowser
+import com.m4ykey.stos.owner.presentation.components.OwnerCard
+import com.m4ykey.stos.question.data.mappers.toQuestion
+import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.presentation.QuestionViewModel
+import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.components.MarkdownText
+import com.m4ykey.stos.question.presentation.components.QuestionStatsRow
 import com.m4ykey.stos.question.presentation.components.chip.ChipItem
+import com.m4ykey.stos.question.presentation.components.formatCreationDate
+import com.m4ykey.stos.question.presentation.components.formatReputation
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +56,8 @@ fun QuestionDetailScreen(
     id : Int,
     onNavBack : () -> Unit,
     viewModel: QuestionViewModel = koinViewModel(),
-    onTagClick : (String) -> Unit
+    onTagClick : (String) -> Unit,
+    onOwnerClick : (Int) -> Unit
 ) {
 
     LaunchedEffect(key1 = id) {
@@ -54,13 +68,16 @@ fun QuestionDetailScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
                 actions = {
-                    IconButton(onClick = {}) {
-
+                    IconButton(onClick = { openBrowser(state.question?.link.orEmpty()) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Public,
+                            contentDescription = "Link"
+                        )
                     }
                 },
                 title = {},
@@ -92,7 +109,8 @@ fun QuestionDetailScreen(
                     QuestionDetailContent(
                         item = state.question!!,
                         onTagClick = onTagClick,
-                        paddingValues = padding
+                        paddingValues = padding,
+                        onOwnerClick = onOwnerClick
                     )
                 }
             }
@@ -105,7 +123,8 @@ fun QuestionDetailContent(
     modifier : Modifier = Modifier,
     item : QuestionDetail,
     paddingValues : PaddingValues,
-    onTagClick : (String) -> Unit
+    onTagClick : (String) -> Unit,
+    onOwnerClick : (Int) -> Unit
 ) {
     LazyColumn (
         modifier = modifier
@@ -128,6 +147,54 @@ fun QuestionDetailContent(
                 onTagClick = onTagClick
             )
         }
+        item {
+            QuestionStatsRow(
+                item = item.toQuestion()
+            )
+        }
+        item {
+            Text(
+                text = formatCreationDate(item.creationDate.toLong()),
+                fontSize = 13.sp
+            )
+        }
+        item {
+            DisplayOwner(
+                item = item.owner,
+                onOwnerClick = onOwnerClick
+            )
+        }
+    }
+}
+
+@Composable
+fun DisplayOwner(
+    modifier : Modifier = Modifier,
+    onOwnerClick : (Int) -> Unit,
+    item : Owner
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            OwnerCard(
+                modifier = Modifier
+                    .clickable { onOwnerClick(item.userId) }
+                    .align(Alignment.CenterVertically),
+                owner = item
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Column(modifier = modifier.fillMaxWidth()) {
+                MarkdownText(
+                    content = item.displayName
+                )
+                Text(
+                    fontSize = 13.sp,
+                    text = formatReputation(item.reputation)
+                )
+            }
+        }
+        BadgeRow(item.badgeCounts)
     }
 }
 

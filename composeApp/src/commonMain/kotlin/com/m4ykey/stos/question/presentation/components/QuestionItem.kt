@@ -16,8 +16,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
+import com.m4ykey.stos.question.domain.model.BadgeCounts
+import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.Question
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.answer_count
 import stos.composeapp.generated.resources.arrow_down
@@ -26,6 +29,7 @@ import stos.composeapp.generated.resources.views
 
 @Composable
 fun QuestionItem(
+    modifier : Modifier = Modifier,
     question : Question,
     onQuestionClick : (Int) -> Unit,
     onOwnerClick : (Int) -> Unit
@@ -49,7 +53,7 @@ fun QuestionItem(
                 owner = question.owner
             )
             Spacer(modifier = Modifier.width(5.dp))
-            Column {
+            Column(modifier = modifier.fillMaxWidth()) {
                 MarkdownText(
                     content = question.owner.displayName
                 )
@@ -58,32 +62,39 @@ fun QuestionItem(
                     text = formattedReputation
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                fontSize = 14.sp,
-                text = formattedDate
-            )
         }
         MarkdownText(
-            content = question.title
+            content = question.title,
+            modifier = Modifier.fillMaxWidth()
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            QuestionCount(
-                count = getVoteCount(question.downVoteCount > 1, question).toInt(),
-                iconRes = getArrowPosition(question.downVoteCount > 1)
-            )
-            QuestionCount(
-                count = question.answerCount,
-                iconRes = getAnswerCountPainter()
-            )
-            QuestionCount(
-                count = question.viewCount,
-                iconRes = getViewsCountPainter()
-            )
-        }
+        QuestionStatsRow(item = question)
+        Text(
+            text = formattedDate,
+            fontSize = 12.sp
+        )
+    }
+}
+
+@Composable
+fun QuestionStatsRow(
+    item : Question
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        QuestionCount(
+            count = getVoteCount(item.downVoteCount > 1, item).toInt(),
+            iconRes = getArrowPosition(item.downVoteCount > 1)
+        )
+        QuestionCount(
+            count = item.answerCount,
+            iconRes = getAnswerCountPainter()
+        )
+        QuestionCount(
+            count = item.viewCount,
+            iconRes = getViewsCountPainter()
+        )
     }
 }
 

@@ -30,6 +30,9 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
             onNavBack = { navHostController.navigateUp() },
             onTagClick = { tag ->
 
+            },
+            onOwnerClick = { userId ->
+
             }
         )
     }

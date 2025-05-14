@@ -9,6 +9,19 @@ import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 
+fun QuestionDetail.toQuestion() : Question {
+    return Question(
+        answerCount = answerCount,
+        owner = owner,
+        creationDate = creationDate,
+        downVoteCount = downVoteCount,
+        title = title,
+        questionId = questionId,
+        viewCount = viewCount,
+        upVoteCount = upVoteCount
+    )
+}
+
 fun QuestionDetailDto.toQuestionDetail() : QuestionDetail {
     return QuestionDetail(
         bodyMarkdown = bodyMarkdown.orEmpty(),
