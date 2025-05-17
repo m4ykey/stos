@@ -13,6 +13,8 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hotReload)
+    alias(libs.plugins.googleGmsGoogleServices)
+    alias(libs.plugins.googleFirebaseCrashlytics)
 }
 
 val versionMajor = 1
@@ -56,6 +58,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.coil3.network.okhttp)
             implementation(libs.androidx.browser)
+            implementation(libs.firebase.crashlytics)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
