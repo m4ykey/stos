@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -11,6 +12,7 @@ plugins {
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hotReload)
 }
 
 val versionMajor = 1
@@ -21,8 +23,12 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
+    }
+
+    composeCompiler {
+        featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
     }
     
     listOf(
@@ -81,6 +87,7 @@ kotlin {
             implementation(libs.androidx.icons.extended)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.bundles.compottie)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

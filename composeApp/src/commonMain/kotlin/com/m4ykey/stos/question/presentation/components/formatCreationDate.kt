@@ -5,7 +5,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import org.jetbrains.compose.resources.stringResource
 import stos.composeapp.generated.resources.Res
-import stos.composeapp.generated.resources.creation
 import stos.composeapp.generated.resources.days
 import stos.composeapp.generated.resources.hours
 import stos.composeapp.generated.resources.min

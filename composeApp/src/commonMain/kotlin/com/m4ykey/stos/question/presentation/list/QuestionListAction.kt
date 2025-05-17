@@ -1,8 +1,7 @@
 package com.m4ykey.stos.question.presentation.list
 
-import com.m4ykey.stos.question.domain.model.Question
-
 sealed interface QuestionListAction {
-    data class OnQuestionClick(val question : Question) : QuestionListAction
+    data class OnQuestionClick(val questionId : Int) : QuestionListAction
     data class OnSortClick(val sort : QuestionSort) : QuestionListAction
+    data class OnOwnerClick(val userId : Int) : QuestionListAction
 }

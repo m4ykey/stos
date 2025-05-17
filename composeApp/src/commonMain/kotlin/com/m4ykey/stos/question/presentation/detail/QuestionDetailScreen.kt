@@ -40,14 +40,16 @@ import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.data.mappers.toQuestion
 import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
-import com.m4ykey.stos.question.presentation.QuestionViewModel
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.components.MarkdownText
 import com.m4ykey.stos.question.presentation.components.QuestionStatsRow
 import com.m4ykey.stos.question.presentation.components.chip.ChipItem
 import com.m4ykey.stos.question.presentation.components.formatCreationDate
 import com.m4ykey.stos.question.presentation.components.formatReputation
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import stos.composeapp.generated.resources.Res
+import stos.composeapp.generated.resources.asked
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,17 +57,27 @@ fun QuestionDetailScreen(
     modifier : Modifier = Modifier,
     id : Int,
     onNavBack : () -> Unit,
-    viewModel: QuestionViewModel = koinViewModel(),
+    viewModel: QuestionDetailViewModel = koinViewModel(),
     onTagClick : (String) -> Unit,
     onOwnerClick : (Int) -> Unit
 ) {
 
-    LaunchedEffect(key1 = id) {
+    LaunchedEffect(id) {
         viewModel.loadQuestionById(id)
     }
 
     val state by viewModel.qDetailState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    LaunchedEffect(viewModel) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is DetailUiEvent.OpenLink -> openBrowser(event.url)
+                is DetailUiEvent.NavigateToTag -> onTagClick(event.tag)
+                is DetailUiEvent.NavigateToUser -> onOwnerClick(event.userId)
+            }
+        }
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -73,11 +85,14 @@ fun QuestionDetailScreen(
             TopAppBar(
                 scrollBehavior = scrollBehavior,
                 actions = {
-                    IconButton(onClick = { openBrowser(state.question?.link.orEmpty()) }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Public,
-                            contentDescription = "Link"
-                        )
+                    val link = state.question?.link
+                    if (!link.isNullOrEmpty()) {
+                        IconButton(onClick = { openBrowser(link) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Public,
+                                contentDescription = "Link"
+                            )
+                        }
                     }
                 },
                 title = {},
@@ -92,7 +107,7 @@ fun QuestionDetailScreen(
             )
         }
     ) { padding ->
-        Box {
+        Box(modifier = Modifier.fillMaxSize()) {
             when {
                 state.isLoading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -108,9 +123,15 @@ fun QuestionDetailScreen(
                 state.question != null -> {
                     QuestionDetailContent(
                         item = state.question!!,
-                        onTagClick = onTagClick,
                         paddingValues = padding,
-                        onOwnerClick = onOwnerClick
+                        onAction = viewModel::onAction
+                    )
+                }
+                else -> {
+                    Text(
+                        fontSize = 16.sp,
+                        modifier = Modifier.align(Alignment.Center),
+                        text = "No data"
                     )
                 }
             }
@@ -123,8 +144,7 @@ fun QuestionDetailContent(
     modifier : Modifier = Modifier,
     item : QuestionDetail,
     paddingValues : PaddingValues,
-    onTagClick : (String) -> Unit,
-    onOwnerClick : (Int) -> Unit
+    onAction : (QuestionDetailAction) -> Unit
 ) {
     LazyColumn (
         modifier = modifier
@@ -144,7 +164,9 @@ fun QuestionDetailContent(
         item {
             TagListRow(
                 tags = item.tags,
-                onTagClick = onTagClick
+                onTagClick = { tag ->
+                    onAction(QuestionDetailAction.OnTagClick(tag))
+                }
             )
         }
         item {
@@ -154,14 +176,18 @@ fun QuestionDetailContent(
         }
         item {
             Text(
-                text = formatCreationDate(item.creationDate.toLong()),
-                fontSize = 13.sp
+                text = "${stringResource(resource = Res.string.asked)} ${formatCreationDate(item.creationDate.toLong())}",
+                fontSize = 14.sp
             )
         }
         item {
             DisplayOwner(
                 item = item.owner,
-                onOwnerClick = onOwnerClick
+                onOwnerClick = {
+                    item.owner.userId.let { id ->
+                        onAction(QuestionDetailAction.OnOwnerClick(id))
+                    }
+                }
             )
         }
     }
@@ -175,7 +201,7 @@ fun DisplayOwner(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth()
         ) {
             OwnerCard(
                 modifier = Modifier
@@ -188,13 +214,16 @@ fun DisplayOwner(
                 MarkdownText(
                     content = item.displayName
                 )
-                Text(
-                    fontSize = 13.sp,
-                    text = formatReputation(item.reputation)
-                )
+                Row {
+                    Text(
+                        fontSize = 13.sp,
+                        text = formatReputation(item.reputation)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    BadgeRow(item.badgeCounts)
+                }
             }
         }
-        BadgeRow(item.badgeCounts)
     }
 }
 
@@ -207,7 +236,10 @@ fun TagListRow(
     LazyRow(
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(tags) { label ->
+        items(
+            items = tags,
+            key = { it }
+        ) { label ->
             ChipItem(
                 title = label,
                 modifier = modifier.padding(horizontal = 5.dp),

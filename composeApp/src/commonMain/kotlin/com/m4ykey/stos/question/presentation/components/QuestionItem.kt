@@ -16,11 +16,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
-import com.m4ykey.stos.question.domain.model.BadgeCounts
-import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.Question
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.answer_count
 import stos.composeapp.generated.resources.arrow_down

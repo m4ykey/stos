@@ -8,6 +8,7 @@
     <string name="too_many_requests">Too many requests</string>
     <string name="unauthorized">Unauthorized</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="error_loading_image">Error loading image</string>
 
     <string name="hot">Hot</string>
     <string name="activity">Activity</string>
@@ -20,4 +21,7 @@
     <string name="min">min.</string>
     <string name="hours">h</string>
     <string name="sec">sec.</string>
+
+    <string name="asked">Asked</string>
+
 </resources>

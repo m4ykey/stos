@@ -16,6 +16,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import com.m4ykey.stos.question.domain.model.Owner
+import org.jetbrains.compose.resources.stringResource
+import stos.composeapp.generated.resources.Res
+import stos.composeapp.generated.resources.error_loading_image
 
 @Composable
 fun OwnerCard(
@@ -40,7 +43,7 @@ fun OwnerCard(
                 Icon(
                     tint = Color.Gray,
                     modifier = Modifier.align(Alignment.Center),
-                    contentDescription = "Error loading image",
+                    contentDescription = stringResource(resource = Res.string.error_loading_image),
                     imageVector = Icons.Outlined.Person
                 )
             }

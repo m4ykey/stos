@@ -36,15 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.m4ykey.stos.question.domain.model.Question
-import com.m4ykey.stos.question.presentation.QuestionViewModel
 import com.m4ykey.stos.question.presentation.components.QuestionItem
 import com.m4ykey.stos.question.presentation.components.chip.ChipList
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionListScreen(
-    viewModel: QuestionViewModel = koinViewModel(),
+    viewModel: QuestionListViewModel = koinViewModel(),
     onQuestionClick : (Int) -> Unit,
     onSearchClick : () -> Unit,
     onOwnerClick : (Int) -> Unit
@@ -60,8 +60,20 @@ fun QuestionListScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel) {
+        viewModel.listUiEvent.collect { event ->
+            when (event) {
+                is ListUiEvent.NavigateToUser -> onOwnerClick(event.userId)
+                is ListUiEvent.NavigateToQuestion -> onQuestionClick(event.questionId)
+                is ListUiEvent.ChangeSort -> viewModel.updateSort(event.sort)
+            }
+        }
+    }
+
+
+    LaunchedEffect(listState) {
         snapshotFlow { shouldLoadMore.value }
+            .distinctUntilChanged()
             .collect { shouldLoad ->
                 if (shouldLoad) viewModel.loadNextPage()
             }
@@ -84,7 +96,7 @@ fun QuestionListScreen(
             )
         }
     ) { padding ->
-        Box {
+        Box(modifier = Modifier.fillMaxSize()) {
             when {
                 state.isLoading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -101,11 +113,9 @@ fun QuestionListScreen(
                     QuestionListContent(
                         padding = padding,
                         listState = listState,
-                        onOwnerClick = onOwnerClick,
-                        onQuestionClick = onQuestionClick,
                         sort = state.sort,
                         questions = state.questions,
-                        onAction = { action -> viewModel.onAction(action) }
+                        onAction = viewModel::onAction
                     )
                 }
             }
@@ -117,8 +127,6 @@ fun QuestionListScreen(
 fun QuestionListContent(
     padding : PaddingValues,
     listState : LazyListState,
-    onOwnerClick : (Int) -> Unit,
-    onQuestionClick : (Int) -> Unit,
     sort: QuestionSort,
     onAction : (QuestionListAction) -> Unit,
     questions : List<Question>
@@ -142,12 +150,17 @@ fun QuestionListContent(
         ) {
             items(
                 items = questions,
-                key = { it.questionId }
-            ) { questions ->
+                key = { it.questionId },
+                contentType = { "question_item" }
+            ) { question ->
                 QuestionItem(
-                    question = questions,
-                    onQuestionClick = onQuestionClick,
-                    onOwnerClick = onOwnerClick
+                    question = question,
+                    onQuestionClick = {
+                        onAction(QuestionListAction.OnQuestionClick(question.questionId))
+                    },
+                    onOwnerClick = {
+                        onAction(QuestionListAction.OnOwnerClick(question.owner.userId))
+                    }
                 )
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 5.dp)

@@ -4,9 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,13 +26,14 @@ fun Badges(
     number : Int
 ) {
     Row(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         ColorCircle(color = color)
+        Spacer(modifier = Modifier.width(5.dp))
         Text(
             text = number.toString(),
-            modifier = modifier.align(Alignment.CenterVertically),
-            fontSize = 12.sp
+            fontSize = 14.sp
         )
     }
 }
@@ -43,8 +45,8 @@ fun ColorCircle(
 ) {
     Box(
         modifier = modifier
-            .background(color)
-            .size(20.dp)
+            .background(color, shape = CircleShape)
+            .size(24.dp)
             .clip(CircleShape)
     )
 }
@@ -59,19 +61,19 @@ fun BadgeRow(
     ) {
         if (badgeCounts.gold > 1) {
             Badges(
-                color = Color(0xFFCC01FF),
+                color = Color(0xFFFFCC01),
                 number = badgeCounts.gold
             )
         }
         if (badgeCounts.silver > 1) {
             Badges(
-                color = Color(0xB4B8BCFF),
+                color = Color(0xFFB4B8BC),
                 number = badgeCounts.silver
             )
         }
         if (badgeCounts.bronze > 1) {
             Badges(
-                color = Color(0xD1A684FF),
+                color = Color(0xFFD1A684),
                 number = badgeCounts.bronze
             )
         }

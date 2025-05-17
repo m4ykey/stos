@@ -6,5 +6,7 @@ data class QuestionDetailState(
     val question : QuestionDetail? = null,
     val isLoading : Boolean = false,
     val errorMessage : String? = null,
-    val selectedQuestionId : Int? = 0
+    val selectedUserId : Int? = null,
+    val selectedUrl : String? = null,
+    val selectedTag : String? = null
 )
