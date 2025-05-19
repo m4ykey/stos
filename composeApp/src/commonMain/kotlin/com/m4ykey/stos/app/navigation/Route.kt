@@ -18,4 +18,10 @@ object Route {
         fun createRoute(id : Int) = "$route/$id"
     }
 
+    object QuestionTag {
+        const val route = "question_tag"
+        val routeWithArgs = "$route/{tag}"
+        fun createRoute(tag : String) = "$route/$tag"
+    }
+
 }

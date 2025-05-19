@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
@@ -52,7 +54,8 @@ fun QuestionItem(
             Spacer(modifier = Modifier.width(5.dp))
             Column(modifier = modifier.fillMaxWidth()) {
                 MarkdownText(
-                    content = question.owner.displayName
+                    content = question.owner.displayName,
+                    fontSize = 14.sp
                 )
                 Text(
                     fontSize = 13.sp,
@@ -64,7 +67,11 @@ fun QuestionItem(
             content = question.title,
             modifier = Modifier.fillMaxWidth()
         )
-        QuestionStatsRow(item = question)
+        QuestionStatsRow(
+            item = question,
+            textSize = 14.sp,
+            iconSize = 15.dp
+        )
         Text(
             text = formattedDate,
             fontSize = 12.sp
@@ -74,7 +81,9 @@ fun QuestionItem(
 
 @Composable
 fun QuestionStatsRow(
-    item : Question
+    item : Question,
+    textSize : TextUnit,
+    iconSize : Dp
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -82,15 +91,21 @@ fun QuestionStatsRow(
     ) {
         QuestionCount(
             count = getVoteCount(item.downVoteCount > 1, item).toInt(),
-            iconRes = getArrowPosition(item.downVoteCount > 1)
+            iconRes = getArrowPosition(item.downVoteCount > 1),
+            textSize = textSize,
+            iconSize = iconSize
         )
         QuestionCount(
             count = item.answerCount,
-            iconRes = getAnswerCountPainter()
+            iconRes = getAnswerCountPainter(),
+            textSize = textSize,
+            iconSize = iconSize
         )
         QuestionCount(
             count = item.viewCount,
-            iconRes = getViewsCountPainter()
+            iconRes = getViewsCountPainter(),
+            iconSize = iconSize,
+            textSize = textSize
         )
     }
 }

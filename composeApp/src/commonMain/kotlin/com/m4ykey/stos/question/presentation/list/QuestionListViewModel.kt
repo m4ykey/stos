@@ -3,6 +3,7 @@ package com.m4ykey.stos.question.presentation.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.m4ykey.stos.core.network.ApiResult
+import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.use_case.QuestionUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,32 +27,51 @@ class QuestionListViewModel(
     private val _listUiEvent = MutableSharedFlow<ListUiEvent>()
     val listUiEvent = _listUiEvent.asSharedFlow()
 
-    init {
-        observeSortingChanges()
-    }
-
     fun updateSort(sort : QuestionSort) {
         _qListState.update { it.copy(sort = sort) }
     }
 
-    private fun observeSortingChanges() {
+    fun observeSortingChangesForHome() {
         _qListState.map { it.sort to it.order }
             .distinctUntilChanged()
             .onEach {
-                _qListState.update {
-                    it.copy(
-                        questions = emptyList(),
-                        currentPage = 1,
-                        isEndReached = false,
-                        errorMessage = null
-                    )
-                }
-                loadNextPage()
+                resetListState()
+                loadNextPageForHome()
             }
             .launchIn(viewModelScope)
     }
 
-    fun loadNextPage() {
+    fun observeSortingChangesForTag(tag : String) {
+        _qListState.map { it.sort to it.order }
+            .distinctUntilChanged()
+            .onEach {
+                resetListState()
+                loadNextPageForTag(tag)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun loadNextPageForTag(tag : String) {
+        val current = _qListState.value
+        if (current.isLoading || current.isEndReached) return
+
+        viewModelScope.launch {
+            _qListState.update { it.copy(isLoading = true) }
+
+            useCase.getQuestionByTag(
+                pageSize = 20,
+                page = current.currentPage,
+                sort = current.sort.name,
+                tag = tag
+            ).catch { exception ->
+                handleError(exception)
+            }.collect { result ->
+                processResult(result)
+            }
+        }
+    }
+
+    fun loadNextPageForHome() {
         val current = _qListState.value
         if (current.isLoading || current.isEndReached) return
 
@@ -63,30 +83,9 @@ class QuestionListViewModel(
                 page = current.currentPage,
                 sort = current.sort.name
             ).catch { exception ->
-                _qListState.update { it.copy(isLoading = false, errorMessage = exception.message) }
+                handleError(exception)
             }.collect { result ->
-                when (result) {
-                    is ApiResult.Success -> {
-                        val newItems = result.data
-                        _qListState.update {
-                            it.copy(
-                                isLoading = false,
-                                questions = it.questions + newItems,
-                                isEndReached = newItems.size < 20,
-                                currentPage = it.currentPage + 1
-                            )
-                        }
-                    }
-
-                    is ApiResult.Failure -> {
-                        _qListState.update {
-                            it.copy(
-                                isLoading = false,
-                                errorMessage = result.exception.message
-                            )
-                        }
-                    }
-                }
+                processResult(result)
             }
         }
     }
@@ -100,4 +99,44 @@ class QuestionListViewModel(
             }
         }
     }
+
+    private fun resetListState() {
+        _qListState.update {
+            it.copy(
+                questions = emptyList(),
+                currentPage = 1,
+                isEndReached = false,
+                errorMessage = null
+            )
+        }
+    }
+
+    private fun processResult(result : ApiResult<List<Question>>) {
+        when (result) {
+            is ApiResult.Success -> {
+                val newItems = result.data
+                _qListState.update {
+                    it.copy(
+                        isLoading = false,
+                        questions = it.questions + newItems,
+                        isEndReached = newItems.size < 20,
+                        currentPage = it.currentPage + 1
+                    )
+                }
+            }
+            is ApiResult.Failure -> {
+                _qListState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = result.exception.message
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleError(exception : Throwable) {
+        _qListState.update { it.copy(isLoading = false, errorMessage = exception.message) }
+    }
+
 }

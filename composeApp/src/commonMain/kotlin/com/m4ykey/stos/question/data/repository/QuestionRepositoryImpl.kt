@@ -18,6 +18,26 @@ class QuestionRepositoryImpl(
     private val remoteQuestionService: RemoteQuestionService
 ) : QuestionRepository {
 
+    override suspend fun getQuestionByTag(
+        tag: String,
+        page: Int,
+        pageSize: Int,
+        sort: String
+    ): Flow<ApiResult<List<Question>>> = flow {
+        val result = safeApi<Items<QuestionDto>> {
+            remoteQuestionService
+                .getQuestionByTag(page = page, pageSize = pageSize, sort = sort, tagged = tag)
+        }
+
+        when (result) {
+            is ApiResult.Failure -> emit(ApiResult.Failure(result.exception))
+            is ApiResult.Success -> {
+                val questions = result.data.items?.map { it.toQuestion() }.orEmpty()
+                emit(ApiResult.Success(questions))
+            }
+        }
+    }
+
     override suspend fun getQuestions(
         page: Int,
         pageSize: Int,

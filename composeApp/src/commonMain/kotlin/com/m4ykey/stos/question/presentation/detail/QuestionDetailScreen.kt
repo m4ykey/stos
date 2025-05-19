@@ -27,14 +27,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.m4ykey.stos.core.network.openBrowser
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.data.mappers.toQuestion
@@ -66,7 +67,11 @@ fun QuestionDetailScreen(
         viewModel.loadQuestionById(id)
     }
 
-    val state by viewModel.qDetailState.collectAsStateWithLifecycle()
+    val state by viewModel.qDetailState.collectAsState()
+    val isLoading = state.isLoading
+    val errorMessage = state.errorMessage
+    val questionDetail = state.question
+
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     LaunchedEffect(viewModel) {
@@ -85,7 +90,7 @@ fun QuestionDetailScreen(
             TopAppBar(
                 scrollBehavior = scrollBehavior,
                 actions = {
-                    val link = state.question?.link
+                    val link = questionDetail?.link
                     if (!link.isNullOrEmpty()) {
                         IconButton(onClick = { openBrowser(link) }) {
                             Icon(
@@ -109,20 +114,20 @@ fun QuestionDetailScreen(
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize()) {
             when {
-                state.isLoading -> {
+                isLoading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-                state.errorMessage != null -> {
+                errorMessage != null -> {
                     Text(
-                        text = state.errorMessage.orEmpty(),
+                        text = errorMessage,
                         color = Color.Red,
                         fontSize = 16.sp,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                state.question != null -> {
+                questionDetail != null -> {
                     QuestionDetailContent(
-                        item = state.question!!,
+                        item = questionDetail,
                         paddingValues = padding,
                         onAction = viewModel::onAction
                     )
@@ -154,7 +159,9 @@ fun QuestionDetailContent(
     ) {
         item {
             MarkdownText(
-                content = item.title
+                content = item.title,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(10.dp))
             MarkdownText(
@@ -171,7 +178,9 @@ fun QuestionDetailContent(
         }
         item {
             QuestionStatsRow(
-                item = item.toQuestion()
+                item = item.toQuestion(),
+                iconSize = 16.dp,
+                textSize = 15.sp
             )
         }
         item {
@@ -214,7 +223,9 @@ fun DisplayOwner(
                 MarkdownText(
                     content = item.displayName
                 )
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         fontSize = 13.sp,
                         text = formatReputation(item.reputation)

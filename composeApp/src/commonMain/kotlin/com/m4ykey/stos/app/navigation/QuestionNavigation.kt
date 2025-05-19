@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.m4ykey.stos.question.presentation.detail.QuestionDetailScreen
 import com.m4ykey.stos.question.presentation.list.QuestionListScreen
+import com.m4ykey.stos.question.presentation.list.QuestionTagScreen
 
 fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
     composable(Route.QuestionHome.route) {
@@ -29,11 +30,29 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
             id = id,
             onNavBack = { navHostController.navigateUp() },
             onTagClick = { tag ->
-
+                navHostController.navigate(Route.QuestionTag.createRoute(tag))
             },
             onOwnerClick = { userId ->
 
             }
+        )
+    }
+    composable(
+        route = Route.QuestionTag.routeWithArgs,
+        arguments = listOf(navArgument("tag") { type = NavType.StringType })
+    ) { navBackStackEntry ->
+        val tag = navBackStackEntry.arguments?.getString("tag") ?: return@composable
+        QuestionTagScreen(
+            onQuestionClick = { questionId ->
+                navHostController.navigate(Route.QuestionDetail.createRoute(questionId))
+            },
+            onOwnerClick = { userId ->
+
+            },
+            onNavBack = {
+                navHostController.navigateUp()
+            },
+            tag = tag
         )
     }
 }

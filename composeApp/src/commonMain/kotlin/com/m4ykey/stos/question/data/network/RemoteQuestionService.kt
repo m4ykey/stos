@@ -12,12 +12,22 @@ interface RemoteQuestionService {
         page : Int,
         pageSize : Int,
         filter : String = QUESTION_FILTER,
-        sort : String = "hot"
+        sort : String = "hot",
+        order : String = "desc"
     ) : Items<QuestionDto>
 
     suspend fun getQuestionById(
         filter : String = QUESTION_DETAIL_FILTER,
         id : Int
     ) : Items<QuestionDetailDto>
+
+    suspend fun getQuestionByTag(
+        page : Int,
+        pageSize : Int,
+        filter : String = QUESTION_FILTER,
+        tagged : String,
+        order : String = "desc",
+        sort : String = "hot"
+    ) : Items<QuestionDto>
 
 }

@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -17,7 +19,9 @@ import androidx.compose.ui.unit.sp
 fun QuestionCount(
     modifier: Modifier = Modifier,
     count: Int,
-    iconRes: Painter
+    iconRes: Painter,
+    textSize : TextUnit,
+    iconSize : Dp
 ) {
     Row(
         modifier = modifier,
@@ -26,12 +30,12 @@ fun QuestionCount(
         Icon(
             painter = iconRes,
             contentDescription = null,
-            modifier = Modifier.size(15.dp)
+            modifier = Modifier.size(iconSize)
         )
         Spacer(modifier = Modifier.width(5.dp))
         Text(
             text = count.toString(),
-            fontSize = 14.sp
+            fontSize = textSize
         )
     }
 }

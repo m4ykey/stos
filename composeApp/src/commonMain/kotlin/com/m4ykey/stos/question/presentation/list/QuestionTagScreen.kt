@@ -1,21 +1,12 @@
 package com.m4ykey.stos.question.presentation.list
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -33,26 +24,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.m4ykey.stos.question.domain.model.Question
-import com.m4ykey.stos.question.presentation.components.QuestionItem
-import com.m4ykey.stos.question.presentation.components.chip.ChipList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuestionListScreen(
+fun QuestionTagScreen(
+    tag : String,
     viewModel: QuestionListViewModel = koinViewModel(),
+    onNavBack : () -> Unit,
     onQuestionClick : (Int) -> Unit,
-    onSearchClick : () -> Unit,
     onOwnerClick : (Int) -> Unit
 ) {
 
-    LaunchedEffect(Unit) {
-        viewModel.observeSortingChangesForHome()
+    LaunchedEffect(tag) {
+        viewModel.observeSortingChangesForTag(tag)
     }
 
     val state by viewModel.qListState.collectAsState()
@@ -86,7 +73,7 @@ fun QuestionListScreen(
         snapshotFlow { shouldLoadMore.value }
             .distinctUntilChanged()
             .collect { shouldLoad ->
-                if (shouldLoad) viewModel.loadNextPageForHome()
+                if (shouldLoad) viewModel.loadNextPageForTag(tag)
             }
     }
 
@@ -95,12 +82,14 @@ fun QuestionListScreen(
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
-                title = {},
-                actions = {
-                    IconButton(onClick = onSearchClick) {
+                title = {
+                    Text(text = tag)
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavBack) {
                         Icon(
-                            contentDescription = null,
-                            imageVector = Icons.Default.Search
+                            contentDescription = "Back",
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack
                         )
                     }
                 }
@@ -129,53 +118,6 @@ fun QuestionListScreen(
                         onAction = viewModel::onAction
                     )
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun QuestionListContent(
-    padding : PaddingValues,
-    listState : LazyListState,
-    sort: QuestionSort,
-    onAction : (QuestionListAction) -> Unit,
-    questions : List<Question>
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-    ) {
-        ChipList(
-            selectedChip = sort,
-            onChipSelected = { selectedSort ->
-                onAction(QuestionListAction.OnSortClick(selectedSort))
-            }
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(10.dp)
-        ) {
-            items(
-                items = questions,
-                key = { it.questionId },
-                contentType = { "question_item" }
-            ) { question ->
-                QuestionItem(
-                    question = question,
-                    onQuestionClick = {
-                        onAction(QuestionListAction.OnQuestionClick(question.questionId))
-                    },
-                    onOwnerClick = {
-                        onAction(QuestionListAction.OnOwnerClick(question.owner.userId))
-                    }
-                )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 5.dp)
-                )
             }
         }
     }

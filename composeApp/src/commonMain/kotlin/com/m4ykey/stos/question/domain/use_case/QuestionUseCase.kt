@@ -10,6 +10,15 @@ class QuestionUseCase(
     private val repository: QuestionRepository
 ) {
 
+    suspend fun getQuestionByTag(
+        page : Int,
+        pageSize: Int,
+        sort: String,
+        tag : String
+    ) : Flow<ApiResult<List<Question>>> {
+        return repository.getQuestionByTag(tag, page, pageSize, sort)
+    }
+
     suspend fun getQuestions(
         page : Int,
         pageSize : Int,

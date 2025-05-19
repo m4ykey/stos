@@ -33,7 +33,7 @@ fun Badges(
         Spacer(modifier = Modifier.width(5.dp))
         Text(
             text = number.toString(),
-            fontSize = 14.sp
+            fontSize = 13.sp
         )
     }
 }
@@ -46,7 +46,7 @@ fun ColorCircle(
     Box(
         modifier = modifier
             .background(color, shape = CircleShape)
-            .size(24.dp)
+            .size(14.dp)
             .clip(CircleShape)
     )
 }
@@ -59,19 +59,19 @@ fun BadgeRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        if (badgeCounts.gold > 1) {
+        if (badgeCounts.gold > 0) {
             Badges(
                 color = Color(0xFFFFCC01),
                 number = badgeCounts.gold
             )
         }
-        if (badgeCounts.silver > 1) {
+        if (badgeCounts.silver > 0) {
             Badges(
                 color = Color(0xFFB4B8BC),
                 number = badgeCounts.silver
             )
         }
-        if (badgeCounts.bronze > 1) {
+        if (badgeCounts.bronze > 0) {
             Badges(
                 color = Color(0xFFD1A684),
                 number = badgeCounts.bronze
