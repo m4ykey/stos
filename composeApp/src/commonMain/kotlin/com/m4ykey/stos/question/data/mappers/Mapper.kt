@@ -1,13 +1,26 @@
 package com.m4ykey.stos.question.data.mappers
 
+import com.m4ykey.stos.question.data.network.model.AnswerDto
 import com.m4ykey.stos.question.data.network.model.BadgeCountsDto
 import com.m4ykey.stos.question.data.network.model.OwnerDto
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
 import com.m4ykey.stos.question.data.network.model.QuestionDto
+import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.BadgeCounts
 import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.model.QuestionDetail
+
+fun AnswerDto.toAnswer() : Answer {
+    return Answer(
+        bodyMarkdown = bodyMarkdown.orEmpty(),
+        creationDate = creationDate ?: -1,
+        upVoteCount = upVoteCount ?: -1,
+        downVoteCount = downVoteCount ?: -1,
+        owner = owner?.toOwner()!!,
+        answerId = answerId ?: -1
+    )
+}
 
 fun QuestionDetail.toQuestion() : Question {
     return Question(

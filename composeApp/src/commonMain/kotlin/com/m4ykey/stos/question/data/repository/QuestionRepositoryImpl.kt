@@ -2,12 +2,15 @@ package com.m4ykey.stos.question.data.repository
 
 import com.m4ykey.stos.core.network.ApiResult
 import com.m4ykey.stos.core.network.safeApi
+import com.m4ykey.stos.question.data.mappers.toAnswer
 import com.m4ykey.stos.question.data.mappers.toQuestion
 import com.m4ykey.stos.question.data.mappers.toQuestionDetail
 import com.m4ykey.stos.question.data.network.RemoteQuestionService
+import com.m4ykey.stos.question.data.network.model.AnswerDto
 import com.m4ykey.stos.question.data.network.model.Items
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
 import com.m4ykey.stos.question.data.network.model.QuestionDto
+import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.domain.repository.QuestionRepository
@@ -17,6 +20,20 @@ import kotlinx.coroutines.flow.flow
 class QuestionRepositoryImpl(
     private val remoteQuestionService: RemoteQuestionService
 ) : QuestionRepository {
+
+    override suspend fun getQuestionAnswer(id: Int): Flow<ApiResult<List<Answer>>> = flow {
+        val result = safeApi<Items<AnswerDto>> {
+            remoteQuestionService.getQuestionAnswers(id = id)
+        }
+
+        when (result) {
+            is ApiResult.Success -> {
+                val answers = result.data.items?.map { it.toAnswer() }.orEmpty()
+                emit(ApiResult.Success(answers))
+            }
+            is ApiResult.Failure -> emit(ApiResult.Failure(result.exception))
+        }
+    }
 
     override suspend fun getQuestionByTag(
         tag: String,

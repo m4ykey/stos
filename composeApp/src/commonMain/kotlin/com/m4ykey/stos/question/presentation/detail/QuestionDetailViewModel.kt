@@ -19,10 +19,58 @@ class QuestionDetailViewModel(
     private val _qDetailState = MutableStateFlow(QuestionDetailState())
     val qDetailState = _qDetailState.asStateFlow()
 
+    private val _qAnswerState = MutableStateFlow(QuestionAnswerState())
+    val qAnswerState = _qAnswerState.asStateFlow()
+
     private val _eventFlow = MutableSharedFlow<DetailUiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    fun loadQuestionById(id: Int) {
+    fun loadQuestionDetails(id : Int) {
+        viewModelScope.launch {
+            launch { loadQuestionAnswer(id) }
+            launch { loadQuestionById(id) }
+        }
+    }
+
+    private fun loadQuestionAnswer(id : Int) {
+        viewModelScope.launch {
+            _qAnswerState.update { it.copy(isLoading = true, errorMessage = null) }
+
+            useCase.getQuestionAnswer(id)
+                .catch { exception ->
+                    _qAnswerState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = exception.message
+                        )
+                    }
+                }
+                .collect { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            _qAnswerState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = null,
+                                    answers = result.data
+                                )
+                            }
+                        }
+                        is ApiResult.Failure -> {
+                            _qAnswerState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    answers = emptyList(),
+                                    errorMessage = result.exception.message
+                                )
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun loadQuestionById(id: Int) {
         viewModelScope.launch {
             _qDetailState.update { it.copy(isLoading = true, errorMessage = null) }
 

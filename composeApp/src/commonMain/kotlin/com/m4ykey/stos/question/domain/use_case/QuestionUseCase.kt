@@ -1,6 +1,7 @@
 package com.m4ykey.stos.question.domain.use_case
 
 import com.m4ykey.stos.core.network.ApiResult
+import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.domain.repository.QuestionRepository
@@ -9,6 +10,12 @@ import kotlinx.coroutines.flow.Flow
 class QuestionUseCase(
     private val repository: QuestionRepository
 ) {
+
+    suspend fun getQuestionAnswer(
+        id : Int
+    ) : Flow<ApiResult<List<Answer>>> {
+        return repository.getQuestionAnswer(id)
+    }
 
     suspend fun getQuestionByTag(
         page : Int,

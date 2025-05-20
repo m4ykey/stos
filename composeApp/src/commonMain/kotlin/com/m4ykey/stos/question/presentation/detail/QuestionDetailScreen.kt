@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -40,20 +41,24 @@ import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.core.network.openBrowser
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.data.mappers.toQuestion
+import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
 import com.m4ykey.stos.question.presentation.components.MarkdownText
-import com.m4ykey.stos.question.presentation.components.QuestionStatsRow
+import com.m4ykey.stos.question.presentation.components.list_items.QuestionStatsRow
 import com.m4ykey.stos.question.presentation.components.chip.ChipItem
 import com.m4ykey.stos.question.presentation.components.formatCreationDate
 import com.m4ykey.stos.question.presentation.components.formatReputation
+import com.m4ykey.stos.question.presentation.components.list_items.AnswerItem
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import stos.composeapp.generated.resources.Res
+import stos.composeapp.generated.resources.answers
 import stos.composeapp.generated.resources.asked
 import stos.composeapp.generated.resources.back
+import stos.composeapp.generated.resources.no_answers
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,13 +72,17 @@ fun QuestionDetailScreen(
 ) {
 
     LaunchedEffect(id) {
-        viewModel.loadQuestionById(id)
+        viewModel.loadQuestionDetails(id)
     }
 
-    val state by viewModel.qDetailState.collectAsState()
-    val isLoading = state.isLoading
-    val errorMessage = state.errorMessage
-    val questionDetail = state.question
+    val detailState by viewModel.qDetailState.collectAsState()
+    val answerState by viewModel.qAnswerState.collectAsState()
+
+    val isLoading = detailState.isLoading || answerState.isLoading
+    val errorMessage = detailState.errorMessage ?: answerState.errorMessage
+
+    val questionDetail = detailState.question
+    val answerList = answerState.answers
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -132,7 +141,8 @@ fun QuestionDetailScreen(
                         item = questionDetail,
                         paddingValues = padding,
                         listState = listState,
-                        onAction = viewModel::onAction
+                        onAction = viewModel::onAction,
+                        answers = answerList
                     )
                 }
                 else -> {
@@ -153,7 +163,8 @@ fun QuestionDetailContent(
     item : QuestionDetail,
     paddingValues : PaddingValues,
     onAction : (QuestionDetailAction) -> Unit,
-    listState : LazyListState
+    listState : LazyListState,
+    answers : List<Answer>
 ) {
     LazyColumn (
         state = listState,
@@ -204,6 +215,44 @@ fun QuestionDetailContent(
                 }
             )
         }
+        item {
+            Text(
+                text = "${stringResource(resource = Res.string.answers)}: ${item.answerCount}"
+            )
+        }
+        item {
+            HorizontalDivider()
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+        if (answers.isEmpty()) {
+            item {
+                Text(
+                    text = stringResource(resource = Res.string.no_answers),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        } else {
+            items(
+                items = answers,
+                key = { it.answerId },
+                contentType = { "answer_item" }
+            ) { answer ->
+                AnswerItem(
+                    onOwnerClick = {
+                        answer.owner.userId.let { id ->
+                            onAction(QuestionDetailAction.OnOwnerClick(id))
+                        }
+                    },
+                    owner = answer.owner,
+                    answer = answer
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 5.dp)
+                )
+            }
+        }
     }
 }
 
@@ -245,7 +294,6 @@ fun DisplayOwner(
 
 @Composable
 fun TagListRow(
-    modifier : Modifier = Modifier,
     tags : List<String>,
     onTagClick: (String) -> Unit
 ) {
@@ -258,7 +306,7 @@ fun TagListRow(
         ) { label ->
             ChipItem(
                 title = label,
-                modifier = modifier.padding(horizontal = 5.dp),
+                modifier = Modifier.padding(horizontal = 5.dp),
                 selected = false,
                 onSelect = { onTagClick(label) }
             )

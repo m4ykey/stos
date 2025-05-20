@@ -1,6 +1,7 @@
 package com.m4ykey.stos.question.data.network
 
 import com.m4ykey.stos.core.network.setParameters
+import com.m4ykey.stos.question.data.network.model.AnswerDto
 import com.m4ykey.stos.question.data.network.model.Items
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
 import com.m4ykey.stos.question.data.network.model.QuestionDto
@@ -12,6 +13,20 @@ import io.ktor.http.appendPathSegments
 class QuestionService(
     private val client : HttpClient
 ) : RemoteQuestionService {
+
+    override suspend fun getQuestionAnswers(
+        filter: String,
+        id: Int
+    ): Items<AnswerDto> {
+        return client.get {
+            url {
+                appendPathSegments("questions/$id/answers")
+                setParameters(
+                    "filter" to filter
+                )
+            }
+        }.body()
+    }
 
     override suspend fun getQuestionByTag(
         page: Int,

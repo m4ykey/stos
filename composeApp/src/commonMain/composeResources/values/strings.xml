@@ -23,6 +23,8 @@
     <string name="sec">sec.</string>
 
     <string name="asked">Asked</string>
+    <string name="answers">Answers</string>
+    <string name="no_answers">No Answers</string>
 
     <string name="back">Back</string>
     <string name="search">Search</string>

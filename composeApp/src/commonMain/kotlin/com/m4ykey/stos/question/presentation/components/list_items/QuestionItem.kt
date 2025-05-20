@@ -1,4 +1,4 @@
-package com.m4ykey.stos.question.presentation.components
+package com.m4ykey.stos.question.presentation.components.list_items
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.domain.model.Question
+import com.m4ykey.stos.question.presentation.components.MarkdownText
+import com.m4ykey.stos.question.presentation.components.QuestionCount
+import com.m4ykey.stos.question.presentation.components.formatCreationDate
+import com.m4ykey.stos.question.presentation.components.formatReputation
 import org.jetbrains.compose.resources.painterResource
 import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.answer_count
