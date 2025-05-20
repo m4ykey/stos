@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -19,7 +18,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -28,19 +26,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.m4ykey.stos.question.domain.model.Question
+import com.m4ykey.stos.question.presentation.components.ErrorComponent
 import com.m4ykey.stos.question.presentation.components.QuestionItem
 import com.m4ykey.stos.question.presentation.components.chip.ChipList
 import kotlinx.coroutines.flow.distinctUntilChanged
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import stos.composeapp.generated.resources.Res
+import stos.composeapp.generated.resources.search
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +52,9 @@ fun QuestionListScreen(
 ) {
 
     LaunchedEffect(Unit) {
-        viewModel.observeSortingChangesForHome()
+        if (viewModel.qListState.value.questions.isEmpty()) {
+            viewModel.observeSortingChangesForHome()
+        }
     }
 
     val state by viewModel.qListState.collectAsState()
@@ -62,7 +64,9 @@ fun QuestionListScreen(
     val errorMessage = state.errorMessage
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val listState = rememberLazyListState()
+    val listState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState()
+    }
 
     val shouldLoadMore = remember {
         derivedStateOf {
@@ -99,7 +103,7 @@ fun QuestionListScreen(
                 actions = {
                     IconButton(onClick = onSearchClick) {
                         Icon(
-                            contentDescription = null,
+                            contentDescription = stringResource(resource = Res.string.search),
                             imageVector = Icons.Default.Search
                         )
                     }
@@ -107,18 +111,16 @@ fun QuestionListScreen(
             )
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             when {
                 isLoading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
                 errorMessage != null -> {
-                    Text(
-                        text = errorMessage,
-                        color = Color.Red,
-                        fontSize = 16.sp,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    ErrorComponent(errorMessage)
                 }
                 question.isNotEmpty() -> {
                     QuestionListContent(

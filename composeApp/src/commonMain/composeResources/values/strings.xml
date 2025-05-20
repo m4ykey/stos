@@ -24,4 +24,9 @@
 
     <string name="asked">Asked</string>
 
+    <string name="back">Back</string>
+    <string name="search">Search</string>
+
+    <string name="error_image">Error Image</string>
+
 </resources>

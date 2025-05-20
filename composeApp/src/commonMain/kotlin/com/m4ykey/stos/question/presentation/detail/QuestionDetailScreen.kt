@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -29,9 +30,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ import com.m4ykey.stos.question.data.mappers.toQuestion
 import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.presentation.components.BadgeRow
+import com.m4ykey.stos.question.presentation.components.ErrorComponent
 import com.m4ykey.stos.question.presentation.components.MarkdownText
 import com.m4ykey.stos.question.presentation.components.QuestionStatsRow
 import com.m4ykey.stos.question.presentation.components.chip.ChipItem
@@ -51,6 +53,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.asked
+import stos.composeapp.generated.resources.back
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,6 +76,10 @@ fun QuestionDetailScreen(
     val questionDetail = state.question
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    val listState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState()
+    }
 
     LaunchedEffect(viewModel) {
         viewModel.eventFlow.collect { event ->
@@ -104,7 +111,7 @@ fun QuestionDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavBack) {
                         Icon(
-                            contentDescription = null,
+                            contentDescription = stringResource(resource = Res.string.back),
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack
                         )
                     }
@@ -118,17 +125,13 @@ fun QuestionDetailScreen(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
                 errorMessage != null -> {
-                    Text(
-                        text = errorMessage,
-                        color = Color.Red,
-                        fontSize = 16.sp,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    ErrorComponent(errorMessage)
                 }
                 questionDetail != null -> {
                     QuestionDetailContent(
                         item = questionDetail,
                         paddingValues = padding,
+                        listState = listState,
                         onAction = viewModel::onAction
                     )
                 }
@@ -149,9 +152,11 @@ fun QuestionDetailContent(
     modifier : Modifier = Modifier,
     item : QuestionDetail,
     paddingValues : PaddingValues,
-    onAction : (QuestionDetailAction) -> Unit
+    onAction : (QuestionDetailAction) -> Unit,
+    listState : LazyListState
 ) {
     LazyColumn (
+        state = listState,
         modifier = modifier
             .padding(paddingValues)
             .padding(horizontal = 10.dp)

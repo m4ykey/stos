@@ -23,9 +23,6 @@ aboutLibraries = "12.1.2"
 room = "2.7.1"
 ksp = "2.1.20-2.0.1"
 compottie = "2.0.0-rc04"
-firebaseCrashlytics = "19.4.3"
-googleGmsGoogleServices = "4.4.2"
-googleFirebaseCrashlytics = "3.0.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -85,8 +82,6 @@ compottie = { group = "io.github.alexzhirkevich", name = "compottie", version.re
 compottie-dot = { group = "io.github.alexzhirkevich", name = "compottie-dot", version.ref = "compottie" }
 compottie-network = { group = "io.github.alexzhirkevich", name = "compottie-network", version.ref = "compottie" }
 
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
-
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -98,8 +93,6 @@ aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "abo
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 hotReload = { id = "org.jetbrains.compose.hot-reload", version = "1.0.0-alpha10" }
-googleGmsGoogleServices = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-googleFirebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }
 
 [bundles]
 markdown = [
