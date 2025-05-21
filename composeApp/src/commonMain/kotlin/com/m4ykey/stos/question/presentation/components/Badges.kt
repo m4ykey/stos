@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +27,7 @@ fun Badges(
     number : Int
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.wrapContentWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ColorCircle(color = color)
@@ -55,27 +56,19 @@ fun ColorCircle(
 fun BadgeRow(
     badgeCounts: BadgeCounts
 ) {
+    val badges = buildList {
+        if (badgeCounts.gold > 0) add(Color(0xFFFFCC01) to badgeCounts.gold)
+        if (badgeCounts.silver > 0) add(Color(0xFFB4B8BC) to badgeCounts.silver)
+        if (badgeCounts.bronze > 0) add(Color(0xFFD1A684) to badgeCounts.bronze)
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        if (badgeCounts.gold > 0) {
-            Badges(
-                color = Color(0xFFFFCC01),
-                number = badgeCounts.gold
-            )
-        }
-        if (badgeCounts.silver > 0) {
-            Badges(
-                color = Color(0xFFB4B8BC),
-                number = badgeCounts.silver
-            )
-        }
-        if (badgeCounts.bronze > 0) {
-            Badges(
-                color = Color(0xFFD1A684),
-                number = badgeCounts.bronze
-            )
+        badges.forEach { (color, count) ->
+            Badges(color = color, number = count)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.m4ykey.stos.question.presentation.detail
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -262,31 +264,30 @@ fun DisplayOwner(
     onOwnerClick : (Int) -> Unit,
     item : Owner
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        OwnerCard(
+            owner = item,
+            modifier = modifier
+                .align(Alignment.CenterVertically)
+                .clickable { onOwnerClick(item.userId) }
+        )
+        Spacer(modifier = modifier.width(5.dp))
+        Column(
+            modifier = modifier.weight(1f)
         ) {
-            OwnerCard(
-                modifier = Modifier
-                    .clickable { onOwnerClick(item.userId) }
-                    .align(Alignment.CenterVertically),
-                owner = item
+            MarkdownText(
+                content = item.displayName
             )
-            Spacer(modifier = Modifier.width(5.dp))
-            Column(modifier = modifier.fillMaxWidth()) {
-                MarkdownText(
-                    content = item.displayName
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    fontSize = 13.sp,
+                    text = formatReputation(item.reputation)
                 )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        fontSize = 13.sp,
-                        text = formatReputation(item.reputation)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    BadgeRow(item.badgeCounts)
-                }
+                BadgeRow(item.badgeCounts)
             }
         }
     }

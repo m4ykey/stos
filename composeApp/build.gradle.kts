@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.ktor.client.android)
             implementation(libs.koin.android)
             implementation(libs.coil3.network.okhttp)
+            implementation(libs.androidx.ui.tooling.preview)
             implementation(libs.androidx.browser)
         }
         commonMain.dependencies {
@@ -85,9 +86,8 @@ kotlin {
             implementation(libs.bundles.markdown)
             implementation(libs.bundles.aboutlibraries)
             implementation(libs.androidx.icons.extended)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
             implementation(libs.bundles.compottie)
+            implementation(libs.logger)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -134,10 +134,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    debugImplementation(libs.androidx.ui.tooling)
 }
 
 compose.desktop {
