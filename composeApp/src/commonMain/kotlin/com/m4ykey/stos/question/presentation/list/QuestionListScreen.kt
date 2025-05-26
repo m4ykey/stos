@@ -51,12 +51,6 @@ fun QuestionListScreen(
     onOwnerClick : (Int) -> Unit
 ) {
 
-    LaunchedEffect(Unit) {
-        if (viewModel.qListState.value.questions.isEmpty()) {
-            viewModel.observeSortingChangesForHome()
-        }
-    }
-
     val state by viewModel.qListState.collectAsState()
     val question = state.questions
     val sort = state.sort

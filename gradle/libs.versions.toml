@@ -13,16 +13,27 @@ androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 compose-multiplatform = "1.8.0"
 junit = "4.13.2"
-kotlin = "2.1.20"
+kotlin = "2.1.21"
 ktor = "3.1.2"
 koin = "4.0.4"
 coil3 = "3.1.0"
-markdown = "0.34.0"
+markdown = "0.35.0"
 coroutines = "1.10.2"
 aboutLibraries = "12.1.2"
 room = "2.7.1"
-ksp = "2.1.20-2.0.1"
+ksp = "2.1.21-2.0.1"
 compottie = "2.0.0-rc04"
+navigation = "2.8.0-alpha10"
+icons-extended = "1.7.3"
+ui-tooling = "1.8.2"
+browser = "1.8.0"
+serialization = "1.8.1"
+datetime = "0.6.2"
+sqlite = "2.5.1"
+hotReload = "1.0.0-alpha10"
+logger = "7.0.7"
+profileinstaller = "1.4.1"
+benchmark = "1.2.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -37,17 +48,18 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
-androidx-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.8.0-alpha10" }
-androidx-icons-extended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version = "1.7.3" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version = "1.8.2" }
-androidx-browser = { group = "androidx.browser", name = "browser", version = "1.8.0" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version = "1.8.2" }
+androidx-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-icons-extended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version.ref = "icons-extended" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "ui-tooling" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "coroutines" }
-kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.6.2" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
@@ -77,13 +89,13 @@ aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compos
 
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version = "2.5.1" }
+sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 
 compottie = { group = "io.github.alexzhirkevich", name = "compottie", version.ref = "compottie" }
 compottie-dot = { group = "io.github.alexzhirkevich", name = "compottie-dot", version.ref = "compottie" }
 compottie-network = { group = "io.github.alexzhirkevich", name = "compottie-network", version.ref = "compottie" }
 
-logger = { group = "io.github.oshai", name = "kotlin-logging-jvm", version = "7.0.7" }
+logger = { group = "io.github.oshai", name = "kotlin-logging-jvm", version.ref = "logger" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -95,7 +107,8 @@ kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versio
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
-hotReload = { id = "org.jetbrains.compose.hot-reload", version = "1.0.0-alpha10" }
+hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hotReload" }
+benchmark = { id = "androidx.benchmark.macro", version.ref = "benchmark" }
 
 [bundles]
 markdown = [

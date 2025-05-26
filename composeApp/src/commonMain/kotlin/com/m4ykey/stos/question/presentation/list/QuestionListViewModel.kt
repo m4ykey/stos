@@ -27,11 +27,15 @@ class QuestionListViewModel(
     private val _listUiEvent = MutableSharedFlow<ListUiEvent>()
     val listUiEvent = _listUiEvent.asSharedFlow()
 
-    fun updateSort(sort : QuestionSort) {
+    fun updateSort(sort: QuestionSort) {
         _qListState.update { it.copy(sort = sort) }
     }
 
-    fun observeSortingChangesForHome() {
+    init {
+        observeSortingChangesForHome()
+    }
+
+    private fun observeSortingChangesForHome() {
         _qListState.map { it.sort to it.order }
             .distinctUntilChanged()
             .onEach {
@@ -41,7 +45,7 @@ class QuestionListViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun observeSortingChangesForTag(tag : String) {
+    fun observeSortingChangesForTag(tag: String) {
         _qListState.map { it.sort to it.order }
             .distinctUntilChanged()
             .onEach {
@@ -51,7 +55,7 @@ class QuestionListViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun loadNextPageForTag(tag : String) {
+    fun loadNextPageForTag(tag: String) {
         val current = _qListState.value
         if (current.isLoading || current.isEndReached) return
 
@@ -93,8 +97,18 @@ class QuestionListViewModel(
     fun onAction(action: QuestionListAction) {
         viewModelScope.launch {
             when (action) {
-                is QuestionListAction.OnQuestionClick -> _listUiEvent.emit(ListUiEvent.NavigateToQuestion(action.questionId))
-                is QuestionListAction.OnOwnerClick -> _listUiEvent.emit(ListUiEvent.NavigateToUser(action.userId))
+                is QuestionListAction.OnQuestionClick -> _listUiEvent.emit(
+                    ListUiEvent.NavigateToQuestion(
+                        action.questionId
+                    )
+                )
+
+                is QuestionListAction.OnOwnerClick -> _listUiEvent.emit(
+                    ListUiEvent.NavigateToUser(
+                        action.userId
+                    )
+                )
+
                 is QuestionListAction.OnSortClick -> _listUiEvent.emit(ListUiEvent.ChangeSort(action.sort))
             }
         }
@@ -111,7 +125,7 @@ class QuestionListViewModel(
         }
     }
 
-    private fun processResult(result : ApiResult<List<Question>>) {
+    private fun processResult(result: ApiResult<List<Question>>) {
         when (result) {
             is ApiResult.Success -> {
                 val newItems = result.data
@@ -124,6 +138,7 @@ class QuestionListViewModel(
                     )
                 }
             }
+
             is ApiResult.Failure -> {
                 _qListState.update {
                     it.copy(
@@ -135,7 +150,7 @@ class QuestionListViewModel(
         }
     }
 
-    private fun handleError(exception : Throwable) {
+    private fun handleError(exception: Throwable) {
         _qListState.update { it.copy(isLoading = false, errorMessage = exception.message) }
     }
 
