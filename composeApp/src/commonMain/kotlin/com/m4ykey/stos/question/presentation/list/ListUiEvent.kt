@@ -4,4 +4,5 @@ sealed interface ListUiEvent {
     data class NavigateToQuestion(val questionId : Int) : ListUiEvent
     data class NavigateToUser(val userId : Int) : ListUiEvent
     data class ChangeSort(val sort : QuestionSort) : ListUiEvent
+    data class TagClick(val tag : String) : ListUiEvent
 }

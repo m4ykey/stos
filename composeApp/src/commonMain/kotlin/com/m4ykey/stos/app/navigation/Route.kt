@@ -24,4 +24,9 @@ object Route {
         fun createRoute(tag : String) = "$route/$tag"
     }
 
+    object Search {
+        const val route = "search"
+        fun createRoute() = route
+    }
+
 }

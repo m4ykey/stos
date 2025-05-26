@@ -75,6 +75,7 @@ fun QuestionListScreen(
                 is ListUiEvent.NavigateToUser -> onOwnerClick(event.userId)
                 is ListUiEvent.NavigateToQuestion -> onQuestionClick(event.questionId)
                 is ListUiEvent.ChangeSort -> viewModel.updateSort(event.sort)
+                else -> null
             }
         }
     }
@@ -84,7 +85,7 @@ fun QuestionListScreen(
         snapshotFlow { shouldLoadMore.value }
             .distinctUntilChanged()
             .collect { shouldLoad ->
-                if (shouldLoad) viewModel.loadNextPageForHome()
+                if (shouldLoad) viewModel.loadQuestions()
             }
     }
 

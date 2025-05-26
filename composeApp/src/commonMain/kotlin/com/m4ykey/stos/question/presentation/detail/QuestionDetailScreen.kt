@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -187,7 +188,7 @@ fun QuestionDetailContent(
             )
         }
         item {
-            TagListRow(
+            TagListWrap(
                 tags = item.tags,
                 onTagClick = { tag ->
                     onAction(QuestionDetailAction.OnTagClick(tag))
@@ -294,20 +295,19 @@ fun DisplayOwner(
 }
 
 @Composable
-fun TagListRow(
+fun TagListWrap(
     tags : List<String>,
     onTagClick: (String) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier.fillMaxWidth()
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(
-            items = tags,
-            key = { it }
-        ) { label ->
+        tags.forEach { label ->
             ChipItem(
                 title = label,
-                modifier = Modifier.padding(horizontal = 5.dp),
+                modifier = Modifier,
                 selected = false,
                 onSelect = { onTagClick(label) }
             )

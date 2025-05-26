@@ -10,6 +10,7 @@ import com.m4ykey.stos.question.domain.model.BadgeCounts
 import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.detail.DisplayOwner
+import com.m4ykey.stos.search.presentation.SearchBox
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,4 +55,10 @@ fun BadgeRowPreview() {
     BadgeRow(
         badgeCounts = badgeCounts
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SearchBoxPrev() {
+    SearchBox()
 }

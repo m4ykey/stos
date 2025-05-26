@@ -17,5 +17,6 @@ fun AppNavHost(
     ) {
         questionNavigation(navHostController)
         ownerNavigation(navHostController)
+        searchNavigation(navHostController)
     }
 }
