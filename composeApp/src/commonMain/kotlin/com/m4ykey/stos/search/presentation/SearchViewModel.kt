@@ -3,7 +3,6 @@ package com.m4ykey.stos.search.presentation
 import androidx.lifecycle.viewModelScope
 import com.m4ykey.stos.core.BaseQuestionViewModel
 import com.m4ykey.stos.question.presentation.list.ListUiEvent
-import com.m4ykey.stos.question.presentation.list.QuestionListAction
 import com.m4ykey.stos.search.domain.use_case.SearchUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged

@@ -8,7 +8,6 @@ import androidx.navigation.navArgument
 import com.m4ykey.stos.question.presentation.detail.QuestionDetailScreen
 import com.m4ykey.stos.question.presentation.list.QuestionListScreen
 import com.m4ykey.stos.question.presentation.list.QuestionTagScreen
-import com.m4ykey.stos.search.presentation.SearchScreen
 
 fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
     composable(Route.QuestionHome.route) {

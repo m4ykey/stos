@@ -12,11 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -42,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.core.network.openBrowser
+import com.m4ykey.stos.markdown.MarkdownText
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.data.mappers.toQuestion
 import com.m4ykey.stos.question.domain.model.Answer
@@ -49,12 +48,11 @@ import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
-import com.m4ykey.stos.question.presentation.components.MarkdownText
-import com.m4ykey.stos.question.presentation.components.list_items.QuestionStatsRow
 import com.m4ykey.stos.question.presentation.components.chip.ChipItem
 import com.m4ykey.stos.question.presentation.components.formatCreationDate
 import com.m4ykey.stos.question.presentation.components.formatReputation
 import com.m4ykey.stos.question.presentation.components.list_items.AnswerItem
+import com.m4ykey.stos.question.presentation.components.list_items.QuestionStatsRow
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import stos.composeapp.generated.resources.Res
@@ -178,13 +176,13 @@ fun QuestionDetailContent(
     ) {
         item {
             MarkdownText(
-                content = item.title,
+                text = item.title,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(10.dp))
             MarkdownText(
-                content = item.bodyMarkdown
+                text = item.bodyMarkdown
             )
         }
         item {
@@ -279,7 +277,7 @@ fun DisplayOwner(
             modifier = modifier.weight(1f)
         ) {
             MarkdownText(
-                content = item.displayName
+                text = item.displayName
             )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)

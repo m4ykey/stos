@@ -32,8 +32,6 @@ datetime = "0.6.2"
 sqlite = "2.5.1"
 hotReload = "1.0.0-alpha10"
 logger = "7.0.7"
-profileinstaller = "1.4.1"
-benchmark = "1.2.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -53,7 +51,6 @@ androidx-icons-extended = { group = "org.jetbrains.compose.material", name = "ma
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "ui-tooling" }
-androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "coroutines" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
@@ -108,7 +105,6 @@ aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "abo
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hotReload" }
-benchmark = { id = "androidx.benchmark.macro", version.ref = "benchmark" }
 
 [bundles]
 markdown = [

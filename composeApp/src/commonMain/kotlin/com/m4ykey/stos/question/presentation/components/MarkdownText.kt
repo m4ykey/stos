@@ -44,7 +44,6 @@ import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeBlock
 import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeFence
 import com.mikepenz.markdown.compose.elements.MarkdownTable
-import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.model.ImageData
 import com.mikepenz.markdown.model.ImageTransformer
@@ -124,7 +123,7 @@ val coil3ImageTransfer = object : ImageTransformer {
 }
 
 @Composable
-fun MarkdownText(
+fun MarkdownText1(
     content : String,
     modifier : Modifier = Modifier,
     fontSize : TextUnit = 16.sp,

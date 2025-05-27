@@ -34,8 +34,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
-import com.m4ykey.stos.question.presentation.components.list_items.QuestionItem
 import com.m4ykey.stos.question.presentation.components.chip.ChipList
+import com.m4ykey.stos.question.presentation.components.list_items.QuestionItem
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel

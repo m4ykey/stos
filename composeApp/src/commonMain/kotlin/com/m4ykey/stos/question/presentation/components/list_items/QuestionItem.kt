@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.m4ykey.stos.markdown.MarkdownText
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.domain.model.Question
-import com.m4ykey.stos.question.presentation.components.MarkdownText
 import com.m4ykey.stos.question.presentation.components.QuestionCount
 import com.m4ykey.stos.question.presentation.components.formatCreationDate
 import com.m4ykey.stos.question.presentation.components.formatReputation
@@ -58,7 +58,7 @@ fun QuestionItem(
             Spacer(modifier = Modifier.width(5.dp))
             Column(modifier = modifier.fillMaxWidth()) {
                 MarkdownText(
-                    content = question.owner.displayName,
+                    text = question.owner.displayName,
                     fontSize = 14.sp
                 )
                 Text(
@@ -68,7 +68,7 @@ fun QuestionItem(
             }
         }
         MarkdownText(
-            content = question.title,
+            text = question.title,
             modifier = Modifier.fillMaxWidth()
         )
         QuestionStatsRow(
