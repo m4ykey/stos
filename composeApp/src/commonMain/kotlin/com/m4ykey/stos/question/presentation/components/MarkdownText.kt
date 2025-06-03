@@ -123,7 +123,7 @@ val coil3ImageTransfer = object : ImageTransformer {
 }
 
 @Composable
-fun MarkdownText1(
+fun MarkdownText(
     content : String,
     modifier : Modifier = Modifier,
     fontSize : TextUnit = 16.sp,

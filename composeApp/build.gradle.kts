@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hotReload)
 }
 
 val versionMajor = 1
@@ -55,6 +56,7 @@ kotlin {
                 implementation(libs.coil3.network.okhttp)
                 implementation(libs.androidx.ui.tooling.preview)
                 implementation(libs.androidx.browser)
+                implementation(libs.bundles.androidx.paging)
             }
         }
 
@@ -88,6 +90,7 @@ kotlin {
                 implementation(libs.bundles.aboutlibraries)
                 implementation(libs.androidx.icons.extended)
                 implementation(libs.bundles.compottie)
+                implementation(libs.cashapp.paging.common)
             }
         }
 

@@ -40,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.core.network.openBrowser
-import com.m4ykey.stos.markdown.MarkdownText
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.data.mappers.toQuestion
 import com.m4ykey.stos.question.domain.model.Answer
@@ -48,6 +47,7 @@ import com.m4ykey.stos.question.domain.model.Owner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
+import com.m4ykey.stos.question.presentation.components.MarkdownText
 import com.m4ykey.stos.question.presentation.components.chip.ChipItem
 import com.m4ykey.stos.question.presentation.components.formatCreationDate
 import com.m4ykey.stos.question.presentation.components.formatReputation
@@ -176,13 +176,13 @@ fun QuestionDetailContent(
     ) {
         item {
             MarkdownText(
-                text = item.title,
+                content = item.title,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(10.dp))
             MarkdownText(
-                text = item.bodyMarkdown
+                content = item.bodyMarkdown
             )
         }
         item {
@@ -277,7 +277,7 @@ fun DisplayOwner(
             modifier = modifier.weight(1f)
         ) {
             MarkdownText(
-                text = item.displayName
+                content = item.displayName
             )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)

@@ -11,6 +11,7 @@ fun main() {
         Window(
             onCloseRequest = ::exitApplication,
             title = "stos",
+            alwaysOnTop = true
         ) {
             App()
         }

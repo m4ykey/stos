@@ -1,5 +1,5 @@
 [versions]
-agp = "8.10.0"
+agp = "8.10.1"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
@@ -8,10 +8,10 @@ androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.2.1"
 androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
-androidx-lifecycle = "2.9.0-alpha05"
+androidx-lifecycle = "2.9.0"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
-compose-multiplatform = "1.8.0"
+compose-multiplatform = "1.8.1"
 junit = "4.13.2"
 kotlin = "2.1.21"
 ktor = "3.1.2"
@@ -32,6 +32,8 @@ datetime = "0.6.2"
 sqlite = "2.5.1"
 hotReload = "1.0.0-alpha10"
 logger = "7.0.7"
+cashapp-paging = "3.3.0-alpha02-0.5.1"
+paging = "3.3.6"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -51,6 +53,11 @@ androidx-icons-extended = { group = "org.jetbrains.compose.material", name = "ma
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "ui-tooling" }
+androidx-paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
+androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
+
+cashapp-paging-common = { group = "app.cash.paging", name = "paging-compose-common", version.ref = "cashapp-paging" }
+cashapp-paging-uikit = { group = "app.cash.paging", name = "paging-runtime-uikit", version.ref = "cashapp-paging" }
 
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "coroutines" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
@@ -123,4 +130,9 @@ compottie = [
     "compottie",
     "compottie-dot",
     "compottie-network"
+]
+
+androidx-paging = [
+    "androidx-paging-common",
+    "androidx-paging-runtime"
 ]

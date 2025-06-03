@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.m4ykey.stos.markdown.MarkdownText
 import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.Owner
+import com.m4ykey.stos.question.presentation.components.MarkdownText
 import com.m4ykey.stos.question.presentation.detail.DisplayOwner
 
 @Composable
@@ -26,7 +26,7 @@ fun AnswerItem(
         )
         Spacer(modifier = modifier.height(10.dp))
         MarkdownText(
-            text = answer.bodyMarkdown
+            content = answer.bodyMarkdown
         )
     }
 }

@@ -43,7 +43,7 @@ fun QuestionTagScreen(
 
     LaunchedEffect(tag) {
         if (viewModel.qListState.value.questions.isEmpty()) {
-            viewModel.loadQuestionsForTag(tag)
+            //viewModel.loadQuestionsForTag(tag)
         }
     }
 
@@ -81,7 +81,7 @@ fun QuestionTagScreen(
         snapshotFlow { shouldLoadMore.value }
             .distinctUntilChanged()
             .collect { shouldLoad ->
-                if (shouldLoad) viewModel.loadQuestionsForTag(tag)
+                //if (shouldLoad) viewModel.loadQuestionsForTag(tag)
             }
     }
 
@@ -112,15 +112,15 @@ fun QuestionTagScreen(
                 errorMessage != null -> {
                     ErrorComponent(errorMessage)
                 }
-                question.isNotEmpty() -> {
-                    QuestionListContent(
-                        padding = padding,
-                        listState = listState,
-                        sort = sort,
-                        questions = question,
-                        onAction = viewModel::onAction
-                    )
-                }
+//                question.isNotEmpty() -> {
+//                    QuestionListContent(
+//                        padding = padding,
+//                        listState = listState,
+//                        sort = sort,
+//                        questions = question,
+//                        onAction = viewModel::onAction
+//                    )
+//                }
             }
         }
     }

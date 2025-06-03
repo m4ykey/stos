@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,20 +22,18 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import app.cash.paging.compose.LazyPagingItems
+import app.cash.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
 import com.m4ykey.stos.question.presentation.components.chip.ChipList
 import com.m4ykey.stos.question.presentation.components.list_items.QuestionItem
-import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import stos.composeapp.generated.resources.Res
@@ -51,22 +48,20 @@ fun QuestionListScreen(
     onOwnerClick : (Int) -> Unit
 ) {
 
-    val state by viewModel.qListState.collectAsState()
-    val question = state.questions
-    val sort = state.sort
-    val isLoading = state.isLoading
-    val errorMessage = state.errorMessage
+    val questions = viewModel.getQuestionsFlow().collectAsLazyPagingItems()
+
+    LaunchedEffect(viewModel) {
+        viewModel.getQuestionsFlow()
+    }
+
+    val viewState by viewModel.qListState.collectAsState()
+    val sort = viewState.sort
+    val isLoading = viewState.isLoading
+    val errorMessage = viewState.errorMessage
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberSaveable(saver = LazyListState.Saver) {
         LazyListState()
-    }
-
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-            lastVisible != null && lastVisible >= question.size - 3
-        }
     }
 
     LaunchedEffect(viewModel) {
@@ -78,15 +73,6 @@ fun QuestionListScreen(
                 else -> null
             }
         }
-    }
-
-
-    LaunchedEffect(listState) {
-        snapshotFlow { shouldLoadMore.value }
-            .distinctUntilChanged()
-            .collect { shouldLoad ->
-                if (shouldLoad) viewModel.loadQuestions()
-            }
     }
 
     Scaffold(
@@ -117,12 +103,12 @@ fun QuestionListScreen(
                 errorMessage != null -> {
                     ErrorComponent(errorMessage)
                 }
-                question.isNotEmpty() -> {
+                questions.itemCount > 0 -> {
                     QuestionListContent(
                         padding = padding,
                         listState = listState,
                         sort = sort,
-                        questions = question,
+                        questions = questions,
                         onAction = viewModel::onAction
                     )
                 }
@@ -137,7 +123,7 @@ fun QuestionListContent(
     listState : LazyListState,
     sort: QuestionSort,
     onAction : (QuestionListAction) -> Unit,
-    questions : List<Question>
+    questions : LazyPagingItems<Question>
 ) {
     Column(
         modifier = Modifier
@@ -157,22 +143,24 @@ fun QuestionListContent(
             contentPadding = PaddingValues(10.dp)
         ) {
             items(
-                items = questions,
-                key = { it.questionId },
+                count = questions.itemCount,
+                key = { index -> questions[index]?.questionId ?: index },
                 contentType = { "question_item" }
-            ) { question ->
-                QuestionItem(
-                    question = question,
-                    onQuestionClick = {
-                        onAction(QuestionListAction.OnQuestionClick(question.questionId))
-                    },
-                    onOwnerClick = {
-                        onAction(QuestionListAction.OnOwnerClick(question.owner.userId))
-                    }
-                )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 5.dp)
-                )
+            ) { index ->
+                questions[index]?.let { question ->
+                    QuestionItem(
+                        question = question,
+                        onQuestionClick = {
+                            onAction(QuestionListAction.OnQuestionClick(question.questionId))
+                        },
+                        onOwnerClick = {
+                            onAction(QuestionListAction.OnOwnerClick(question.owner.userId))
+                        }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 5.dp)
+                    )
+                }
             }
         }
     }

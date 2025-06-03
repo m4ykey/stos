@@ -9,5 +9,6 @@ val modules = listOf(
     repositoryModule,
     serviceModule,
     useCaseModule,
-    viewModelModule
+    viewModelModule,
+    dispatcherModule
 )

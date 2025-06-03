@@ -1,5 +1,7 @@
 package com.m4ykey.stos.question.domain.use_case
 
+import app.cash.paging.PagingData
+import app.cash.paging.PagingSource
 import com.m4ykey.stos.core.network.ApiResult
 import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.Question
@@ -30,7 +32,7 @@ class QuestionUseCase(
         page : Int,
         pageSize : Int,
         sort : String
-    ) : Flow<ApiResult<List<Question>>> {
+    ) : Flow<PagingData<Question>> {
         return repository.getQuestions(page, pageSize, sort)
     }
 
