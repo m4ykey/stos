@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Public
@@ -32,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -53,6 +53,7 @@ import com.m4ykey.stos.question.presentation.components.formatCreationDate
 import com.m4ykey.stos.question.presentation.components.formatReputation
 import com.m4ykey.stos.question.presentation.components.list_items.AnswerItem
 import com.m4ykey.stos.question.presentation.components.list_items.QuestionStatsRow
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import stos.composeapp.generated.resources.Res
@@ -72,10 +73,6 @@ fun QuestionDetailScreen(
     onOwnerClick : (Int) -> Unit
 ) {
 
-    LaunchedEffect(id) {
-        viewModel.loadQuestionDetails(id)
-    }
-
     val detailState by viewModel.qDetailState.collectAsState()
     val answerState by viewModel.qAnswerState.collectAsState()
 
@@ -86,13 +83,10 @@ fun QuestionDetailScreen(
     val answerList = answerState.answers
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
 
-    val listState = rememberSaveable(saver = LazyListState.Saver) {
-        LazyListState()
-    }
-
-    LaunchedEffect(viewModel) {
-        viewModel.eventFlow.collect { event ->
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is DetailUiEvent.OpenLink -> openBrowser(event.url)
                 is DetailUiEvent.NavigateToTag -> onTagClick(event.tag)
@@ -155,6 +149,10 @@ fun QuestionDetailScreen(
                 }
             }
         }
+    }
+
+    LaunchedEffect(id) {
+        viewModel.loadQuestionDetails(id)
     }
 }
 

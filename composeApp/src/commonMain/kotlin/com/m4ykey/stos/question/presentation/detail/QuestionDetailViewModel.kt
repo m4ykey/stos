@@ -2,7 +2,7 @@ package com.m4ykey.stos.question.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.m4ykey.stos.core.network.ApiResult
+import com.m4ykey.stos.core.network.handleApiResult
 import com.m4ykey.stos.question.domain.use_case.QuestionUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,96 +26,58 @@ class QuestionDetailViewModel(
     val eventFlow = _eventFlow.asSharedFlow()
 
     fun loadQuestionDetails(id : Int) {
-        viewModelScope.launch {
-            launch { loadQuestionAnswer(id) }
-            launch { loadQuestionById(id) }
-        }
+        loadQuestionDetail(id)
+        loadQuestionAnswer(id)
     }
 
     private fun loadQuestionAnswer(id : Int) {
-        viewModelScope.launch {
-            _qAnswerState.update { it.copy(isLoading = true, errorMessage = null) }
+        _qAnswerState.update { it.copy(isLoading = true, errorMessage = null) }
 
+        viewModelScope.launch {
             useCase.getQuestionAnswer(id)
                 .catch { exception ->
                     _qAnswerState.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = exception.message
-                        )
+                        it.copy(isLoading = false, errorMessage = exception.message)
                     }
                 }
                 .collect { result ->
-                    when (result) {
-                        is ApiResult.Success -> {
-                            _qAnswerState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    errorMessage = null,
-                                    answers = result.data
-                                )
-                            }
-                        }
-                        is ApiResult.Failure -> {
-                            _qAnswerState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    answers = emptyList(),
-                                    errorMessage = result.exception.message
-                                )
-                            }
-                        }
-                    }
+                    handleApiResult(
+                        result = result,
+                        onFailure = { msg -> _qAnswerState.update { it.copy(isLoading = false, answers = emptyList(), errorMessage = msg) } },
+                        onSuccess = { data -> _qAnswerState.update { it.copy(isLoading = false, answers = data) }}
+                    )
                 }
         }
     }
 
-    private fun loadQuestionById(id: Int) {
-        viewModelScope.launch {
-            _qDetailState.update { it.copy(isLoading = true, errorMessage = null) }
+    private fun loadQuestionDetail(id: Int) {
+        _qDetailState.update { it.copy(isLoading = true, errorMessage = null) }
 
+        viewModelScope.launch {
             useCase.getQuestionById(id)
                 .catch { exception ->
                     _qDetailState.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = exception.message
-                        )
+                        it.copy(isLoading = false, errorMessage = exception.message)
                     }
                 }
                 .collect { result ->
-                    when (result) {
-                        is ApiResult.Success -> {
-                            _qDetailState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    errorMessage = null,
-                                    question = result.data
-                                )
-                            }
-                        }
-
-                        is ApiResult.Failure -> {
-                            _qDetailState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    question = null,
-                                    errorMessage = result.exception.message
-                                )
-                            }
-                        }
-                    }
+                    handleApiResult(
+                        result = result,
+                        onFailure = { msg -> _qDetailState.update { it.copy(isLoading = false, question = null, errorMessage = msg) } },
+                        onSuccess = { data -> _qDetailState.update { it.copy(isLoading = false, question = data) }}
+                    )
                 }
         }
     }
 
     fun onAction(action : QuestionDetailAction) {
         viewModelScope.launch {
-            when (action) {
-                is QuestionDetailAction.OnOwnerClick -> _eventFlow.emit(DetailUiEvent.NavigateToUser(action.userId))
-                is QuestionDetailAction.OnTagClick -> _eventFlow.emit(DetailUiEvent.NavigateToTag(action.tag))
-                is QuestionDetailAction.OnOpenLink -> _eventFlow.emit(DetailUiEvent.OpenLink(action.link))
+            val event = when (action) {
+                is QuestionDetailAction.OnOwnerClick -> DetailUiEvent.NavigateToUser(action.userId)
+                is QuestionDetailAction.OnTagClick -> DetailUiEvent.NavigateToTag(action.tag)
+                is QuestionDetailAction.OnOpenLink -> DetailUiEvent.OpenLink(action.link)
             }
+            _eventFlow.emit(event)
         }
     }
 }
