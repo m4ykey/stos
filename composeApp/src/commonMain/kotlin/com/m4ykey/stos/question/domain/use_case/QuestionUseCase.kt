@@ -24,7 +24,7 @@ class QuestionUseCase(
         pageSize: Int,
         sort: String,
         tag : String
-    ) : Flow<ApiResult<List<Question>>> {
+    ) : Flow<PagingData<Question>> {
         return repository.getQuestionByTag(tag, page, pageSize, sort)
     }
 

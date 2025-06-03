@@ -25,21 +25,40 @@ class QuestionListViewModel(
     private val useCase: QuestionUseCase
 ) : ViewModel() {
 
+    private val page = 1
+    private val pageSize = 20
+
     val _qListState = MutableStateFlow(QuestionListState())
     val qListState = _qListState.asStateFlow()
 
     val _listUiEvent = MutableSharedFlow<ListUiEvent>()
     val listUiEvent = _listUiEvent.asSharedFlow()
 
+    fun getQuestionsTagFlow(tag : String) : Flow<PagingData<Question>> {
+        return _qListState
+            .map { it.sort to it.order }
+            .distinctUntilChanged()
+            .debounce(1000L)
+            .flatMapLatest { (sort, order) ->
+                useCase.getQuestionByTag(
+                    page = page,
+                    pageSize = pageSize,
+                    sort = sort.name,
+                    tag = tag
+                )
+            }
+            .cachedIn(viewModelScope)
+    }
+
     fun getQuestionsFlow() : Flow<PagingData<Question>> {
         return _qListState
             .map { it.sort to it.order }
             .distinctUntilChanged()
-            .debounce(1000)
+            .debounce(1000L)
             .flatMapLatest { (sort, order) ->
                 useCase.getQuestions(
-                    page = 1,
-                    pageSize = 20,
+                    page = page,
+                    pageSize = pageSize,
                     sort = sort.name
                 )
             }

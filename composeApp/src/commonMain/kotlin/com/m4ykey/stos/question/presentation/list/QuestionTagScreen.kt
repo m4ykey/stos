@@ -16,16 +16,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import app.cash.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
-import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import stos.composeapp.generated.resources.Res
@@ -41,28 +38,20 @@ fun QuestionTagScreen(
     onOwnerClick : (Int) -> Unit
 ) {
 
+    val questions = viewModel.getQuestionsTagFlow(tag).collectAsLazyPagingItems()
+
     LaunchedEffect(tag) {
-        if (viewModel.qListState.value.questions.isEmpty()) {
-            //viewModel.loadQuestionsForTag(tag)
-        }
+        viewModel.getQuestionsTagFlow(tag)
     }
 
-    val state by viewModel.qListState.collectAsState()
-    val question = state.questions
-    val sort = state.sort
-    val isLoading = state.isLoading
-    val errorMessage = state.errorMessage
+    val viewState by viewModel.qListState.collectAsState()
+    val sort = viewState.sort
+    val isLoading = viewState.isLoading
+    val errorMessage = viewState.errorMessage
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberSaveable(saver = LazyListState.Saver) {
         LazyListState()
-    }
-
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-            lastVisible != null && lastVisible >= question.size - 3
-        }
     }
 
     LaunchedEffect(viewModel) {
@@ -74,15 +63,6 @@ fun QuestionTagScreen(
                 else -> null
             }
         }
-    }
-
-
-    LaunchedEffect(listState) {
-        snapshotFlow { shouldLoadMore.value }
-            .distinctUntilChanged()
-            .collect { shouldLoad ->
-                //if (shouldLoad) viewModel.loadQuestionsForTag(tag)
-            }
     }
 
     Scaffold(
@@ -112,15 +92,15 @@ fun QuestionTagScreen(
                 errorMessage != null -> {
                     ErrorComponent(errorMessage)
                 }
-//                question.isNotEmpty() -> {
-//                    QuestionListContent(
-//                        padding = padding,
-//                        listState = listState,
-//                        sort = sort,
-//                        questions = question,
-//                        onAction = viewModel::onAction
-//                    )
-//                }
+                questions.itemCount > 0 -> {
+                    QuestionListContent(
+                        padding = padding,
+                        listState = listState,
+                        sort = sort,
+                        questions = questions,
+                        onAction = viewModel::onAction
+                    )
+                }
             }
         }
     }

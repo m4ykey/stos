@@ -14,6 +14,7 @@ import com.m4ykey.stos.question.data.network.model.Items
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
 import com.m4ykey.stos.question.data.network.model.QuestionDto
 import com.m4ykey.stos.question.data.paging.QuestionPaging
+import com.m4ykey.stos.question.data.paging.QuestionTagPaging
 import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.model.QuestionDetail
@@ -47,19 +48,13 @@ class QuestionRepositoryImpl(
         page: Int,
         pageSize: Int,
         sort: String
-    ): Flow<ApiResult<List<Question>>> = flow {
-        val result = safeApi<Items<QuestionDto>> {
-            remoteQuestionService
-                .getQuestionByTag(page = page, pageSize = pageSize, sort = sort, tagged = tag)
-        }
-
-        when (result) {
-            is ApiResult.Failure -> emit(ApiResult.Failure(result.exception))
-            is ApiResult.Success -> {
-                val questions = result.data.items?.map { it.toQuestion() }.orEmpty()
-                emit(ApiResult.Success(questions))
+    ): Flow<PagingData<Question>> {
+        return Pager(
+            config = pagingConfig,
+            pagingSourceFactory = {
+                QuestionTagPaging(service = remoteQuestionService, tag = tag)
             }
-        }
+        ).flow.flowOn(dispatcherIO)
     }
 
     override suspend fun getQuestions(
