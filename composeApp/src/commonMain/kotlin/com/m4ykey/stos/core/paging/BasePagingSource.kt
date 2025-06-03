@@ -21,13 +21,14 @@ abstract class BasePagingSource<Value : Any> : PagingSource<Int, Value>() {
 
         return try {
             val result = loadData(page = position, pageSize = pageSize)
-
+            
             result.fold(
                 onSuccess = { data ->
                     LoadResult.Page(
                         data = data,
                         prevKey = if (position == 1) null else position - 1,
-                        nextKey = if (data.size < pageSize) null else position + 1
+                        nextKey = if (data.size < pageSize) null else position + 1,
+                        itemsBefore = 0
                     )
                 },
                 onFailure = { exception ->

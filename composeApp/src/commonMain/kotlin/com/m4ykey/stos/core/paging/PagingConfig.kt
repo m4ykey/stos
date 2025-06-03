@@ -4,5 +4,7 @@ import app.cash.paging.PagingConfig
 
 val pagingConfig = PagingConfig(
     pageSize = 20,
-    enablePlaceholders = false
+    enablePlaceholders = false,
+    prefetchDistance = 5,
+    initialLoadSize = 20
 )

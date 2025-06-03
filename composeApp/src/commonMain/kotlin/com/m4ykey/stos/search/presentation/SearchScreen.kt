@@ -1,6 +1,5 @@
 package com.m4ykey.stos.search.presentation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,12 +27,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.m4ykey.stos.question.domain.model.Question
-import com.m4ykey.stos.question.presentation.components.ErrorComponent
 import com.m4ykey.stos.question.presentation.components.list_items.QuestionItem
 import com.m4ykey.stos.question.presentation.detail.TagListWrap
 import com.m4ykey.stos.question.presentation.list.ListUiEvent
@@ -59,8 +55,6 @@ fun SearchScreen(
 
     val state by viewModel.qListState.collectAsState()
     val question = state.questions
-    val isLoading = state.isLoading
-    val errorMessage = state.errorMessage
 
     val listState = rememberSaveable(saver = LazyListState.Saver) {
         LazyListState()
@@ -109,24 +103,12 @@ fun SearchScreen(
             )
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            when {
-                isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-                errorMessage != null -> {
-                    ErrorComponent(errorMessage)
-                }
-                question.isNotEmpty() -> {
-                    SearchContent(
-                        padding = padding,
-                        listState = listState,
-                        onAction = viewModel::onAction,
-                        questions = question
-                    )
-                }
-            }
-        }
+        SearchContent(
+            padding = padding,
+            listState = listState,
+            onAction = viewModel::onAction,
+            questions = question
+        )
     }
 }
 

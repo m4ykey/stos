@@ -1,19 +1,15 @@
 package com.m4ykey.stos.question.presentation.list
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -23,17 +19,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
+import com.m4ykey.stos.core.paging.BasePagingList
 import com.m4ykey.stos.question.domain.model.Question
-import com.m4ykey.stos.question.presentation.components.ErrorComponent
 import com.m4ykey.stos.question.presentation.components.chip.ChipList
 import com.m4ykey.stos.question.presentation.components.list_items.QuestionItem
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import stos.composeapp.generated.resources.Res
@@ -49,23 +46,16 @@ fun QuestionListScreen(
 ) {
 
     val questions = viewModel.getQuestionsFlow().collectAsLazyPagingItems()
-
-    LaunchedEffect(viewModel) {
-        viewModel.getQuestionsFlow()
-    }
-
     val viewState by viewModel.qListState.collectAsState()
-    val sort = viewState.sort
-    val isLoading = viewState.isLoading
-    val errorMessage = viewState.errorMessage
+    val sort by rememberUpdatedState(viewState.sort)
+
+    val currentOnAction by rememberUpdatedState(newValue = viewModel::onAction)
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val listState = rememberSaveable(saver = LazyListState.Saver) {
-        LazyListState()
-    }
+    val listState = remember { LazyListState() }
 
-    LaunchedEffect(viewModel) {
-        viewModel.listUiEvent.collect { event ->
+    LaunchedEffect(Unit) {
+        viewModel.listUiEvent.collectLatest { event ->
             when (event) {
                 is ListUiEvent.NavigateToUser -> onOwnerClick(event.userId)
                 is ListUiEvent.NavigateToQuestion -> onQuestionClick(event.questionId)
@@ -92,28 +82,13 @@ fun QuestionListScreen(
             )
         }
     ) { padding ->
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            when {
-                isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-                errorMessage != null -> {
-                    ErrorComponent(errorMessage)
-                }
-                questions.itemCount > 0 -> {
-                    QuestionListContent(
-                        padding = padding,
-                        listState = listState,
-                        sort = sort,
-                        questions = questions,
-                        onAction = viewModel::onAction
-                    )
-                }
-            }
-        }
+        QuestionListContent(
+            padding = padding,
+            listState = listState,
+            sort = sort,
+            questions = questions,
+            onAction = currentOnAction
+        )
     }
 }
 
@@ -136,32 +111,21 @@ fun QuestionListContent(
                 onAction(QuestionListAction.OnSortClick(selectedSort))
             }
         )
-        Spacer(modifier = Modifier.height(5.dp))
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(10.dp)
-        ) {
-            items(
-                count = questions.itemCount,
-                key = { index -> questions[index]?.questionId ?: index },
-                contentType = { "question_item" }
-            ) { index ->
-                questions[index]?.let { question ->
-                    QuestionItem(
-                        question = question,
-                        onQuestionClick = {
-                            onAction(QuestionListAction.OnQuestionClick(question.questionId))
-                        },
-                        onOwnerClick = {
-                            onAction(QuestionListAction.OnOwnerClick(question.owner.userId))
-                        }
-                    )
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 5.dp)
-                    )
-                }
+        Spacer(modifier = Modifier.height(8.dp))
+        BasePagingList(
+            listState = listState,
+            items = questions,
+            itemContent = { question ->
+                QuestionItem(
+                    question = question,
+                    onQuestionClick = {
+                        onAction(QuestionListAction.OnQuestionClick(question.questionId))
+                    },
+                    onOwnerClick = {
+                        onAction(QuestionListAction.OnOwnerClick(question.owner.userId))
+                    }
+                )
             }
-        }
+        )
     }
 }

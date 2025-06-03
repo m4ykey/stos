@@ -28,42 +28,46 @@ class QuestionListViewModel(
     private val page = 1
     private val pageSize = 20
 
-    val _qListState = MutableStateFlow(QuestionListState())
+    private val _qListState = MutableStateFlow(QuestionListState())
     val qListState = _qListState.asStateFlow()
 
-    val _listUiEvent = MutableSharedFlow<ListUiEvent>()
+    private val _listUiEvent = MutableSharedFlow<ListUiEvent>()
     val listUiEvent = _listUiEvent.asSharedFlow()
 
+    private val tagFlowCache = mutableMapOf<String, Flow<PagingData<Question>>>()
+
     fun getQuestionsTagFlow(tag : String) : Flow<PagingData<Question>> {
-        return _qListState
-            .map { it.sort to it.order }
-            .distinctUntilChanged()
-            .debounce(1000L)
-            .flatMapLatest { (sort, order) ->
-                useCase.getQuestionByTag(
-                    page = page,
-                    pageSize = pageSize,
-                    sort = sort.name,
-                    tag = tag
-                )
-            }
-            .cachedIn(viewModelScope)
+        return tagFlowCache.getOrPut(tag) {
+            _qListState
+                .map { it.sort to it.order }
+                .distinctUntilChanged()
+                .debounce(1000L)
+                .flatMapLatest { (sort, order) ->
+                    useCase.getQuestionByTag(
+                        page = page,
+                        pageSize = pageSize,
+                        sort = sort.name,
+                        tag = tag
+                    )
+                }
+                .cachedIn(viewModelScope)
+        }
     }
 
-    fun getQuestionsFlow() : Flow<PagingData<Question>> {
-        return _qListState
-            .map { it.sort to it.order }
-            .distinctUntilChanged()
-            .debounce(1000L)
-            .flatMapLatest { (sort, order) ->
-                useCase.getQuestions(
-                    page = page,
-                    pageSize = pageSize,
-                    sort = sort.name
-                )
-            }
-            .cachedIn(viewModelScope)
-    }
+    private val _questionFlow = _qListState
+        .map { it.sort to it.order }
+        .distinctUntilChanged()
+        .debounce(1000L)
+        .flatMapLatest { (sort, order) ->
+            useCase.getQuestions(
+                page = page,
+                pageSize = pageSize,
+                sort = sort.name
+            )
+        }
+        .cachedIn(viewModelScope)
+
+    fun getQuestionsFlow() : Flow<PagingData<Question>> = _questionFlow
 
     fun onAction(action: QuestionListAction) {
         viewModelScope.launch {
