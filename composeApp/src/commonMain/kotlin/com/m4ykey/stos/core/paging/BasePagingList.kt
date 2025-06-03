@@ -1,10 +1,12 @@
 package com.m4ykey.stos.core.paging
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -50,46 +52,62 @@ fun <T : Any> BasePagingList(
             if (items.itemCount == 0) {
                 emptyContent()
             } else {
-                LazyColumn(
-                    modifier = modifier,
-                    state = listState,
-                    contentPadding = contentPadding
-                ) {
-                    items(
-                        count = items.itemCount,
-                        key = { index -> items[index]?.let { itemKey(it) } ?: index },
-                        contentType = { "paged_item" }
-                    ) { index ->
-                        items[index]?.let { item ->
-                            itemContent(item)
+                BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                    val isWideScreen = maxWidth > 600.dp
 
-                            if (showDivider && index < items.itemCount - 1) {
-                                HorizontalDivider(modifier = Modifier.padding(horizontal = 5.dp))
-                            }
+                    val contentModifier = modifier.then(
+                        if (isWideScreen) {
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 32.dp)
+                                .widthIn(max = 800.dp)
+                                .align(Alignment.TopCenter)
+                        } else {
+                            Modifier.fillMaxWidth()
                         }
-                    }
+                    )
 
-                    when (val appendState = items.loadState.append) {
-                        is LoadStateLoading -> {
-                            item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
+                    LazyColumn(
+                        modifier = contentModifier,
+                        state = listState,
+                        contentPadding = contentPadding
+                    ) {
+                        items(
+                            count = items.itemCount,
+                            key = { index -> items[index]?.let { itemKey(it) } ?: index },
+                            contentType = { "paged_item" }
+                        ) { index ->
+                            items[index]?.let { item ->
+                                itemContent(item)
+
+                                if (showDivider && index < items.itemCount - 1) {
+                                    HorizontalDivider(modifier = Modifier.padding(horizontal = 5.dp))
                                 }
                             }
                         }
 
-                        is LoadStateError -> {
-                            item {
-                                errorContent(appendState.error)
+                        when (val appendState = items.loadState.append) {
+                            is LoadStateLoading -> {
+                                item {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator()
+                                    }
+                                }
                             }
-                        }
 
-                        is LoadStateNotLoading -> {}
+                            is LoadStateError -> {
+                                item {
+                                    errorContent(appendState.error)
+                                }
+                            }
+
+                            is LoadStateNotLoading -> {}
+                        }
                     }
                 }
             }

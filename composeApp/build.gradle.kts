@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -15,9 +16,13 @@ plugins {
     alias(libs.plugins.hotReload)
 }
 
-val versionMajor = 1
-val versionMinor = 0
-val versionPatch = 0
+val versionProperties = Properties().apply {
+    load(rootProject.file("version.properties").inputStream())
+}
+
+val versionMajor = versionProperties["versionMajor"].toString().toInt()
+val versionMinor = versionProperties["versionMinor"].toString().toInt()
+val versionPatch = versionProperties["versionPatch"].toString().toInt()
 
 kotlin {
     androidTarget {
