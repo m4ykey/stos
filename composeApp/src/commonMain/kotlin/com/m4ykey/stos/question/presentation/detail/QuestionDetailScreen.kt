@@ -60,6 +60,7 @@ import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.answers
 import stos.composeapp.generated.resources.asked
 import stos.composeapp.generated.resources.back
+import stos.composeapp.generated.resources.link
 import stos.composeapp.generated.resources.no_answers
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,6 +96,10 @@ fun QuestionDetailScreen(
         }
     }
 
+    LaunchedEffect(id) {
+        viewModel.loadQuestionDetails(id)
+    }
+
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -106,7 +111,7 @@ fun QuestionDetailScreen(
                         IconButton(onClick = { openBrowser(link) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Public,
-                                contentDescription = "Link"
+                                contentDescription = stringResource(resource = Res.string.link)
                             )
                         }
                     }
@@ -149,10 +154,6 @@ fun QuestionDetailScreen(
                 }
             }
         }
-    }
-
-    LaunchedEffect(id) {
-        viewModel.loadQuestionDetails(id)
     }
 }
 

@@ -71,20 +71,12 @@ class QuestionListViewModel(
 
     fun onAction(action: QuestionListAction) {
         viewModelScope.launch {
-            when (action) {
-                is QuestionListAction.OnQuestionClick -> _listUiEvent.emit(
-                    ListUiEvent.NavigateToQuestion(action.questionId)
-                )
-
-                is QuestionListAction.OnOwnerClick -> _listUiEvent.emit(
-                    ListUiEvent.NavigateToUser(action.userId)
-                )
-
-                is QuestionListAction.OnSortClick -> {
-                    _listUiEvent.emit(ListUiEvent.ChangeSort(action.sort))
-                    updateSort(action.sort)
-                }
+            val event = when (action) {
+                is QuestionListAction.OnQuestionClick -> ListUiEvent.NavigateToQuestion(action.questionId)
+                is QuestionListAction.OnOwnerClick -> ListUiEvent.NavigateToUser(action.userId)
+                is QuestionListAction.OnSortClick -> ListUiEvent.ChangeSort(action.sort)
             }
+            _listUiEvent.emit(event)
         }
     }
 

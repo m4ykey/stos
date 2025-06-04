@@ -28,6 +28,10 @@
 
     <string name="back">Back</string>
     <string name="search">Search</string>
+    <string name="link">Link</string>
+
+    <string name="popular_tags">Popular tags</string>
+    <string name="recent_search">Recent search</string>
 
     <string name="error_image">Error Image</string>
 

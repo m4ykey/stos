@@ -1,6 +1,6 @@
 package com.m4ykey.stos.question.domain.repository
 
-import androidx.paging.PagingData
+import app.cash.paging.PagingData
 import com.m4ykey.stos.core.network.ApiResult
 import com.m4ykey.stos.question.domain.model.Answer
 import com.m4ykey.stos.question.domain.model.Question

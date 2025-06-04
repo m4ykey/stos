@@ -2,109 +2,69 @@ package com.m4ykey.stos.search.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.presentation.list.ListUiEvent
 import com.m4ykey.stos.question.presentation.list.QuestionListState
 import com.m4ykey.stos.search.domain.use_case.SearchUseCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class SearchViewModel(
     private val useCase: SearchUseCase
 ) : ViewModel() {
 
-    val _qListState = MutableStateFlow(QuestionListState())
+    private val _searchQuery = MutableStateFlow(SearchQueryState())
+    val searchQuery = _searchQuery.asStateFlow()
+
+    private val _qListState = MutableStateFlow(QuestionListState())
     val qListState = _qListState.asStateFlow()
 
-    val _listUiEvent = MutableSharedFlow<ListUiEvent>()
+    private val _listUiEvent = MutableSharedFlow<ListUiEvent>()
     val listUiEvent = _listUiEvent.asSharedFlow()
-
-    fun resetListState() {
-        _qListState.update {
-            it.copy(
-                questions = emptyList(),
-                currentPage = 1
-            )
-        }
-    }
-
-//    fun processResult(result: ApiResult<List<Question>>) {
-//        when (result) {
-//            is ApiResult.Success -> {
-//                val newItems = result.data
-//                _qListState.update {
-//                    it.copy(
-//                        isLoading = false,
-//                        questions = it.questions + newItems,
-//                        isEndReached = newItems.size < 20,
-//                        currentPage = it.currentPage + 1
-//                    )
-//                }
-//            }
-//
-//            is ApiResult.Failure -> {
-//                _qListState.update {
-//                    it.copy(
-//                        isLoading = false,
-//                        errorMessage = result.exception.message
-//                    )
-//                }
-//            }
-//        }
-//    }
-//
-//    fun handleError(exception: Throwable) {
-//        _qListState.update { it.copy(isLoading = false, errorMessage = exception.message) }
-//    }
 
     fun onAction(action: SearchListAction) {
         viewModelScope.launch {
-            when (action) {
-                is SearchListAction.OnQuestionClick -> _listUiEvent.emit(
-                    ListUiEvent.NavigateToQuestion(
-                        action.questionId
-                    )
-                )
-
-                is SearchListAction.OnOwnerClick -> _listUiEvent.emit(
-                    ListUiEvent.NavigateToUser(
-                        action.userId
-                    )
-                )
-
-                is SearchListAction.OnTagClick -> _listUiEvent.emit(ListUiEvent.TagClick(action.tag))
+            val event = when (action) {
+                is SearchListAction.OnQuestionClick -> ListUiEvent.NavigateToQuestion(action.questionId)
+                is SearchListAction.OnOwnerClick -> ListUiEvent.NavigateToUser(action.userId)
+                is SearchListAction.OnTagClick -> ListUiEvent.TagClick(action.tag)
             }
+            _listUiEvent.emit(event)
         }
     }
 
-    fun search(inTitle : String, tag : String) {
-//        _qListState.map { it.sort to it.order }
-//            .distinctUntilChanged()
-//            .onEach {
-//                resetListState()
-//
-//                val current = _qListState.value
-//
-//                if (!current.isLoading && !current.isEndReached) {
-//                    _qListState.update { it.copy(isLoading = true) }
-//
-//                    useCase.search(
-//                        pageSize = 20,
-//                        inTitle = inTitle,
-//                        order = current.order.name,
-//                        page = current.currentPage,
-//                        sort = current.sort.name,
-//                        tagged = tag
-//                    ).catch { exception ->
-//                        handleError(exception)
-//                    }.collect { result ->
-//                        processResult(result)
-//                    }
-//                }
-//            }.launchIn(viewModelScope)
+    private val searchFlow : Flow<PagingData<Question>> = combine(
+        _searchQuery.debounce(500L).distinctUntilChanged(),
+        _qListState
+    ) { query, state ->
+        Triple(query, state.sort, state.order)
+    }
+        .distinctUntilChanged()
+        .flatMapLatest { (query, sort, order) ->
+            useCase.search(
+                inTitle = query.inTitle,
+                tagged = query.tag,
+                page = 1,
+                pageSize = 20,
+                sort = sort.name,
+                order = order.name
+            )
+        }
+
+    fun searchQuestion(inTitle : String, tag : String) {
+        _searchQuery.value = SearchQueryState(inTitle = inTitle, tag = tag)
     }
 
 }

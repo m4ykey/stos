@@ -1,6 +1,6 @@
 package com.m4ykey.stos.search.domain.repository
 
-import com.m4ykey.stos.core.network.ApiResult
+import app.cash.paging.PagingData
 import com.m4ykey.stos.question.domain.model.Question
 import kotlinx.coroutines.flow.Flow
 
@@ -13,6 +13,6 @@ interface SearchRepository {
         inTitle : String,
         tagged : String,
         order : String
-    ) : Flow<ApiResult<List<Question>>>
+    ) : Flow<PagingData<Question>>
 
 }

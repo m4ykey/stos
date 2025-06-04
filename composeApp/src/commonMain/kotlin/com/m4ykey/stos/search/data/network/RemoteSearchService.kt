@@ -13,7 +13,7 @@ interface RemoteSearchService {
         inTitle : String?,
         sort : String = "activity",
         tagged : String,
-        order : String
+        order : String = "desc"
     ) : Items<QuestionDto>
 
 }
