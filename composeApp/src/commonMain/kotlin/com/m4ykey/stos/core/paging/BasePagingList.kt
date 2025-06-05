@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
@@ -29,7 +28,7 @@ val defaultEmpty : @Composable () -> Unit = { DefaultEmpty() }
 @Composable
 fun <T : Any> BasePagingList(
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState(),
+    listState: LazyListState,
     items: LazyPagingItems<T>,
     itemContent: @Composable (item: T) -> Unit,
     contentPadding: PaddingValues = PaddingValues(10.dp),

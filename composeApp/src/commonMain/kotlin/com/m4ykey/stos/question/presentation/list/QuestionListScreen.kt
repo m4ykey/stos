@@ -19,8 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
@@ -52,7 +52,9 @@ fun QuestionListScreen(
     val currentOnAction by rememberUpdatedState(newValue = viewModel::onAction)
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val listState = remember { LazyListState() }
+    val listState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.listUiEvent.collectLatest { event ->

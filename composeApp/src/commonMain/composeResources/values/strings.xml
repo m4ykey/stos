@@ -32,6 +32,7 @@
 
     <string name="popular_tags">Popular tags</string>
     <string name="recent_search">Recent search</string>
+    <string name="search_placeholder">Search...</string>
 
     <string name="error_image">Error Image</string>
 

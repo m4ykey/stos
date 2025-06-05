@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import app.cash.paging.compose.collectAsLazyPagingItems
@@ -40,7 +40,9 @@ fun QuestionTagScreen(
     val sort by rememberUpdatedState(viewState.sort)
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val listState = remember { LazyListState() }
+    val listState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.listUiEvent.collectLatest { event ->

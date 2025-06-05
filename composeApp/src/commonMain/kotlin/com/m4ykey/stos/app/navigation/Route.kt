@@ -9,6 +9,15 @@ sealed class Route(val route : String) {
         fun createRoute() = route
     }
 
+    data class SearchList(val text : String) : Route("search/$text") {
+        companion object {
+            const val base = "search_list"
+            const val routeWithArgs = "$base/{text}"
+
+            fun createRoute(text : String) = "$base/$text"
+        }
+    }
+
     data class QuestionDetail(val id : Int) : Route("question_detail/$id") {
         companion object {
             const val base = "question_detail"

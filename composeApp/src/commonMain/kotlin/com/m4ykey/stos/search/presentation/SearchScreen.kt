@@ -24,11 +24,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -37,7 +35,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.question.presentation.detail.TagListWrap
-import com.m4ykey.stos.question.presentation.list.ListUiEvent
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -45,33 +42,25 @@ import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.back
 import stos.composeapp.generated.resources.popular_tags
 import stos.composeapp.generated.resources.search
+import stos.composeapp.generated.resources.search_placeholder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     onNavBack : () -> Unit,
     viewModel: SearchViewModel = koinViewModel(),
-    onOwnerClick : (Int) -> Unit,
-    onQuestionClick : (Int) -> Unit
+    onSearchScreen : (String) -> Unit
 ) {
 
     var inTitle by remember { mutableStateOf("") }
     var tag by remember { mutableStateOf("") }
 
-    val questions = viewModel.searchQuestion(inTitle, tag)
-    val viewState by viewModel.qListState.collectAsState()
-    val sort by rememberUpdatedState(viewState.sort)
-
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = remember { LazyListState() }
-
-    val currentOnAction by rememberUpdatedState(newValue = viewModel::onAction)
 
     LaunchedEffect(Unit) {
         viewModel.listUiEvent.collectLatest { event ->
             when (event) {
-                is ListUiEvent.NavigateToUser -> onOwnerClick(event.userId)
-                is ListUiEvent.NavigateToQuestion -> onQuestionClick(event.questionId)
                 else -> null
             }
         }
@@ -205,6 +194,6 @@ fun SearchBox(
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Search
         ),
-        placeholder = { Text("Search...") }
+        placeholder = { Text(stringResource(resource = Res.string.search_placeholder)) }
     )
 }
