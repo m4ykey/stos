@@ -54,15 +54,13 @@ import dev.snipme.highlights.model.SyntaxThemes
 val coil3ImageTransfer = object : ImageTransformer {
     @Composable
     override fun transform(link: String): ImageData? {
-        val cleanUrl = remember(link) {
-            link.trim().let { url ->
-                when {
-                    url.isBlank() -> null
-                    url.startsWith("//") -> "https:$url"
-                    url.startsWith("/") -> null
-                    !url.startsWith("http://") && !url.startsWith("https://") -> "https://$url"
-                    else -> url
-                }
+        val cleanUrl = link.trim().let { url ->
+            when {
+                url.isBlank() -> null
+                url.startsWith("//") -> "https:$url"
+                url.startsWith("/") -> null
+                !url.startsWith("http://") && !url.startsWith("https://") -> "https://$url"
+                else -> url
             }
         }
 
