@@ -162,7 +162,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "com.m4ykey.stos"
-            packageVersion = "1.0.0"
+            packageVersion = "$versionMajor.$versionMinor.$versionPatch"
         }
     }
 }

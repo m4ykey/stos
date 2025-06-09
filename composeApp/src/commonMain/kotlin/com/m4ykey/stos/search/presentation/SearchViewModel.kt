@@ -40,6 +40,7 @@ class SearchViewModel(
                 is SearchListAction.OnQuestionClick -> ListUiEvent.NavigateToQuestion(action.questionId)
                 is SearchListAction.OnOwnerClick -> ListUiEvent.NavigateToUser(action.userId)
                 is SearchListAction.OnTagClick -> ListUiEvent.TagClick(action.tag)
+                is SearchListAction.OnSearchClick -> ListUiEvent.NavigateToSearch(action.inTitle, action.tag)
             }
             _listUiEvent.emit(event)
         }

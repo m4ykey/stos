@@ -29,12 +29,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.question.presentation.detail.TagListWrap
+import com.m4ykey.stos.question.presentation.list.ListUiEvent
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -49,12 +56,10 @@ import stos.composeapp.generated.resources.search_placeholder
 fun SearchScreen(
     onNavBack : () -> Unit,
     viewModel: SearchViewModel = koinViewModel(),
-    onSearchScreen : (String) -> Unit
+    onSearchScreen : (String, String) -> Unit
 ) {
 
     var inTitle by remember { mutableStateOf("") }
-    var tag by remember { mutableStateOf("") }
-    var searchQuery by remember { mutableStateOf("") }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = remember { LazyListState() }
@@ -62,6 +67,7 @@ fun SearchScreen(
     LaunchedEffect(Unit) {
         viewModel.listUiEvent.collectLatest { event ->
             when (event) {
+                is ListUiEvent.NavigateToSearch -> onSearchScreen(event.inTitle, event.tag)
                 else -> null
             }
         }
@@ -88,14 +94,12 @@ fun SearchScreen(
             padding = padding,
             listState = listState,
             inTitle = inTitle,
-            onSearch = { searchQuery = inTitle },
+            onSearch = {
+                viewModel.onAction(SearchListAction.OnSearchClick(inTitle = inTitle, tag = ""))
+            },
             onInTitleChange = { inTitle = it },
             onTagClick = { clickedTag ->
-                if (inTitle.isEmpty()) {
-                    inTitle = clickedTag
-                } else {
-                    inTitle += " $clickedTag"
-                }
+                viewModel.onAction(SearchListAction.OnSearchClick(inTitle = inTitle, tag = clickedTag))
             }
         )
     }
@@ -170,9 +174,19 @@ fun SearchBox(
     onValueChange : (String) -> Unit,
     onSearch : () -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     OutlinedTextField(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .onKeyEvent { event ->
+                if (event.type == KeyEventType.KeyUp && event.key == Key.Enter) {
+                    onSearch()
+                    true
+                } else {
+                    false
+                }
+            },
         value = value,
         onValueChange = onValueChange,
         leadingIcon = {
@@ -193,7 +207,10 @@ fun SearchBox(
             }
         },
         keyboardActions = KeyboardActions(
-            onSearch = { onSearch() }
+            onSearch = {
+                keyboardController?.hide()
+                onSearch()
+            }
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Search

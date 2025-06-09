@@ -2,19 +2,19 @@ package com.m4ykey.stos.app.navigation
 
 sealed class Route(val route : String) {
 
-    object QuestionHome : Route("question_home") {
-        fun createRoute() = route
-    }
+    object QuestionHome : Route("question_home")
     object Search : Route("search") {
         fun createRoute() = route
     }
 
-    data class SearchList(val text : String) : Route("search/$text") {
+    data class SearchList(val inTitle : String, val tag : String) : Route("search/$inTitle/$tag") {
         companion object {
             const val base = "search_list"
-            const val routeWithArgs = "$base/{text}"
+            const val routeWithArgs = "$base/{inTitle}/{tag}"
 
-            fun createRoute(text : String) = "$base/$text"
+            fun createRoute(inTitle : String, tag : String) : String {
+                return "$base/$inTitle/$tag"
+            }
         }
     }
 

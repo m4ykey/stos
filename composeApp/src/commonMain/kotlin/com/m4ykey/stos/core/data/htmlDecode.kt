@@ -6,6 +6,7 @@ fun String.htmlDecode() : String {
         .replaceSymbols()
         .replaceCheckboxes()
         .replaceWhitespace()
+        .replaceEmojis()
 }
 
 private fun String.replaceCheckboxes() : String {
@@ -97,4 +98,10 @@ private fun String.replaceWhitespace(): String {
         .replace("\r\n", "\n")
         .replace("\r", "\n")
         .replace("(?<!\n)\n(?!\n)".toRegex(), "  \n")
+}
+
+private fun String.replaceEmojis(): String {
+    return Regex("&#(\\d+);").replace(this) { matchResult ->
+        matchResult.groupValues[1].toInt().toChar().toString()
+    }
 }

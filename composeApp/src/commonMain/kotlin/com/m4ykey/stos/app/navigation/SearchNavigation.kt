@@ -12,19 +12,26 @@ fun NavGraphBuilder.searchNavigation(navHostController: NavHostController) {
     composable(route = Route.Search.route) {
         SearchScreen(
             onNavBack = { navHostController.navigateUp() },
-            onSearchScreen = { text ->
-
+            onSearchScreen = { inTitle, tag ->
+                navHostController.navigate(Route.SearchList.createRoute(inTitle, tag))
             }
         )
     }
 
     composable(
         route = Route.SearchList.routeWithArgs,
-        arguments = listOf(navArgument("text") { type = NavType.StringType })
+        arguments = listOf(
+            navArgument("inTitle") { type = NavType.StringType },
+            navArgument("tag") { type = NavType.StringType }
+        )
     ) { navBackStackEntry ->
-        val text = navBackStackEntry.arguments?.getString("text") ?: return@composable
+        val inTitle = navBackStackEntry.arguments?.getString("inTitle") ?: return@composable
+        val tag = navBackStackEntry.arguments?.getString("tag") ?: return@composable
+
         SearchListScreen(
-            text = text
+            onNavBack = { navHostController.navigateUp() },
+            tag = tag,
+            inTitle = inTitle
         )
     }
 }
