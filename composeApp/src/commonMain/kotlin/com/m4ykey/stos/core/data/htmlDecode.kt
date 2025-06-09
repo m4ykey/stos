@@ -93,7 +93,8 @@ private fun String.replaceSymbols() : String {
 }
 
 private fun String.replaceWhitespace(): String {
-    return this.replace(Regex("\\s+"), " ")
-        .replace(Regex("\\n\\s*\\n\\s*\\n+"), "\n\n")
-        .trim()
+    return this.replace("\t", "    ")
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .replace("(?<!\n)\n(?!\n)".toRegex(), "  \n")
 }

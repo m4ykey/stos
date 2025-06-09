@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="request_timeout">Request timed out</string>
+    <string name="server_problem">Server problem</string>
+    <string name="client_error">Request error</string>
+    <string name="parse_error">Failed to process response</string>
+    <string name="too_many_requests">Too many requests</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="error_loading_image">Error loading image</string>
+
+    <string name="hot">Gorące</string>
+    <string name="activity">Aktywność</string>
+    <string name="votes">Głosy</string>
+    <string name="creation">Utworzone</string>
+    <string name="week">Tydzień</string>
+    <string name="month">Miesiąc</string>
+
+    <string name="days">dni</string>
+    <string name="min">min.</string>
+    <string name="hours">godz.</string>
+    <string name="sec">sek</string>
+
+    <string name="asked">Zapytano</string>
+    <string name="answers">Odpowiedzi</string>
+    <string name="no_answers">Brak odpowiedzi</string>
+
+    <string name="back">Wróć</string>
+    <string name="search">Szukaj</string>
+    <string name="link">Link</string>
+
+    <string name="popular_tags">Popularne tagi</string>
+    <string name="recent_search">Ostatnie wyszukiwania</string>
+    <string name="search_placeholder">Szukaj...</string>
+
+    <string name="error_image">Error Image</string>
+
+</resources>

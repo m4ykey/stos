@@ -54,6 +54,7 @@ fun SearchScreen(
 
     var inTitle by remember { mutableStateOf("") }
     var tag by remember { mutableStateOf("") }
+    var searchQuery by remember { mutableStateOf("") }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = remember { LazyListState() }
@@ -87,13 +88,9 @@ fun SearchScreen(
             padding = padding,
             listState = listState,
             inTitle = inTitle,
-            onSearch = {},
-            onInTitleChange = {
-                inTitle = it
-            },
-            onTagClick = { clickedTag ->
-                tag = clickedTag
-            }
+            onSearch = { searchQuery = inTitle },
+            onInTitleChange = { inTitle = it },
+            onTagClick = { clickedTag -> tag = clickedTag }
         )
     }
 }
