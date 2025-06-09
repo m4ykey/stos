@@ -90,7 +90,13 @@ fun SearchScreen(
             inTitle = inTitle,
             onSearch = { searchQuery = inTitle },
             onInTitleChange = { inTitle = it },
-            onTagClick = { clickedTag -> tag = clickedTag }
+            onTagClick = { clickedTag ->
+                if (inTitle.isEmpty()) {
+                    inTitle = clickedTag
+                } else {
+                    inTitle += " $clickedTag"
+                }
+            }
         )
     }
 }
@@ -114,7 +120,6 @@ val languageTags = listOf(
     "typescript", "c++", "swift", "ruby", "go", "kotlin", "r", "rust", "scala", "dart", "bash", "objective-c", "c"
 )
 val allTags = mobileTags + databaseTags + testTags + cloudTags + frameworksTags + languageTags
-
 @Composable
 fun SearchContent(
     padding : PaddingValues,
@@ -124,6 +129,8 @@ fun SearchContent(
     onSearch : () -> Unit,
     onTagClick : (String) -> Unit
 ) {
+    val shuffledTags = remember { allTags.shuffled() }
+
     LazyColumn(
         state = listState,
         modifier = Modifier
@@ -149,7 +156,7 @@ fun SearchContent(
             )
             Spacer(modifier = Modifier.height(8.dp))
             TagListWrap(
-                tags = allTags.shuffled(),
+                tags = shuffledTags,
                 onTagClick = onTagClick
             )
         }

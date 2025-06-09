@@ -61,7 +61,6 @@ import stos.composeapp.generated.resources.answers
 import stos.composeapp.generated.resources.asked
 import stos.composeapp.generated.resources.back
 import stos.composeapp.generated.resources.link
-import stos.composeapp.generated.resources.no_answers
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -171,7 +170,8 @@ fun QuestionDetailContent(
         modifier = modifier
             .padding(paddingValues)
             .padding(horizontal = 10.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
             MarkdownText(
@@ -179,7 +179,6 @@ fun QuestionDetailContent(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(10.dp))
             MarkdownText(
                 content = item.bodyMarkdown
             )
@@ -220,38 +219,24 @@ fun QuestionDetailContent(
                 text = "${stringResource(resource = Res.string.answers)}: ${item.answerCount}"
             )
         }
-        item {
-            HorizontalDivider()
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-        if (answers.isEmpty()) {
-            item {
-                Text(
-                    text = stringResource(resource = Res.string.no_answers),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        } else {
-            items(
-                items = answers,
-                key = { it.answerId },
-                contentType = { "answer_item" }
-            ) { answer ->
-                AnswerItem(
-                    onOwnerClick = {
-                        answer.owner.userId.let { id ->
-                            onAction(QuestionDetailAction.OnOwnerClick(id))
-                        }
-                    },
-                    owner = answer.owner,
-                    answer = answer
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 5.dp)
-                )
-            }
+        items(
+            items = answers,
+            key = { it.answerId },
+            contentType = { "answer_item" }
+        ) { answer ->
+            AnswerItem(
+                onOwnerClick = {
+                    answer.owner.userId.let { id ->
+                        onAction(QuestionDetailAction.OnOwnerClick(id))
+                    }
+                },
+                owner = answer.owner,
+                answer = answer
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 5.dp)
+            )
         }
     }
 }
