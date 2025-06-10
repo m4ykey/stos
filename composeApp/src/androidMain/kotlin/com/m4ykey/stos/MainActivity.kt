@@ -56,9 +56,3 @@ fun BadgeRowPreview() {
         badgeCounts = badgeCounts
     )
 }
-
-@Preview(showBackground = true)
-@Composable
-fun SearchBoxPrev() {
-    SearchBox()
-}
