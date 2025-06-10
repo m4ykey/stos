@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -138,28 +137,26 @@ fun MarkdownText(
             content = model.content,
             node = model.node,
             style = model.typography.table,
+
             headerBlock = { content, header, tableWidth, style ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(
-                            if (isDarkTheme) Color(0xFF333333) else Color(0xFFEEEEEE)
-                        )
+                        .background(if (isDarkTheme) Color(0xFF333333) else Color(0xFFEEEEEE))
                         .padding(12.dp)
                 ) {
-                    val headerText = content.buildMarkdownAnnotatedString(
-                        textNode = header,
-                        annotatorSettings = annotatorSettings(),
-                        style = style.copy(fontWeight = FontWeight.Bold)
-                    ).text
-
-                    val cells = headerText.split("|").filter { it.trim().isNotEmpty() }
-                    cells.forEach { cellText ->
+                    header.children.forEach { cellNode ->
                         Box(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
+                            val cellText = content.buildMarkdownAnnotatedString(
+                                textNode = cellNode,
+                                annotatorSettings = annotatorSettings(),
+                                style = style.copy(fontWeight = FontWeight.Bold)
+                            ).text
+
                             Text(
                                 text = cellText.trim(),
                                 overflow = TextOverflow.Visible,
@@ -177,32 +174,27 @@ fun MarkdownText(
                             .fillMaxWidth()
                             .padding(12.dp)
                     ) {
-                        val rowText = content.buildMarkdownAnnotatedString(
-                            textNode = row,
-                            style = style,
-                            annotatorSettings = annotatorSettings()
-                        ).text
-
-                        val cells = rowText.split("|").filter { it.trim().isNotEmpty() }
-                        cells.forEach { cellText ->
+                        row.children.forEach { cellNode ->
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
+                                val cellText = content.buildMarkdownAnnotatedString(
+                                    textNode = cellNode,
+                                    annotatorSettings = annotatorSettings(),
+                                    style = style
+                                ).text
+
                                 Text(
                                     style = style,
+                                    text = cellText.trim(),
                                     overflow = TextOverflow.Visible,
-                                    maxLines = Int.MAX_VALUE,
-                                    text = cellText.trim()
+                                    maxLines = Int.MAX_VALUE
                                 )
                             }
                         }
                     }
-                    HorizontalDivider(
-                        color = if (isDarkTheme) Color(0xFF444444) else Color(0xFFE0E0E0),
-                        thickness = 0.5.dp
-                    )
                 }
             }
         )

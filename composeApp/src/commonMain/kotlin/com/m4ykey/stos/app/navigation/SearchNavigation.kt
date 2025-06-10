@@ -31,7 +31,11 @@ fun NavGraphBuilder.searchNavigation(navHostController: NavHostController) {
         SearchListScreen(
             onNavBack = { navHostController.navigateUp() },
             tag = tag,
-            inTitle = inTitle
+            inTitle = inTitle,
+            onOwnerClick = { userId -> },
+            onQuestionClick = { questionId ->
+                navHostController.navigate(Route.QuestionDetail.createRoute(questionId))
+            }
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.presentation.list.ListUiEvent
 import com.m4ykey.stos.question.presentation.list.QuestionListState
+import com.m4ykey.stos.question.presentation.list.QuestionSort
 import com.m4ykey.stos.search.domain.use_case.SearchUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -34,6 +36,10 @@ class SearchViewModel(
     private val _listUiEvent = MutableSharedFlow<ListUiEvent>()
     val listUiEvent = _listUiEvent.asSharedFlow()
 
+    fun updateSort(sort: QuestionSort) {
+        _qListState.update { it.copy(sort = sort) }
+    }
+
     fun onAction(action: SearchListAction) {
         viewModelScope.launch {
             val event = when (action) {
@@ -46,7 +52,7 @@ class SearchViewModel(
         }
     }
 
-    private val searchFlow : Flow<PagingData<Question>> = combine(
+    val searchFlow : Flow<PagingData<Question>> = combine(
         _searchQuery.debounce(500L).distinctUntilChanged(),
         _qListState
     ) { query, state ->
