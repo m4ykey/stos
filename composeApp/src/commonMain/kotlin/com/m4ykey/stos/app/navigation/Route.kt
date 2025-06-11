@@ -1,47 +1,41 @@
 package com.m4ykey.stos.app.navigation
 
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+
 sealed class Route(val route : String) {
 
     object QuestionHome : Route("question_home")
-    object Search : Route("search") {
-        fun createRoute() = route
+    object Search : Route("search")
+
+    object QuestionDetail {
+        const val base = "question_detail"
+        const val routeWithArgs = "$base/{id}"
+        val arguments = listOf(navArgument("id") { type = NavType.IntType })
+        fun route(id : Int) = "$base/$id"
     }
 
-    data class SearchList(val inTitle : String, val tag : String) : Route("search/$inTitle/$tag") {
-        companion object {
-            const val base = "search_list"
-            const val routeWithArgs = "$base/{inTitle}/{tag}"
-
-            fun createRoute(inTitle : String, tag : String) : String {
-                return "$base/$inTitle/$tag"
-            }
-        }
+    object OwnerHome {
+        const val base = "owner_home"
+        const val routeWithArgs = "$base/{id}"
+        val arguments = listOf(navArgument("id") { type = NavType.IntType })
+        fun route(id : Int) = "$base/$id"
     }
 
-    data class QuestionDetail(val id : Int) : Route("question_detail/$id") {
-        companion object {
-            const val base = "question_detail"
-            const val routeWithArgs = "$base/{id}"
-
-            fun createRoute(id : Int) = "$base/$id"
-        }
+    object QuestionTag {
+        const val base = "question_tag"
+        const val routeWithArgs = "$base/{tag}"
+        val arguments = listOf(navArgument("tag") { type = NavType.StringType })
+        fun route(tag : String) = "$base/$tag"
     }
 
-    data class OwnerHome(val id : Int) : Route("owner_home/$id") {
-        companion object {
-            const val base = "owner_home"
-            const val routeWithArgs = "$base/{id}"
-
-            fun createRoute(id : Int) = "$base/$id"
-        }
-    }
-
-    data class QuestionTag(val tag : String) : Route("question_tag/$tag") {
-        companion object {
-            const val base = "question_tag"
-            const val routeWithArgs = "$base/{tag}"
-
-            fun createRoute(tag : String) = "$base/$tag"
-        }
+    object SearchList {
+        const val base = "search_list"
+        const val routeWithArgs = "$base/{inTitle}/{tag}"
+        val arguments = listOf(
+            navArgument("inTitle") { type = NavType.StringType },
+            navArgument("tag") { type = NavType.StringType }
+        )
+        fun route(inTitle : String, tag : String) = "$base/$inTitle/$tag"
     }
 }
