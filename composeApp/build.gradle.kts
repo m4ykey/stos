@@ -96,6 +96,7 @@ kotlin {
                 implementation(libs.androidx.icons.extended)
                 implementation(libs.bundles.compottie)
                 implementation(libs.cashapp.paging.common)
+                implementation(libs.ktor.client.encoding)
             }
         }
 
