@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
@@ -104,17 +105,19 @@ fun QuestionListContent(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .padding(padding)
+            .fillMaxSize()
     ) {
         ChipList(
             selectedChip = sort,
             onChipSelected = { selectedSort ->
                 onAction(QuestionListAction.OnSortClick(selectedSort))
-            }
+            },
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         BasePagingList(
+            modifier = Modifier.fillMaxWidth(),
             listState = listState,
             items = questions,
             itemContent = { question ->

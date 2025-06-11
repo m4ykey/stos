@@ -25,6 +25,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import app.cash.paging.compose.collectAsLazyPagingItems
 import com.m4ykey.stos.question.presentation.list.ListUiEvent
+import com.m4ykey.stos.question.presentation.list.QuestionListAction
 import com.m4ykey.stos.question.presentation.list.QuestionListContent
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
@@ -43,7 +44,16 @@ fun SearchListScreen(
     onOwnerClick : (Int) -> Unit
 ) {
 
-    var searchText by rememberSaveable { mutableStateOf("") }
+    val initialSearchText = buildString {
+        if (inTitle.isNotEmpty()) {
+            append(inTitle)
+        }
+        if (tag.isNotEmpty()) {
+            if (inTitle.isNotEmpty()) append(" ")
+            append(tag)
+        }
+    }
+    var searchText by rememberSaveable { mutableStateOf(initialSearchText) }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberSaveable(saver = LazyListState.Saver) {
@@ -54,7 +64,9 @@ fun SearchListScreen(
     val sort by rememberUpdatedState(viewState.sort)
 
     LaunchedEffect(inTitle, tag) {
-        viewModel.searchQuestion(inTitle, tag)
+        if (initialSearchText.isNotEmpty()) {
+            viewModel.searchQuestion(inTitle, tag)
+        }
     }
 
     val searchResult = viewModel
@@ -100,7 +112,7 @@ fun SearchListScreen(
                     viewModel.searchQuestion(searchText, tag)
                 },
                 onValueChange = { searchText = it },
-                modifier = Modifier.padding(horizontal = 10.dp)
+                modifier = Modifier.padding(horizontal = 32.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             QuestionListContent(
@@ -108,7 +120,16 @@ fun SearchListScreen(
                 questions = searchResult,
                 padding = PaddingValues(8.dp),
                 listState = listState,
-                onAction = {}
+                onAction = { questionAction ->
+                    when (questionAction) {
+                        is QuestionListAction.OnQuestionClick ->
+                            viewModel.onAction(SearchListAction.OnQuestionClick(questionAction.questionId))
+                        is QuestionListAction.OnOwnerClick ->
+                            viewModel.onAction(SearchListAction.OnOwnerClick(questionAction.userId))
+                        is QuestionListAction.OnSortClick ->
+                            viewModel.onAction(SearchListAction.OnSortClick(questionAction.sort))
+                    }
+                }
             )
         }
     }

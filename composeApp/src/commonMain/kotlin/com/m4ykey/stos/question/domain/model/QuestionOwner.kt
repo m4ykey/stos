@@ -1,6 +1,8 @@
 package com.m4ykey.stos.question.domain.model
 
-data class Owner(
+import com.m4ykey.stos.owner.domain.model.BadgeCounts
+
+data class QuestionOwner(
     val reputation : Int,
     val userId : Int,
     val profileImage : String,

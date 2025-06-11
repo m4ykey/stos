@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
-import com.m4ykey.stos.question.domain.model.Owner
+import com.m4ykey.stos.question.domain.model.QuestionOwner
 import org.jetbrains.compose.resources.stringResource
 import stos.composeapp.generated.resources.Res
 import stos.composeapp.generated.resources.error_loading_image
@@ -23,7 +23,7 @@ import stos.composeapp.generated.resources.error_loading_image
 @Composable
 fun OwnerCard(
     modifier : Modifier = Modifier,
-    owner : Owner
+    owner : QuestionOwner
 ) {
     Card(
         modifier = modifier.size(26.dp),

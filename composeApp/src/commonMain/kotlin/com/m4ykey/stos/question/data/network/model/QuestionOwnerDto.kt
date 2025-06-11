@@ -1,10 +1,11 @@
 package com.m4ykey.stos.question.data.network.model
 
+import com.m4ykey.stos.owner.data.network.model.BadgeCountsDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class OwnerDto(
+data class QuestionOwnerDto(
     val reputation : Int? = 0,
     @SerialName("user_id") val userId : Int? = 0,
     @SerialName("profile_image") val profileImage : String? = null,

@@ -42,8 +42,8 @@ import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.core.network.openBrowser
 import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.data.mappers.toQuestion
-import com.m4ykey.stos.question.domain.model.Answer
-import com.m4ykey.stos.question.domain.model.Owner
+import com.m4ykey.stos.question.domain.model.QuestionAnswer
+import com.m4ykey.stos.question.domain.model.QuestionOwner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
@@ -163,7 +163,7 @@ fun QuestionDetailContent(
     paddingValues : PaddingValues,
     onAction : (QuestionDetailAction) -> Unit,
     listState : LazyListState,
-    answers : List<Answer>
+    answers : List<QuestionAnswer>
 ) {
     LazyColumn (
         state = listState,
@@ -245,7 +245,7 @@ fun QuestionDetailContent(
 fun DisplayOwner(
     modifier : Modifier = Modifier,
     onOwnerClick : (Int) -> Unit,
-    item : Owner
+    item : QuestionOwner
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()

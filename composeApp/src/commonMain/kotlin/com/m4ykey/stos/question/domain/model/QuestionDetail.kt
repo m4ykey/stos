@@ -2,7 +2,7 @@ package com.m4ykey.stos.question.domain.model
 
 data class QuestionDetail(
     val tags : List<String>,
-    val owner : Owner,
+    val owner : QuestionOwner,
     val viewCount : Int,
     val downVoteCount : Int,
     val upVoteCount : Int,

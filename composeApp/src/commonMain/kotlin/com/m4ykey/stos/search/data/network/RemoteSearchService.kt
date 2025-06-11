@@ -1,7 +1,7 @@
 package com.m4ykey.stos.search.data.network
 
 import com.m4ykey.stos.core.Filters.QUESTION_FILTER
-import com.m4ykey.stos.question.data.network.model.Items
+import com.m4ykey.stos.core.model.Items
 import com.m4ykey.stos.question.data.network.model.QuestionDto
 
 interface RemoteSearchService {

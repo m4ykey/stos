@@ -1,18 +1,18 @@
 package com.m4ykey.stos.question.data.mappers
 
-import com.m4ykey.stos.question.data.network.model.AnswerDto
-import com.m4ykey.stos.question.data.network.model.BadgeCountsDto
-import com.m4ykey.stos.question.data.network.model.OwnerDto
+import com.m4ykey.stos.question.data.network.model.QuestionAnswerDto
+import com.m4ykey.stos.owner.data.network.model.BadgeCountsDto
+import com.m4ykey.stos.question.data.network.model.QuestionOwnerDto
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
 import com.m4ykey.stos.question.data.network.model.QuestionDto
-import com.m4ykey.stos.question.domain.model.Answer
-import com.m4ykey.stos.question.domain.model.BadgeCounts
-import com.m4ykey.stos.question.domain.model.Owner
+import com.m4ykey.stos.question.domain.model.QuestionAnswer
+import com.m4ykey.stos.owner.domain.model.BadgeCounts
+import com.m4ykey.stos.question.domain.model.QuestionOwner
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 
-fun AnswerDto.toAnswer() : Answer {
-    return Answer(
+fun QuestionAnswerDto.toAnswer() : QuestionAnswer {
+    return QuestionAnswer(
         bodyMarkdown = bodyMarkdown.orEmpty(),
         creationDate = creationDate ?: -1,
         upVoteCount = upVoteCount ?: -1,
@@ -73,8 +73,8 @@ fun BadgeCountsDto.toBadgeCounts() : BadgeCounts {
     )
 }
 
-fun OwnerDto.toOwner() : Owner {
-    return Owner(
+fun QuestionOwnerDto.toOwner() : QuestionOwner {
+    return QuestionOwner(
         reputation = reputation ?: -1,
         badgeCounts = badgeCounts?.toBadgeCounts()!!,
         displayName = displayName.orEmpty(),

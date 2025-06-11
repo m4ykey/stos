@@ -6,16 +6,14 @@ import com.m4ykey.stos.core.network.ApiResult
 import com.m4ykey.stos.core.network.safeApi
 import com.m4ykey.stos.core.paging.pagingConfig
 import com.m4ykey.stos.question.data.mappers.toAnswer
-import com.m4ykey.stos.question.data.mappers.toQuestion
 import com.m4ykey.stos.question.data.mappers.toQuestionDetail
 import com.m4ykey.stos.question.data.network.RemoteQuestionService
-import com.m4ykey.stos.question.data.network.model.AnswerDto
-import com.m4ykey.stos.question.data.network.model.Items
+import com.m4ykey.stos.question.data.network.model.QuestionAnswerDto
+import com.m4ykey.stos.core.model.Items
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
-import com.m4ykey.stos.question.data.network.model.QuestionDto
 import com.m4ykey.stos.question.data.paging.QuestionPaging
 import com.m4ykey.stos.question.data.paging.QuestionTagPaging
-import com.m4ykey.stos.question.domain.model.Answer
+import com.m4ykey.stos.question.domain.model.QuestionAnswer
 import com.m4ykey.stos.question.domain.model.Question
 import com.m4ykey.stos.question.domain.model.QuestionDetail
 import com.m4ykey.stos.question.domain.repository.QuestionRepository
@@ -29,8 +27,8 @@ class QuestionRepositoryImpl(
     private val dispatcherIO : CoroutineDispatcher
 ) : QuestionRepository {
 
-    override suspend fun getQuestionAnswer(id: Int): Flow<ApiResult<List<Answer>>> = flow {
-        val result = safeApi<Items<AnswerDto>> {
+    override suspend fun getQuestionAnswer(id: Int): Flow<ApiResult<List<QuestionAnswer>>> = flow {
+        val result = safeApi<Items<QuestionAnswerDto>> {
             remoteQuestionService.getQuestionAnswers(id = id)
         }
 

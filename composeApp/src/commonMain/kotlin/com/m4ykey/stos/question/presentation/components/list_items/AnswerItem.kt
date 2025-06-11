@@ -7,16 +7,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.m4ykey.stos.question.domain.model.Answer
-import com.m4ykey.stos.question.domain.model.Owner
+import com.m4ykey.stos.question.domain.model.QuestionAnswer
+import com.m4ykey.stos.question.domain.model.QuestionOwner
 import com.m4ykey.stos.question.presentation.components.MarkdownText
 import com.m4ykey.stos.question.presentation.detail.DisplayOwner
 
 @Composable
 fun AnswerItem(
     modifier: Modifier = Modifier,
-    answer: Answer,
-    owner : Owner,
+    answer: QuestionAnswer,
+    owner : QuestionOwner,
     onOwnerClick : (Int) -> Unit
 ) {
     Column(modifier = modifier.fillMaxWidth()) {

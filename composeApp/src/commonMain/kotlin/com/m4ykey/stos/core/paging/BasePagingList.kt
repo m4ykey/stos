@@ -1,12 +1,10 @@
 package com.m4ykey.stos.core.paging
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.CircularProgressIndicator
@@ -19,6 +17,7 @@ import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.LoadStateNotLoading
 import app.cash.paging.compose.LazyPagingItems
+import com.m4ykey.stos.core.views.CenteredContent
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
 
 val defaultLoading : @Composable () -> Unit = { DefaultLoading() }
@@ -51,21 +50,7 @@ fun <T : Any> BasePagingList(
             if (items.itemCount == 0) {
                 emptyContent()
             } else {
-                BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-                    val isWideScreen = maxWidth > 600.dp
-
-                    val contentModifier = modifier.then(
-                        if (isWideScreen) {
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 32.dp)
-                                .widthIn(max = 800.dp)
-                                .align(Alignment.TopCenter)
-                        } else {
-                            Modifier.fillMaxWidth()
-                        }
-                    )
-
+                CenteredContent(modifier = Modifier.fillMaxSize()) { contentModifier ->
                     LazyColumn(
                         modifier = contentModifier,
                         state = listState,

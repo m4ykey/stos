@@ -28,7 +28,6 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val _searchQuery = MutableStateFlow(SearchQueryState())
-    val searchQuery = _searchQuery.asStateFlow()
 
     private val _qListState = MutableStateFlow(QuestionListState())
     val qListState = _qListState.asStateFlow()
@@ -47,6 +46,7 @@ class SearchViewModel(
                 is SearchListAction.OnOwnerClick -> ListUiEvent.NavigateToUser(action.userId)
                 is SearchListAction.OnTagClick -> ListUiEvent.TagClick(action.tag)
                 is SearchListAction.OnSearchClick -> ListUiEvent.NavigateToSearch(action.inTitle, action.tag)
+                is SearchListAction.OnSortClick -> ListUiEvent.ChangeSort(action.sort)
             }
             _listUiEvent.emit(event)
         }

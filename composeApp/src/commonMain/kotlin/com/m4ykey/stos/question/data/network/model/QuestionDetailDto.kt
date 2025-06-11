@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class QuestionDetailDto(
     val tags : List<String>? = emptyList(),
-    val owner : OwnerDto? = null,
+    val owner : QuestionOwnerDto? = null,
     @SerialName("view_count") val viewCount : Int? = 0,
     @SerialName("down_vote_count") val downVoteCount : Int? = 0,
     @SerialName("up_vote_count") val upVoteCount : Int? = 0,

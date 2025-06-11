@@ -1,8 +1,8 @@
 package com.m4ykey.stos.question.data.network
 
 import com.m4ykey.stos.core.network.setParameters
-import com.m4ykey.stos.question.data.network.model.AnswerDto
-import com.m4ykey.stos.question.data.network.model.Items
+import com.m4ykey.stos.question.data.network.model.QuestionAnswerDto
+import com.m4ykey.stos.core.model.Items
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
 import com.m4ykey.stos.question.data.network.model.QuestionDto
 import io.ktor.client.HttpClient
@@ -17,7 +17,7 @@ class QuestionService(
     override suspend fun getQuestionAnswers(
         filter: String,
         id: Int
-    ): Items<AnswerDto> {
+    ): Items<QuestionAnswerDto> {
         return client.get {
             url {
                 appendPathSegments("questions/$id/answers")
