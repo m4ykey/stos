@@ -54,7 +54,7 @@ object NetworkClient {
         install(HttpRequestRetry) {
             retryOnServerErrors(maxRetries = 2)
             retryOnException(maxRetries = 1, retryOnTimeout = true)
-            exponentialDelay(base = 2.0, maxDelayMs = 10000)
+            exponentialDelay(base = 2.0, maxDelayMs = 1000)
 
             retryIf { _, httpResponse ->
                 httpResponse.status.value !in 400..499
