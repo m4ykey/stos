@@ -47,9 +47,6 @@ If you'd like to propose a change, please open an issue first to discuss it.
 ## 📄 License
 
 ```plaintext
-GNU GENERAL PUBLIC LICENSE
-Version 3, 29 June 2007
-
 Copyright (C) 2025 Michał F
 
 This program is free software: you can redistribute it and/or modify
