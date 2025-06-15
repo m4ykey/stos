@@ -42,8 +42,9 @@ This app uses the official [StackExchange API](https://api.stackexchange.com/) t
 
 ## 🤝 Contributing
 Contributions are welcome!
-If you'd like to propose a change, please open an issue first to discuss it.
-
+If you find a better solution, spot a bug, or want to improve something — feel free to open a pull request directly.
+You can also open an issue if you’d like to discuss an idea first.
+Every suggestion, fix, or improvement is appreciated!
 ## 📄 License
 
 ```plaintext
