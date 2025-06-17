@@ -30,7 +30,7 @@ fun NavGraphBuilder.searchNavigation(navHostController: NavHostController) {
             tag = tag,
             inTitle = inTitle,
             onOwnerClick = { userId ->
-                navHostController.navigate(Route.OwnerHome.route(userId)) {
+                navHostController.navigate(Route.UserHome.route(userId)) {
                     launchSingleTop = true
                 }
             },

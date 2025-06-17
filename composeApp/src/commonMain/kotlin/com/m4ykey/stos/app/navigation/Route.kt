@@ -15,8 +15,8 @@ sealed class Route(val route : String) {
         fun route(id : Int) = "$base/$id"
     }
 
-    object OwnerHome {
-        const val base = "owner_home"
+    object UserHome {
+        const val base = "user_home"
         const val routeWithArgs = "$base/{id}"
         val arguments = listOf(navArgument("id") { type = NavType.IntType })
         fun route(id : Int) = "$base/$id"

@@ -21,7 +21,7 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
                 }
             },
             onOwnerClick = { userId ->
-                navHostController.navigate(Route.OwnerHome.route(userId)) {
+                navHostController.navigate(Route.UserHome.route(userId)) {
                     launchSingleTop = true
                 }
             }
@@ -41,7 +41,7 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
                 }
             },
             onOwnerClick = { userId ->
-                navHostController.navigate(Route.OwnerHome.route(userId)) {
+                navHostController.navigate(Route.UserHome.route(userId)) {
                     launchSingleTop = true
                 }
             }
@@ -59,7 +59,7 @@ fun NavGraphBuilder.questionNavigation(navHostController: NavHostController) {
                 }
             },
             onOwnerClick = { userId ->
-                navHostController.navigate(Route.OwnerHome.route(userId)) {
+                navHostController.navigate(Route.UserHome.route(userId)) {
                     launchSingleTop = true
                 }
             },
