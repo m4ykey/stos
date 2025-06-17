@@ -1,4 +1,4 @@
-package com.m4ykey.stos.owner.domain.model
+package com.m4ykey.stos.user.domain.model
 
 data class BadgeCounts(
     val bronze : Int,

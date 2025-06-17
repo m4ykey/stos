@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.m4ykey.stos.owner.domain.model.BadgeCounts
+import com.m4ykey.stos.user.domain.model.BadgeCounts
 
 @Composable
 fun Badges(

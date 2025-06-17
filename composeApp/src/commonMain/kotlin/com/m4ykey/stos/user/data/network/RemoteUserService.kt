@@ -1,10 +1,10 @@
-package com.m4ykey.stos.owner.data.network
+package com.m4ykey.stos.user.data.network
 
 import com.m4ykey.stos.core.Filters.OWNER_FILTER
 import com.m4ykey.stos.core.model.Items
-import com.m4ykey.stos.owner.data.network.model.UserDto
+import com.m4ykey.stos.user.data.network.model.UserDto
 
-interface RemoteOwnerService {
+interface RemoteUserService {
 
     suspend fun getUser(
         filter : String = OWNER_FILTER,

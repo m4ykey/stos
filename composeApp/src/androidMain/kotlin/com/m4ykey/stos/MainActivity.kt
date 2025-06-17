@@ -6,10 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.m4ykey.stos.app.App
-import com.m4ykey.stos.owner.domain.model.BadgeCounts
 import com.m4ykey.stos.question.domain.model.QuestionOwner
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.detail.DisplayOwner
+import com.m4ykey.stos.user.domain.model.BadgeCounts
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

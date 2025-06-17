@@ -10,10 +10,10 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.http.HttpMethod
 import io.ktor.http.URLProtocol
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
@@ -26,9 +26,7 @@ object NetworkClient {
     private const val BASE_HOST = "api.stackexchange.com"
     private const val DEFAULT_SITE = "stackoverflow"
 
-    fun create(
-        engine : HttpClientEngine
-    ) : HttpClient {
+    fun create(engine : HttpClientEngine) : HttpClient {
         return HttpClient(engine) {
             configureDefaultRequest()
             configureLogging()
@@ -52,17 +50,8 @@ object NetworkClient {
 
     private fun HttpClientConfig<*>.configureRetries() {
         install(HttpRequestRetry) {
-            retryOnServerErrors(maxRetries = 2)
-            retryOnException(maxRetries = 1, retryOnTimeout = true)
-            exponentialDelay(base = 2.0, maxDelayMs = 1000)
-
-            retryIf { _, httpResponse ->
-                httpResponse.status.value !in 400..499
-            }
-
-            retryIf { request, _ ->
-                request.method == HttpMethod.Get
-            }
+            retryOnServerErrors(maxRetries = 3)
+            exponentialDelay()
         }
     }
 
@@ -72,8 +61,6 @@ object NetworkClient {
                 Json {
                     prettyPrint = true
                     ignoreUnknownKeys = true
-                    coerceInputValues = true
-                    encodeDefaults = false
                 }
             )
         }
@@ -96,11 +83,7 @@ object NetworkClient {
     private fun HttpClientConfig<*>.configureLogging() {
         install(Logging) {
             level = LogLevel.BODY
-            logger = object : Logger {
-                override fun log(message: String) {
-                    println("HTTP: $message")
-                }
-            }
+            logger = Logger.DEFAULT
         }
     }
 

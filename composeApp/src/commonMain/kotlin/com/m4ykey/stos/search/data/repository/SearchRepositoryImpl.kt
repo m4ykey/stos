@@ -1,6 +1,6 @@
 package com.m4ykey.stos.search.data.repository
 
-import app.cash.paging.Pager
+import androidx.paging.Pager
 import app.cash.paging.PagingData
 import com.m4ykey.stos.core.paging.pagingConfig
 import com.m4ykey.stos.question.domain.model.Question
@@ -16,7 +16,7 @@ class SearchRepositoryImpl(
     private val dispatcherIO : CoroutineDispatcher
 ) : SearchRepository {
 
-    override suspend fun search(
+    override fun search(
         page: Int,
         pageSize: Int,
         sort: String,

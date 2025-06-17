@@ -1,4 +1,4 @@
-package com.m4ykey.stos.owner.presentation.components
+package com.m4ykey.stos.user.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size

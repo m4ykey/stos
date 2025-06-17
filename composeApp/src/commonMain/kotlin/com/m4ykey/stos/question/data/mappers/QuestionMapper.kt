@@ -1,15 +1,15 @@
 package com.m4ykey.stos.question.data.mappers
 
 import com.m4ykey.stos.question.data.network.model.QuestionAnswerDto
-import com.m4ykey.stos.owner.data.network.model.BadgeCountsDto
-import com.m4ykey.stos.question.data.network.model.QuestionOwnerDto
 import com.m4ykey.stos.question.data.network.model.QuestionDetailDto
 import com.m4ykey.stos.question.data.network.model.QuestionDto
-import com.m4ykey.stos.question.domain.model.QuestionAnswer
-import com.m4ykey.stos.owner.domain.model.BadgeCounts
-import com.m4ykey.stos.question.domain.model.QuestionOwner
+import com.m4ykey.stos.question.data.network.model.QuestionOwnerDto
 import com.m4ykey.stos.question.domain.model.Question
+import com.m4ykey.stos.question.domain.model.QuestionAnswer
 import com.m4ykey.stos.question.domain.model.QuestionDetail
+import com.m4ykey.stos.question.domain.model.QuestionOwner
+import com.m4ykey.stos.user.data.mapper.toBadgeCounts
+import com.m4ykey.stos.user.domain.model.BadgeCounts
 
 fun QuestionAnswerDto.toAnswer() : QuestionAnswer {
     return QuestionAnswer(
@@ -17,7 +17,14 @@ fun QuestionAnswerDto.toAnswer() : QuestionAnswer {
         creationDate = creationDate ?: -1,
         upVoteCount = upVoteCount ?: -1,
         downVoteCount = downVoteCount ?: -1,
-        owner = owner?.toOwner()!!,
+        owner = owner?.toOwner() ?: QuestionOwner(
+            displayName = "",
+            userId = 0,
+            link = "",
+            profileImage = "",
+            reputation = 0,
+            badgeCounts = BadgeCounts(0,0,0)
+        ),
         answerId = answerId ?: -1
     )
 }
@@ -48,7 +55,14 @@ fun QuestionDetailDto.toQuestionDetail() : QuestionDetail {
         tags = tags ?: emptyList(),
         questionId = questionId ?: -1,
         upVoteCount = upVoteCount ?: -1,
-        owner = owner?.toOwner()!!
+        owner = owner?.toOwner() ?: QuestionOwner(
+            displayName = "",
+            userId = 0,
+            link = "",
+            profileImage = "",
+            reputation = 0,
+            badgeCounts = BadgeCounts(0, 0, 0)
+        )
     )
 }
 
@@ -57,7 +71,14 @@ fun QuestionDto.toQuestion() : Question {
         creationDate = creationDate ?: -1,
         answerCount = answerCount ?: -1,
         downVoteCount = downVoteCount ?: -1,
-        owner = owner?.toOwner()!!,
+        owner = owner?.toOwner() ?: QuestionOwner(
+            displayName = "",
+            userId = 0,
+            link = "",
+            profileImage = "",
+            reputation = 0,
+            badgeCounts = BadgeCounts(0, 0, 0)
+        ),
         questionId = questionId ?: -1,
         title = title.orEmpty(),
         upVoteCount = upVoteCount ?: -1,
@@ -65,18 +86,10 @@ fun QuestionDto.toQuestion() : Question {
     )
 }
 
-fun BadgeCountsDto.toBadgeCounts() : BadgeCounts {
-    return BadgeCounts(
-        silver = silver ?: -1,
-        gold = gold ?: -1,
-        bronze = bronze ?: -1
-    )
-}
-
 fun QuestionOwnerDto.toOwner() : QuestionOwner {
     return QuestionOwner(
         reputation = reputation ?: -1,
-        badgeCounts = badgeCounts?.toBadgeCounts()!!,
+        badgeCounts = badgeCounts?.toBadgeCounts() ?: BadgeCounts(0,0,0),
         displayName = displayName.orEmpty(),
         link = link.orEmpty(),
         profileImage = profileImage.orEmpty(),

@@ -9,7 +9,7 @@ class SearchUseCase(
     private val repository: SearchRepository
 ) {
 
-    suspend fun search(
+    fun search(
         inTitle : String,
         order : String,
         page : Int,

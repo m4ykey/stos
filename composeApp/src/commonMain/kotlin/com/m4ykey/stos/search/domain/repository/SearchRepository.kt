@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
-    suspend fun search(
+    fun search(
         page : Int,
         pageSize : Int,
         sort : String,

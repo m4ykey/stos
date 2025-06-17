@@ -40,11 +40,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.m4ykey.stos.core.network.openBrowser
-import com.m4ykey.stos.owner.presentation.components.OwnerCard
 import com.m4ykey.stos.question.data.mappers.toQuestion
 import com.m4ykey.stos.question.domain.model.QuestionAnswer
-import com.m4ykey.stos.question.domain.model.QuestionOwner
 import com.m4ykey.stos.question.domain.model.QuestionDetail
+import com.m4ykey.stos.question.domain.model.QuestionOwner
 import com.m4ykey.stos.question.presentation.components.BadgeRow
 import com.m4ykey.stos.question.presentation.components.ErrorComponent
 import com.m4ykey.stos.question.presentation.components.MarkdownText
@@ -53,6 +52,7 @@ import com.m4ykey.stos.question.presentation.components.formatCreationDate
 import com.m4ykey.stos.question.presentation.components.formatReputation
 import com.m4ykey.stos.question.presentation.components.list_items.AnswerItem
 import com.m4ykey.stos.question.presentation.components.list_items.QuestionStatsRow
+import com.m4ykey.stos.user.presentation.components.OwnerCard
 import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel

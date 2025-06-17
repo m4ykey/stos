@@ -1,8 +1,8 @@
 package com.m4ykey.stos.core.paging
 
 import app.cash.paging.PagingSource
-import app.cash.paging.PagingState
 import app.cash.paging.PagingSourceLoadResult
+import app.cash.paging.PagingState
 
 abstract class BasePagingSource<Value : Any> : PagingSource<Int, Value>() {
 
