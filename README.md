@@ -30,7 +30,7 @@ Built with Jetpack Compose and Kotlin Multiplatform, the app offers a fast and r
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/stos.git
+   git clone https://github.com/m4ykey/stos
 2. Open the project in Android Studio
 3. Run the app on an Android emulator or a physical device.
 
